@@ -1,10 +1,10 @@
-@import url('https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700&family=DM+Sans:wght@400;500;700&family=Manrope:wght@400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700;800&display=swap');
 
 :root {
   --color-primary: #121212;
-  --color-accent: #8b6b45;
-  --color-surface: #f2efe9;
-  --color-border: rgba(18, 18, 18, 0.18);
+  --color-accent: #5b7a62;
+  --color-surface: #f5f4ef;
+  --color-border: rgba(18, 18, 18, 0.24);
   --color-text: rgba(18, 18, 18, 0.82);
   --font-heading: "DM Sans", "Segoe UI", sans-serif;
   --font-body: "DM Sans", "Segoe UI", sans-serif;
@@ -67,15 +67,16 @@ h3 {
 }
 
 h1 {
-  font-size: clamp(2.4rem, 4.2vw, 4rem);
+  font-size: clamp(1.8rem, 2.6vw, 2.7rem);
+  letter-spacing: 0;
 }
 
 h2 {
-  font-size: clamp(1.45rem, 2.6vw, 2.3rem);
+  font-size: clamp(1.15rem, 1.8vw, 1.45rem);
 }
 
 h3 {
-  font-size: 1.1rem;
+  font-size: 0.98rem;
 }
 
 p {

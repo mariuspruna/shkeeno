@@ -125,10 +125,8 @@
 }
 
 .hero-section {
-  display: grid;
-  gap: 1rem;
-  align-items: start;
-  padding-top: 2rem;
+  display: block;
+  padding-top: 1.5rem;
   padding-bottom: 2rem;
 }
 
@@ -141,8 +139,8 @@
 }
 
 .hero-copy h1 {
-  max-width: 11ch;
-  margin: 0 0 0.85rem;
+  max-width: 13ch;
+  margin: 0 0 0.65rem;
 }
 
 .hero-text,
@@ -150,7 +148,11 @@
 .card-meta p,
 .admin-sidebar p,
 .preview-tile p {
-  max-width: 46ch;
+  max-width: 54ch;
+}
+
+.hero-media {
+  margin-top: 1rem;
 }
 
 .button {
@@ -186,11 +188,11 @@
   min-height: 17rem;
   overflow: hidden;
   background: var(--color-accent);
-  border: 2px solid rgba(18, 18, 18, 0.28);
+  border: 2px solid var(--color-border);
 }
 
 .placeholder-block.tall {
-  min-height: 26rem;
+  min-height: 18rem;
 }
 
 .placeholder-block span {
@@ -209,8 +211,8 @@
   display: grid;
   grid-template-columns: repeat(4, 1fr);
   margin-top: 0.5rem;
-  border-top: 2px solid rgba(18, 18, 18, 0.2);
-  border-bottom: 2px solid rgba(18, 18, 18, 0.2);
+  border-top: 2px solid var(--color-border);
+  border-bottom: 2px solid var(--color-border);
 }
 
 .category-strip span {
@@ -221,7 +223,7 @@
 }
 
 .category-strip span + span {
-  border-left: 1px solid var(--color-border);
+  border-left: 2px solid var(--color-border);
 }
 
 .content-grid,
@@ -244,7 +246,7 @@
 .column-block,
 .admin-sidebar,
 .preview-tile {
-  padding: 1.25rem;
+  padding: 1rem 0;
 }
 
 .section-heading {
@@ -256,7 +258,7 @@
 
 .portfolio-section,
 .detail-grid {
-  padding-top: 2rem;
+  padding-top: 1.5rem;
   padding-bottom: 2rem;
 }
 
@@ -290,17 +292,17 @@
 .link-list a,
 .footer-links a {
   display: block;
-  padding: 0.8rem 0;
+  padding: 0.7rem 0;
   color: var(--color-primary);
   text-decoration: none;
-  border-top: 2px solid rgba(18, 18, 18, 0.16);
+  border-top: 2px solid var(--color-border);
 }
 
 .footer {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
   gap: 2rem;
-  border-top: 2px solid rgba(18, 18, 18, 0.2);
+  border-top: 2px solid var(--color-border);
 }
 
 .footer-block {

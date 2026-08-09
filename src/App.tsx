@@ -19,14 +19,12 @@ const THEME_STORAGE_KEY = 'shkeeno-theme'
 
 const fontOptions = {
   refined: '"DM Sans", "Segoe UI", sans-serif',
-  modern: '"Manrope", "Segoe UI", sans-serif',
-  neutral: '"Archivo", "Segoe UI", sans-serif',
 } as const
 
 const defaultTheme: ThemeConfig = {
   primary: '#121212',
-  accent: '#8b6b45',
-  surface: '#f2efe9',
+  accent: '#5b7a62',
+  surface: '#f5f4ef',
   headingFont: fontOptions.refined,
   bodyFont: fontOptions.refined,
 }
@@ -168,8 +166,10 @@ function FrontPage() {
               posuere tellus sit amet pulvinar dapibus, arcu nisi fermentum
               velit, vitae rhoncus nisl ipsum at nunc.
             </p>
+            <div className="hero-media">
+              <PlaceholderBlock label="Wide campaign image" tall />
+            </div>
           </div>
-          <PlaceholderBlock label="Wide campaign image" tall />
         </section>
 
         <section className="category-strip" aria-label="Category links">
@@ -348,9 +348,7 @@ function AdminPage({
               }))
             }
           >
-            <option value={fontOptions.modern}>Manrope</option>
             <option value={fontOptions.refined}>DM Sans</option>
-            <option value={fontOptions.neutral}>Archivo</option>
           </select>
         </div>
 
@@ -367,8 +365,6 @@ function AdminPage({
             }
           >
             <option value={fontOptions.refined}>DM Sans</option>
-            <option value={fontOptions.modern}>Manrope</option>
-            <option value={fontOptions.neutral}>Archivo</option>
           </select>
         </div>
 
