@@ -166,9 +166,9 @@ function FrontPage() {
               posuere tellus sit amet pulvinar dapibus, arcu nisi fermentum
               velit, vitae rhoncus nisl ipsum at nunc.
             </p>
-            <div className="hero-media">
-              <PlaceholderBlock label="Wide campaign image" tall />
-            </div>
+          </div>
+          <div className="hero-media">
+            <PlaceholderBlock label="Wide campaign image" tall />
           </div>
         </section>
 
