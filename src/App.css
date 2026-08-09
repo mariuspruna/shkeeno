@@ -311,17 +311,35 @@
 
 .footer {
   display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
+  grid-template-columns: repeat(4, minmax(0, 1fr));
   gap: 2rem;
-  border-top: 2px solid var(--color-border);
+  background: var(--color-primary);
+  color: white;
+  padding-top: 2rem;
+  padding-bottom: 2rem;
 }
 
 .footer-block {
-  padding: 1.25rem 0;
+  padding: 0;
 }
 
 .footer-block + .footer-block {
   padding-left: 0;
+}
+
+.footer .eyebrow,
+.footer a,
+.footer p {
+  color: white;
+}
+
+.footer .footer-links a {
+  border-top: 0;
+}
+
+.footer .footer-links a:hover {
+  background: transparent;
+  color: color-mix(in srgb, white 72%, var(--color-accent));
 }
 
 .admin-shell {

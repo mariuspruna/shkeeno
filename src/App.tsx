@@ -227,36 +227,25 @@ function FrontPage() {
           </div>
         </section>
 
-        <section className="detail-grid" id="sustainability">
-          <div className="column-block">
-            <p className="eyebrow">Responsabilities</p>
-            <ul className="link-list">
-              <li id="code-of-ethics">
-                <a href="/">Sustainability</a>
-              </li>
-              <li id="terms-and-conditions">
-                <a href="/">Code of ethics</a>
-              </li>
-              <li id="charity">
-                <a href="/">Terms & conditions</a>
-              </li>
-              <li>
-                <a href="/">Charity</a>
-              </li>
-            </ul>
-          </div>
-
-          <div className="column-block" id="need-help">
-            <p className="eyebrow">Need help</p>
-            <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Contact,
-              delivery, returns and pre-order support will live here.
-            </p>
-          </div>
-        </section>
       </main>
 
       <footer className="footer" id="contacts">
+        <div className="footer-block">
+          <p className="eyebrow">Responsabilities</p>
+          <div className="footer-links">
+            <a href="/" id="sustainability">Sustainability</a>
+            <a href="/" id="code-of-ethics">Code of ethics</a>
+            <a href="/" id="terms-and-conditions">Terms & conditions</a>
+            <a href="/" id="charity">Charity</a>
+          </div>
+        </div>
+        <div className="footer-block" id="need-help">
+          <p className="eyebrow">Need help</p>
+          <p>
+            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Contact,
+            delivery, returns and pre-order support will live here.
+          </p>
+        </div>
         <div className="footer-block">
           <p className="eyebrow">Follow us on</p>
           <div className="footer-links">
