@@ -172,13 +172,6 @@ function FrontPage() {
           </div>
         </section>
 
-        <section className="category-strip" aria-label="Category links">
-          <span>New in</span>
-          <span>Wish list</span>
-          <span>Pre-order</span>
-          <span>Sale</span>
-        </section>
-
         <section className="content-grid" id="about-shkeeno">
           <article className="text-panel">
             <p className="eyebrow">About shkeeno</p>
