@@ -67,7 +67,6 @@ const navGroups: NavGroup[] = [
       { label: 'Facebook ↗', href: '/' },
     ],
   },
-  { label: 'Need help', href: '#need-help' },
   { label: 'Contacts', href: '#contacts' },
 ]
 
@@ -231,13 +230,6 @@ function FrontPage() {
             <a href="/" id="terms-and-conditions">Terms & conditions</a>
             <a href="/" id="charity">Charity</a>
           </div>
-        </div>
-        <div className="footer-block" id="need-help">
-          <p className="eyebrow">Need help</p>
-          <p>
-            Lorem ipsum dolor sit amet, consectetur adipiscing elit. Contact,
-            delivery, returns and pre-order support will live here.
-          </p>
         </div>
         <div className="footer-block">
           <p className="eyebrow">Follow us on</p>
