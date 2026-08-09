@@ -23,7 +23,7 @@ const fontOptions = {
 
 const defaultTheme: ThemeConfig = {
   primary: '#121212',
-  accent: '#5b7a62',
+  accent: '#007f7a',
   surface: '#f5f4ef',
   headingFont: fontOptions.refined,
   bodyFont: fontOptions.refined,
