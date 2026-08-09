@@ -22,8 +22,8 @@ const defaultTheme: ThemeConfig = {
   primary: '#16110f',
   accent: '#d98c6f',
   surface: '#f7efe7',
-  headingFont: fontOptions.classic,
-  bodyFont: fontOptions.modern,
+  headingFont: fontOptions.modern,
+  bodyFont: fontOptions.refined,
 }
 
 const lookbookCards = [
@@ -296,9 +296,10 @@ function AdminPage({
               }))
             }
           >
+            <option value={fontOptions.modern}>Manrope</option>
+            <option value={fontOptions.refined}>DM Sans</option>
             <option value={fontOptions.classic}>Instrument Serif</option>
             <option value={fontOptions.editorial}>Cormorant Garamond</option>
-            <option value={fontOptions.modern}>Manrope</option>
           </select>
         </div>
 
