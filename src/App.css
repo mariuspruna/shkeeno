@@ -139,8 +139,8 @@
 }
 
 .hero-copy h1 {
-  max-width: 13ch;
-  margin: 0 0 0.65rem;
+  max-width: 18ch;
+  margin: 0 0 0.45rem;
 }
 
 .hero-text,
@@ -148,11 +148,11 @@
 .card-meta p,
 .admin-sidebar p,
 .preview-tile p {
-  max-width: 54ch;
+  max-width: 64ch;
 }
 
 .hero-media {
-  margin-top: 1rem;
+  margin-top: 0.75rem;
 }
 
 .button {
@@ -192,7 +192,7 @@
 }
 
 .placeholder-block.tall {
-  min-height: 18rem;
+  min-height: 16rem;
 }
 
 .placeholder-block span {
