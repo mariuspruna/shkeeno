@@ -9,38 +9,76 @@ type ThemeConfig = {
   bodyFont: string
 }
 
+type NavGroup = {
+  label: string
+  href?: string
+  items?: Array<{ label: string; href: string }>
+}
+
 const THEME_STORAGE_KEY = 'shkeeno-theme'
 
 const fontOptions = {
-  editorial: '"Cormorant Garamond", Georgia, serif',
   modern: '"Manrope", "Segoe UI", sans-serif',
   refined: '"DM Sans", "Segoe UI", sans-serif',
-  classic: '"Instrument Serif", Georgia, serif',
+  neutral: '"Archivo", "Segoe UI", sans-serif',
 } as const
 
 const defaultTheme: ThemeConfig = {
-  primary: '#16110f',
-  accent: '#d98c6f',
-  surface: '#f7efe7',
+  primary: '#121212',
+  accent: '#d6b38a',
+  surface: '#f3ede3',
   headingFont: fontOptions.modern,
   bodyFont: fontOptions.refined,
 }
 
-const lookbookCards = [
+const navGroups: NavGroup[] = [
+  { label: 'Home', href: '#home' },
+  {
+    label: 'About',
+    items: [
+      { label: 'Shkeeno', href: '#about-shkeeno' },
+      { label: 'The designer', href: '#the-designer' },
+      { label: 'The idea', href: '#the-idea' },
+    ],
+  },
+  {
+    label: 'Responsabilities',
+    items: [
+      { label: 'Sustainability', href: '#sustainability' },
+      { label: 'Code of ethics', href: '#code-of-ethics' },
+      { label: 'Terms & conditions', href: '#terms-and-conditions' },
+      { label: 'Charity', href: '#charity' },
+    ],
+  },
+  {
+    label: 'Menu',
+    items: [
+      { label: 'New in', href: '#new-in' },
+      { label: 'Wish list', href: '#wish-list' },
+      { label: 'Pre-order', href: '#pre-order' },
+      { label: 'Sale', href: '#sale' },
+    ],
+  },
+  { label: 'Portfolio', href: '#portfolio' },
+  {
+    label: 'Follow us on',
+    items: [
+      { label: 'Instagram ↗', href: '/' },
+      { label: 'Pinterest ↗', href: '/' },
+      { label: 'TikTok ↗', href: '/' },
+      { label: 'Facebook ↗', href: '/' },
+    ],
+  },
+  { label: 'Need help', href: '#need-help' },
+  { label: 'Contacts', href: '#contacts' },
+]
+
+const portfolioCards = [
   'Collection zero one',
   'Studio tailoring',
   'Graphic florals',
   'Pre-order capsule',
 ]
-
-const responsibilities = [
-  'Sustainability',
-  'Code of ethics',
-  'Terms & conditions',
-  'Charity',
-]
-
-const menuLinks = ['New in', 'Wish list', 'Pre-order', 'Sale']
 
 function loadTheme() {
   if (typeof window === 'undefined') {
@@ -86,35 +124,55 @@ function FrontPage() {
   return (
     <div className="site-shell">
       <header className="topbar">
-        <div className="wordmark">SHKEENO</div>
-        <nav className="main-nav" aria-label="Primary">
-          <a href="#about">About</a>
-          <a href="#portfolio">Portfolio</a>
-          <a href="#responsibilities">Responsibilities</a>
-          <a href="#contact">Contact</a>
-        </nav>
-        <a className="nav-link" href="/admin">
-          Admin
-        </a>
+        <div className="nav-row">
+          <a className="wordmark" href="#home">
+            SHKEENO
+          </a>
+
+          <nav className="main-nav" aria-label="Primary">
+            {navGroups.map((group) =>
+              group.items ? (
+                <div className="nav-group" key={group.label}>
+                  <button type="button" className="nav-trigger">
+                    {group.label}
+                  </button>
+                  <div className="nav-dropdown">
+                    {group.items.map((item) => (
+                      <a key={item.label} href={item.href}>
+                        {item.label}
+                      </a>
+                    ))}
+                  </div>
+                </div>
+              ) : (
+                <a key={group.label} href={group.href} className="nav-link">
+                  {group.label}
+                </a>
+              ),
+            )}
+          </nav>
+
+          <a className="admin-link" href="/admin">
+            Admin
+          </a>
+        </div>
       </header>
 
       <main>
-        <section className="hero-section">
+        <section className="hero-section" id="home">
           <div className="hero-copy">
             <p className="eyebrow">Independent fashion label</p>
-            <h1>
-              Designer-led fashion with a graphic pulse and a softer edge.
-            </h1>
+            <h1>Designer-led fashion with a graphic pulse and a softer edge.</h1>
             <p className="hero-text">
-              Latin copy will live here for now, but the structure is ready for
-              brand story, campaign messaging, collections and signposted
-              product categories.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
+              posuere tellus sit amet pulvinar dapibus, arcu nisi fermentum
+              velit, vitae rhoncus nisl ipsum at nunc.
             </p>
             <div className="hero-actions">
               <a href="#portfolio" className="button button-solid">
                 Explore portfolio
               </a>
-              <a href="#about" className="button button-ghost">
+              <a href="#about-shkeeno" className="button button-ghost">
                 Meet the designer
               </a>
             </div>
@@ -122,46 +180,43 @@ function FrontPage() {
 
           <div className="hero-visual">
             <PlaceholderBlock label="Campaign image" tall />
-            <div className="floating-note">
-              <span>Theme-ready layout</span>
-              <strong>Primary / accent / surface</strong>
-            </div>
           </div>
         </section>
 
-        <section className="collection-ribbon" aria-label="Shopping shortcuts">
-          {menuLinks.map((item) => (
-            <span key={item}>{item}</span>
-          ))}
+        <section className="category-strip" aria-label="Category links">
+          <span>New in</span>
+          <span>Wish list</span>
+          <span>Pre-order</span>
+          <span>Sale</span>
         </section>
 
-        <section className="editorial-grid" id="about">
+        <section className="content-grid" id="about-shkeeno">
           <article className="text-panel">
             <p className="eyebrow">About shkeeno</p>
             <h2>A brand presence first, with room for commerce later.</h2>
             <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
-              posuere, tellus sit amet pulvinar dapibus, arcu nisi fermentum
-              velit, vitae rhoncus nisl ipsum at nunc.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer
+              facilisis, libero vel eleifend ultrices, erat metus malesuada
+              lectus, sed molestie felis lorem vitae erat.
             </p>
           </article>
           <PlaceholderBlock label="Designer portrait" />
-          <article className="text-panel">
+          <article className="text-panel" id="the-designer">
             <p className="eyebrow">The designer</p>
             <h2>Diana Baptista sits at the center of the narrative.</h2>
             <p>
-              Integer facilisis, libero vel eleifend ultrices, erat metus
-              malesuada lectus, sed molestie felis lorem vitae erat.
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Aenean
+              iaculis nisi ac justo laoreet, nec convallis sapien faucibus.
             </p>
           </article>
-          <PlaceholderBlock label="Texture or detail crop" />
-        </section>
-
-        <section className="statement-band">
-          <p>
-            SHKEENO should feel editorial, contemporary, feminine and confident
-            without sliding into generic luxury language.
-          </p>
+          <article className="text-panel" id="the-idea">
+            <p className="eyebrow">The idea</p>
+            <h2>Contemporary, feminine and confident without visual noise.</h2>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla
+              facilisi. In sed mi ac turpis cursus convallis sit amet ac arcu.
+            </p>
+          </article>
         </section>
 
         <section className="portfolio-section" id="portfolio">
@@ -171,7 +226,7 @@ function FrontPage() {
           </div>
 
           <div className="portfolio-grid">
-            {lookbookCards.map((item) => (
+            {portfolioCards.map((item) => (
               <article key={item} className="portfolio-card">
                 <PlaceholderBlock label={item} />
                 <div className="card-meta">
@@ -183,43 +238,51 @@ function FrontPage() {
           </div>
         </section>
 
-        <section className="dual-columns" id="responsibilities">
+        <section className="detail-grid" id="sustainability">
           <div className="column-block">
-            <p className="eyebrow">Responsibilities</p>
+            <p className="eyebrow">Responsabilities</p>
             <ul className="link-list">
-              {responsibilities.map((item) => (
-                <li key={item}>
-                  <a href="/">{item}</a>
-                </li>
-              ))}
+              <li id="code-of-ethics">
+                <a href="/">Sustainability</a>
+              </li>
+              <li id="terms-and-conditions">
+                <a href="/">Code of ethics</a>
+              </li>
+              <li id="charity">
+                <a href="/">Terms & conditions</a>
+              </li>
+              <li>
+                <a href="/">Charity</a>
+              </li>
             </ul>
           </div>
 
-          <div className="column-block">
-            <p className="eyebrow">Follow us on</p>
-            <ul className="link-list">
-              <li>
-                <a href="/">Instagram</a>
-              </li>
-              <li>
-                <a href="/">Pinterest</a>
-              </li>
-              <li>
-                <a href="/">TikTok</a>
-              </li>
-            </ul>
+          <div className="column-block" id="need-help">
+            <p className="eyebrow">Need help</p>
+            <p>
+              Lorem ipsum dolor sit amet, consectetur adipiscing elit. Contact,
+              delivery, returns and pre-order support will live here.
+            </p>
           </div>
         </section>
       </main>
 
-      <footer className="footer" id="contact">
-        <div>
-          <p className="eyebrow">Contact</p>
-          <p>hello@shkeeno.com</p>
+      <footer className="footer" id="contacts">
+        <div className="footer-block">
+          <p className="eyebrow">Follow us on</p>
+          <div className="footer-links">
+            <a href="/">Instagram ↗</a>
+            <a href="/">Pinterest ↗</a>
+            <a href="/">TikTok ↗</a>
+            <a href="/">Facebook ↗</a>
+          </div>
         </div>
-        <div>
-          <p className="eyebrow">Future sections</p>
-          <p>Home / About / Portfolio / New in / Pre-order / Sale</p>
+        <div className="footer-block">
+          <p className="eyebrow">Contacts</p>
+          <div className="footer-links">
+            <a href="mailto:hello@shkeeno.com">hello@shkeeno.com</a>
+            <a href="/">London, United Kingdom</a>
+          </div>
         </div>
       </footer>
     </div>
@@ -240,7 +303,7 @@ function AdminPage({
         <h1>Theme controls</h1>
         <p>
           First pass only. This is intentionally unprotected for now and set up
-          so we can swap it later for a proper CMS or password gate.
+          so we can replace it later with a proper CMS or password gate.
         </p>
         <a className="button button-ghost" href="/">
           Back to site
@@ -298,8 +361,7 @@ function AdminPage({
           >
             <option value={fontOptions.modern}>Manrope</option>
             <option value={fontOptions.refined}>DM Sans</option>
-            <option value={fontOptions.classic}>Instrument Serif</option>
-            <option value={fontOptions.editorial}>Cormorant Garamond</option>
+            <option value={fontOptions.neutral}>Archivo</option>
           </select>
         </div>
 
@@ -315,9 +377,9 @@ function AdminPage({
               }))
             }
           >
-            <option value={fontOptions.modern}>Manrope</option>
             <option value={fontOptions.refined}>DM Sans</option>
-            <option value={fontOptions.classic}>Instrument Serif</option>
+            <option value={fontOptions.modern}>Manrope</option>
+            <option value={fontOptions.neutral}>Archivo</option>
           </select>
         </div>
 
@@ -328,7 +390,11 @@ function AdminPage({
             Next step can be storing the theme in a small backend or content
             file so publishing makes it canonical.
           </p>
-          <button type="button" className="button button-solid" onClick={() => setTheme(defaultTheme)}>
+          <button
+            type="button"
+            className="button button-solid"
+            onClick={() => setTheme(defaultTheme)}
+          >
             Reset defaults
           </button>
         </div>
