@@ -2,11 +2,11 @@
 
 :root {
   --color-primary: #121212;
-  --color-accent: #d6b38a;
-  --color-surface: #f3ede3;
-  --color-border: rgba(18, 18, 18, 0.14);
+  --color-accent: #8b6b45;
+  --color-surface: #f2efe9;
+  --color-border: rgba(18, 18, 18, 0.18);
   --color-text: rgba(18, 18, 18, 0.82);
-  --font-heading: "Manrope", "Segoe UI", sans-serif;
+  --font-heading: "DM Sans", "Segoe UI", sans-serif;
   --font-body: "DM Sans", "Segoe UI", sans-serif;
 
   font-family: var(--font-body);
@@ -61,7 +61,7 @@ h2,
 h3 {
   color: var(--color-primary);
   font-family: var(--font-heading);
-  font-weight: 700;
+  font-weight: 800;
   line-height: 1;
   text-align: left;
 }

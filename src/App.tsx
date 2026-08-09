@@ -18,16 +18,16 @@ type NavGroup = {
 const THEME_STORAGE_KEY = 'shkeeno-theme'
 
 const fontOptions = {
-  modern: '"Manrope", "Segoe UI", sans-serif',
   refined: '"DM Sans", "Segoe UI", sans-serif',
+  modern: '"Manrope", "Segoe UI", sans-serif',
   neutral: '"Archivo", "Segoe UI", sans-serif',
 } as const
 
 const defaultTheme: ThemeConfig = {
   primary: '#121212',
-  accent: '#d6b38a',
-  surface: '#f3ede3',
-  headingFont: fontOptions.modern,
+  accent: '#8b6b45',
+  surface: '#f2efe9',
+  headingFont: fontOptions.refined,
   bodyFont: fontOptions.refined,
 }
 
@@ -162,25 +162,14 @@ function FrontPage() {
         <section className="hero-section" id="home">
           <div className="hero-copy">
             <p className="eyebrow">Independent fashion label</p>
-            <h1>Designer-led fashion with a graphic pulse and a softer edge.</h1>
+            <h1>Designer-led fashion shaped by confidence, structure and identity.</h1>
             <p className="hero-text">
               Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed
               posuere tellus sit amet pulvinar dapibus, arcu nisi fermentum
               velit, vitae rhoncus nisl ipsum at nunc.
             </p>
-            <div className="hero-actions">
-              <a href="#portfolio" className="button button-solid">
-                Explore portfolio
-              </a>
-              <a href="#about-shkeeno" className="button button-ghost">
-                Meet the designer
-              </a>
-            </div>
           </div>
-
-          <div className="hero-visual">
-            <PlaceholderBlock label="Campaign image" tall />
-          </div>
+          <PlaceholderBlock label="Wide campaign image" tall />
         </section>
 
         <section className="category-strip" aria-label="Category links">
