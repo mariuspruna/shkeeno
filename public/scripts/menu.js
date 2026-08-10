@@ -38,6 +38,19 @@ document.addEventListener("click", (event) => {
     return;
   }
 
+  const submenuToggle = event.target.closest("[data-mobile-submenu-toggle]");
+  if (submenuToggle) {
+    const group = submenuToggle.closest("[data-mobile-submenu]");
+    const submenu = group?.querySelector(".mobile-submenu");
+    if (!submenu) return;
+    const isOpen = submenuToggle.getAttribute("aria-expanded") === "true";
+    submenuToggle.setAttribute("aria-expanded", String(!isOpen));
+    submenu.hidden = isOpen;
+    const icon = submenuToggle.querySelector("[aria-hidden='true']");
+    if (icon) icon.textContent = isOpen ? "+" : "−";
+    return;
+  }
+
   if (event.target.closest("[data-mobile-menu] a")) {
     setMenuOpen(false);
   }

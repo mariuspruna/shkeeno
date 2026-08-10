@@ -512,6 +512,12 @@ button {
   justify-self: end;
 }
 
+.site-nav-group {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
 .site-actions {
   gap: 18px;
   flex: 0 0 auto;
@@ -559,6 +565,7 @@ button {
 }
 
 .site-nav a,
+.site-subnav a,
 .site-action-link,
 .mobile-cart-link,
 .mobile-menu-toggle,
@@ -576,6 +583,7 @@ button {
 }
 
 .site-nav a,
+.site-subnav a,
 .site-action-link,
 .mobile-cart-link,
 .mobile-menu-toggle,
@@ -600,6 +608,45 @@ button {
   white-space: nowrap;
 }
 
+.site-subnav {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 30;
+  min-width: 220px;
+  display: grid;
+  border: var(--border-strong);
+  background: var(--color-background);
+  opacity: 0;
+  pointer-events: none;
+  transform: translateY(-4px);
+  transition: opacity 140ms ease, transform 140ms ease;
+}
+
+.site-nav-group:hover .site-subnav,
+.site-nav-group:focus-within .site-subnav {
+  opacity: 1;
+  pointer-events: auto;
+  transform: translateY(0);
+}
+
+.site-subnav a {
+  min-height: var(--button-height-compact);
+  justify-content: flex-start;
+  padding: 0 12px;
+  border-top: var(--button-border);
+}
+
+.site-subnav a:first-child {
+  border-top: 0;
+}
+
+.site-subnav a:hover,
+.site-subnav a:focus {
+  background: var(--color-primary);
+  color: var(--color-background);
+}
+
 .site-nav a,
 .site-action-link {
   font-size: 0.9rem;
@@ -615,7 +662,8 @@ button {
   justify-content: flex-start;
 }
 
-.site-nav a::after,
+.site-nav > a::after,
+.site-nav-group > a::after,
 .site-action-link::after,
 .mobile-cart-link::after {
   content: "";
@@ -628,7 +676,8 @@ button {
   opacity: 0;
 }
 
-.site-nav a[aria-current="page"]::after,
+.site-nav > a[aria-current="page"]::after,
+.site-nav-group > a[aria-current="page"]::after,
 .site-action-link[aria-current="page"]::after,
 .mobile-cart-link[aria-current="page"]::after {
   opacity: 1;
@@ -3925,6 +3974,7 @@ textarea[data-fetched="true"] {
   }
 
   .mobile-menu a,
+  .mobile-menu [data-mobile-submenu-toggle],
   .mobile-theme-toggle {
     min-height: 0;
     display: flex;
@@ -3937,6 +3987,19 @@ textarea[data-fetched="true"] {
     font-size: var(--type-title-sm);
     font-weight: 800;
     text-transform: uppercase;
+  }
+
+  .mobile-menu [data-mobile-submenu-toggle] {
+    width: 100%;
+    border: 0;
+    background: transparent;
+    color: inherit;
+  }
+
+  .mobile-submenu {
+    display: grid;
+    gap: 12px;
+    padding: 8px 0 2px;
   }
 
   .mobile-menu nav + .mobile-theme-toggle {

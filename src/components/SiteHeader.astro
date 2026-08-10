@@ -2,6 +2,7 @@
 interface NavItem {
   label: string;
   href: string;
+  items?: NavItem[];
 }
 
 interface Props {
@@ -12,12 +13,49 @@ const { current = "home" } = Astro.props;
 
 const navItems: NavItem[] = [
   { label: "Home", href: "/" },
-  { label: "About", href: "/about" },
-  { label: "Responsibilities", href: "/responsibilities" },
-  { label: "Menu", href: "/menu" },
+  {
+    label: "About",
+    href: "/about",
+    items: [
+      { label: "Shkeeno", href: "/about" },
+      { label: "The designer", href: "/about#designer" },
+      { label: "The idea", href: "/about#idea" },
+    ],
+  },
+  {
+    label: "Responsibilities",
+    href: "/responsibilities",
+    items: [
+      { label: "Sustainability", href: "/responsibilities#sustainability" },
+      { label: "Code of ethics", href: "/responsibilities#ethics" },
+      { label: "Terms & conditions", href: "/responsibilities#terms" },
+      { label: "Charity", href: "/responsibilities#charity" },
+    ],
+  },
+  {
+    label: "Menu",
+    href: "/menu",
+    items: [
+      { label: "New in", href: "/menu#new-in" },
+      { label: "Wish list", href: "/menu#wish-list" },
+      { label: "Pre-order", href: "/menu#pre-order" },
+      { label: "Sale", href: "/menu#sale" },
+    ],
+  },
   { label: "Portfolio", href: "/portfolio" },
+  {
+    label: "Follow us on",
+    href: "/contact",
+    items: [
+      { label: "Instagram ↗", href: "/" },
+      { label: "Pinterest ↗", href: "/" },
+      { label: "TikTok ↗", href: "/" },
+    ],
+  },
   { label: "Contact", href: "/contact" },
 ];
+
+const getCurrentKey = (item: NavItem) => item.href.split("/")[1] || "home";
 ---
 
 <header class="site-header" transition:persist>
@@ -25,9 +63,22 @@ const navItems: NavItem[] = [
     <a class="brand-mark" href="/" aria-label="SHKEENO home">SHKEENO</a>
     <nav class="site-nav" aria-label="Primary navigation">
       {navItems.map((item) => (
-        <a href={item.href} aria-current={current === item.label.toLowerCase() ? "page" : undefined}>
-          {item.label}
-        </a>
+        item.items ? (
+          <div class="site-nav-group">
+            <a href={item.href} aria-current={current === getCurrentKey(item) ? "page" : undefined}>
+              {item.label}
+            </a>
+            <div class="site-subnav" aria-label={`${item.label} submenu`}>
+              {item.items.map((subitem) => (
+                <a href={subitem.href}>{subitem.label}</a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a href={item.href} aria-current={current === getCurrentKey(item) ? "page" : undefined}>
+            {item.label}
+          </a>
+        )
       ))}
     </nav>
     <div class="site-actions" aria-label="Admin">
@@ -49,9 +100,24 @@ const navItems: NavItem[] = [
   <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
     <nav aria-label="Mobile navigation">
       {navItems.map((item) => (
-        <a href={item.href} aria-current={current === item.label.toLowerCase() ? "page" : undefined}>
-          {item.label}
-        </a>
+        item.items ? (
+          <div class="mobile-menu-group" data-mobile-submenu>
+            <button type="button" data-mobile-submenu-toggle aria-expanded="false">
+              <span>{item.label}</span>
+              <span aria-hidden="true">+</span>
+            </button>
+            <div class="mobile-submenu" hidden>
+              <a href={item.href} aria-current={current === getCurrentKey(item) ? "page" : undefined}>{item.label}</a>
+              {item.items.map((subitem) => (
+                <a class="mobile-category-link" href={subitem.href}>{subitem.label}</a>
+              ))}
+            </div>
+          </div>
+        ) : (
+          <a href={item.href} aria-current={current === getCurrentKey(item) ? "page" : undefined}>
+            {item.label}
+          </a>
+        )
       ))}
       <a href="/admin" aria-current={current === "admin" ? "page" : undefined}>Admin</a>
     </nav>
