@@ -62,6 +62,8 @@ window.addEventListener("keydown", (event) => {
 
 function syncHeaderCurrent() {
   const path = window.location.pathname;
+  const hash = window.location.hash;
+  const currentPath = `${path}${hash}`;
   const current = path.startsWith("/about")
       ? "/about"
       : path.startsWith("/responsibilities")
@@ -85,12 +87,19 @@ function syncHeaderCurrent() {
   document.querySelectorAll(`.site-header a[href="${current}"]`).forEach((link) => {
     link.setAttribute("aria-current", "page");
   });
+  if (hash) {
+    document.querySelectorAll(`.site-header a[href="${currentPath}"]`).forEach((link) => {
+      link.setAttribute("aria-current", "page");
+    });
+  }
 }
 
 document.addEventListener("astro:page-load", () => {
   initPublicMenu();
   syncHeaderCurrent();
 });
+
+window.addEventListener("hashchange", syncHeaderCurrent);
 
 initPublicMenu();
 syncHeaderCurrent();
