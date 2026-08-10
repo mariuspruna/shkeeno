@@ -1,0 +1,26 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout title="About | SHKEENO">
+  <SiteHeader current="about" />
+  <main class="content-page">
+    <p class="eyebrow">About</p>
+    <h1>SHKEENO is Diana Baptista's creative fashion identity.</h1>
+    <section class="shkeeno-section-grid">
+      <article>
+        <h2>Shkeeno</h2>
+        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer facilisis libero vel eleifend ultrices.</p>
+      </article>
+      <article id="designer">
+        <h2>The designer</h2>
+        <p>Diana Baptista is a Portuguese fashion designer based in the UK.</p>
+      </article>
+      <article id="idea">
+        <h2>The idea</h2>
+        <p>Expressive, individual and contemporary fashion with a designer-led point of view.</p>
+      </article>
+    </section>
+  </main>
+</BaseLayout>

@@ -1,0 +1,60 @@
+---
+interface NavItem {
+  label: string;
+  href: string;
+}
+
+interface Props {
+  current?: "home" | "about" | "portfolio" | "responsibilities" | "menu" | "contact" | "admin";
+}
+
+const { current = "home" } = Astro.props;
+
+const navItems: NavItem[] = [
+  { label: "Home", href: "/" },
+  { label: "About", href: "/about" },
+  { label: "Responsibilities", href: "/responsibilities" },
+  { label: "Menu", href: "/menu" },
+  { label: "Portfolio", href: "/portfolio" },
+  { label: "Contact", href: "/contact" },
+];
+---
+
+<header class="site-header" transition:persist>
+  <div class="site-header-main">
+    <a class="brand-mark" href="/" aria-label="SHKEENO home">SHKEENO</a>
+    <nav class="site-nav" aria-label="Primary navigation">
+      {navItems.map((item) => (
+        <a href={item.href} aria-current={current === item.label.toLowerCase() ? "page" : undefined}>
+          {item.label}
+        </a>
+      ))}
+    </nav>
+    <div class="site-actions" aria-label="Admin">
+      <a class="site-action-link" href="/admin" aria-current={current === "admin" ? "page" : undefined}>Admin</a>
+    </div>
+    <div class="mobile-actions">
+      <button
+        type="button"
+        class="mobile-menu-toggle"
+        data-menu-toggle
+        aria-expanded="false"
+        aria-controls="mobile-menu"
+      >
+        <span class="hamburger-icon" aria-hidden="true"></span>
+        <span class="sr-only">Menu</span>
+      </button>
+    </div>
+  </div>
+  <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+    <nav aria-label="Mobile navigation">
+      {navItems.map((item) => (
+        <a href={item.href} aria-current={current === item.label.toLowerCase() ? "page" : undefined}>
+          {item.label}
+        </a>
+      ))}
+      <a href="/admin" aria-current={current === "admin" ? "page" : undefined}>Admin</a>
+    </nav>
+  </div>
+  <button type="button" class="mobile-menu-backdrop" data-menu-backdrop aria-label="Close menu" hidden></button>
+</header>

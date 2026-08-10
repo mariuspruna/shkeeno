@@ -1,0 +1,28 @@
+---
+import "../styles/global.css";
+import SiteFooter from "../components/SiteFooter.astro";
+
+interface Props {
+  title?: string;
+  description?: string;
+}
+
+const {
+  title = "SHKEENO | Independent fashion label",
+  description = "SHKEENO is an independent designer-led fashion brand by Diana Baptista.",
+} = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content={description} />
+    <title>{title}</title>
+  </head>
+  <body>
+    <slot />
+    <SiteFooter />
+    <script is:inline src="/scripts/menu.js" defer></script>
+  </body>
+</html>

@@ -1,0 +1,21 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout title="Portfolio | SHKEENO">
+  <SiteHeader current="portfolio" />
+  <main class="content-page">
+    <p class="eyebrow">Portfolio</p>
+    <h1>Collections, pieces and visual studies will live here.</h1>
+    <div class="shkeeno-card-grid">
+      {["Collection zero one", "Studio tailoring", "Graphic florals", "Watercolour studies"].map((title) => (
+        <article class="shkeeno-card">
+          <div class="shkeeno-image-placeholder"><span>{title}</span></div>
+          <h2>{title}</h2>
+          <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
+        </article>
+      ))}
+    </div>
+  </main>
+</BaseLayout>
