@@ -284,8 +284,10 @@ button {
 .content-page,
 .shkeeno-portfolio-preview,
 .admin-page {
-  width: min(var(--max-width), calc(100% - 2 * var(--space-4)));
-  margin-inline: auto;
+  width: 100%;
+  max-width: none;
+  margin-inline: 0;
+  padding-inline: var(--space-4);
 }
 
 .shkeeno-hero {
@@ -354,8 +356,10 @@ button {
 }
 
 .shkeeno-section-grid {
-  width: min(var(--max-width), calc(100% - 2 * var(--space-4)));
-  margin: 0 auto var(--space-5);
+  width: 100%;
+  max-width: none;
+  margin: 0 0 var(--space-5);
+  padding-inline: var(--space-4);
 }
 
 .shkeeno-section-grid article,
@@ -473,10 +477,10 @@ button {
   z-index: 20;
   display: block;
   width: 100%;
-  max-width: var(--max-width);
-  margin: 0 auto;
+  max-width: none;
+  margin: 0;
   min-height: 86px;
-  padding: 16px 14px;
+  padding: 16px var(--space-4);
 }
 
 .site-header-main {
