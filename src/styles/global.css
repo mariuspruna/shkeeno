@@ -293,10 +293,7 @@ button {
 }
 
 .shkeeno-hero-copy {
-  display: grid;
-  grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
-  gap: var(--space-4);
-  align-items: end;
+  display: block;
   margin-bottom: var(--space-4);
 }
 
@@ -311,6 +308,15 @@ button {
 .shkeeno-hero p,
 .content-page > p {
   max-width: 62ch;
+}
+
+.shkeeno-hero .eyebrow {
+  margin-bottom: var(--space-2);
+}
+
+.shkeeno-hero h1 {
+  max-width: 18ch;
+  margin-bottom: var(--space-3);
 }
 
 .shkeeno-image-placeholder {
