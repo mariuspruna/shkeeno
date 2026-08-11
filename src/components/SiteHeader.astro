@@ -81,7 +81,7 @@ const { current } = Astro.props;
     <nav aria-label="Mobile navigation">
       <details class="mobile-menu-group" open={current === "shop"}>
         <summary>Shop</summary>
-        <a href="/shop" aria-current={current === "shop" ? "page" : undefined}>All</a>
+        <a class="mobile-category-link" href="/shop" aria-current={current === "shop" ? "page" : undefined}>All</a>
         {shopNavigation.map((item) => (
           <a class="mobile-category-link" href={item.href}>{item.label}</a>
         ))}
