@@ -1,0 +1,34 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageTrail from "../../components/PageTrail.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { aboutPages, getAboutPage } from "../../lib/about-pages";
+
+export function getStaticPaths() {
+  return aboutPages.map((page) => ({
+    params: { slug: page.slug },
+  }));
+}
+
+const page = getAboutPage(String(Astro.params.slug));
+
+if (!page) {
+  return Astro.redirect("/about");
+}
+---
+
+<BaseLayout title={`${page.title} | Shkeeno`} description={page.description}>
+  <SiteHeader current="about" />
+
+  <main class="shop-shell about-shell">
+    <PageTrail items={[{ label: "About", href: "/about" }, { label: page.title }]} />
+
+    <section class="about-intro" aria-labelledby="about-subpage-title">
+      <h1 id="about-subpage-title">{page.title}</h1>
+      <div>
+        <p class="eyebrow">{page.eyebrow}</p>
+        <p>{page.body}</p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

@@ -68,6 +68,9 @@ function syncHeaderCurrent() {
   document.querySelectorAll(`.site-header a[href="${current}"]`).forEach((link) => {
     link.setAttribute("aria-current", "page");
   });
+  document.querySelectorAll(`.site-header a[href="${path.replace(/\/$/, "")}"]`).forEach((link) => {
+    link.setAttribute("aria-current", "page");
+  });
 }
 
 document.addEventListener("astro:page-load", () => {

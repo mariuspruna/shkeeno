@@ -1,4 +1,6 @@
 ---
+import { aboutPages } from "../lib/about-pages";
+
 interface Props {
   current?: "shop" | "about" | "contact" | "admin" | "cart" | "account";
 }
@@ -11,7 +13,14 @@ const { current } = Astro.props;
     <a class="brand-mark" href="/" aria-label="Shkeeno home">SHKEENO</a>
     <nav class="site-nav" aria-label="Primary navigation">
       <a href="/shop" aria-current={current === "shop" ? "page" : undefined}>Shop</a>
-      <a href="/about" aria-current={current === "about" ? "page" : undefined}>About</a>
+      <div class="site-nav-item has-dropdown">
+        <a href="/about" aria-current={current === "about" ? "page" : undefined}>About</a>
+        <div class="site-nav-dropdown" aria-label="About pages">
+          {aboutPages.map((page) => (
+            <a href={`/about/${page.slug}`}>{page.navLabel}</a>
+          ))}
+        </div>
+      </div>
       <a href="/contact" aria-current={current === "contact" ? "page" : undefined}>Contact</a>
     </nav>
     <div class="site-actions" aria-label="Account, cart, and theme">
@@ -58,7 +67,13 @@ const { current } = Astro.props;
       <a class="mobile-category-link" href="/shop?category=office">Office</a>
       <a class="mobile-category-link" href="/shop?category=pocket">Pocket</a>
       <a class="mobile-category-link" href="/shop?category=travel">Travel</a>
-      <a href="/about" aria-current={current === "about" ? "page" : undefined}>About</a>
+      <details class="mobile-menu-group" open={current === "about"}>
+        <summary>About</summary>
+        <a href="/about" aria-current={current === "about" ? "page" : undefined}>Overview</a>
+        {aboutPages.map((page) => (
+          <a class="mobile-category-link" href={`/about/${page.slug}`}>{page.navLabel}</a>
+        ))}
+      </details>
       <a href="/contact" aria-current={current === "contact" ? "page" : undefined}>Contact</a>
       <a href="/account" aria-current={current === "account" ? "page" : undefined}>
         Account <span data-account-badge data-empty="true" aria-hidden="true"></span>

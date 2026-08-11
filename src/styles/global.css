@@ -364,6 +364,12 @@ button {
   justify-self: end;
 }
 
+.site-nav-item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+}
+
 .site-actions {
   gap: 18px;
   flex: 0 0 auto;
@@ -450,6 +456,56 @@ button {
   position: relative;
   gap: 8px;
   white-space: nowrap;
+}
+
+.site-nav-dropdown {
+  position: absolute;
+  top: calc(100% + 12px);
+  left: 0;
+  z-index: 32;
+  min-width: 190px;
+  display: grid;
+  gap: 0;
+  border: 2px solid var(--color-primary);
+  background: var(--color-background);
+  color: var(--color-primary);
+  padding: 8px;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(-4px);
+  transition: opacity 150ms ease, transform 150ms ease, visibility 150ms ease;
+}
+
+.site-nav-dropdown::before {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  top: -14px;
+  height: 14px;
+}
+
+.site-nav-item:hover .site-nav-dropdown,
+.site-nav-item:focus-within .site-nav-dropdown {
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0);
+}
+
+.site-nav-dropdown a {
+  justify-content: flex-start;
+  min-height: 38px;
+  padding: 0 10px;
+}
+
+.site-nav-dropdown a:hover,
+.site-nav-dropdown a:focus-visible {
+  background: var(--color-primary);
+  color: var(--color-background);
+}
+
+.site-nav-dropdown a::after {
+  display: none;
 }
 
 .site-nav a,
@@ -3777,6 +3833,7 @@ textarea[data-fetched="true"] {
   }
 
   .mobile-menu a,
+  .mobile-menu summary,
   .mobile-theme-toggle {
     min-height: 0;
     display: flex;
@@ -3789,6 +3846,29 @@ textarea[data-fetched="true"] {
     font-size: var(--type-title-sm);
     font-weight: 800;
     text-transform: uppercase;
+  }
+
+  .mobile-menu summary {
+    cursor: pointer;
+    list-style: none;
+  }
+
+  .mobile-menu summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .mobile-menu summary::after {
+    content: "+";
+    font-weight: 800;
+  }
+
+  .mobile-menu details[open] summary::after {
+    content: "−";
+  }
+
+  .mobile-menu-group {
+    display: grid;
+    gap: 12px;
   }
 
   .mobile-menu nav + .mobile-theme-toggle {
