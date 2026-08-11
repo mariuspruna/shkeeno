@@ -17,7 +17,7 @@ async function refreshShopProducts() {
 
   setShopPending(true);
 
-  const url = new URL("/api/shop/products", window.location.origin);
+  const url = new URL("/api/catalog/products", window.location.origin);
   if (category) url.searchParams.set("category", category);
   if (view) url.searchParams.set("view", view);
   if (sort && sort !== "newest") url.searchParams.set("sort", sort);
