@@ -3936,7 +3936,7 @@ textarea[data-fetched="true"] {
     padding: 0;
     font-size: clamp(0.86rem, 3.6vw, 1rem);
     line-height: 1.22;
-    opacity: 0.72;
+    opacity: 1;
   }
 
   .mobile-menu .mobile-category-link + .mobile-category-link {

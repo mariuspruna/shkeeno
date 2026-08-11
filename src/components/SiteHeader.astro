@@ -88,14 +88,12 @@ const { current } = Astro.props;
       </details>
       <details class="mobile-menu-group" open={current === "about"}>
         <summary>About</summary>
-        <a href="/about" aria-current={current === "about" ? "page" : undefined}>Overview</a>
         {aboutPages.map((page) => (
           <a class="mobile-category-link" href={`/about/${page.slug}`}>{page.navLabel}</a>
         ))}
       </details>
       <details class="mobile-menu-group" open={current === "values"}>
         <summary>Values</summary>
-        <a href="/values" aria-current={current === "values" ? "page" : undefined}>Overview</a>
         {valuesPages.map((page) => (
           <a class="mobile-category-link" href={`/values/${page.slug}`}>{page.navLabel}</a>
         ))}
