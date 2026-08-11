@@ -1075,6 +1075,25 @@ html[data-shop-filter-pending="true"] [data-shop-shell][data-pending="true"] {
   margin: 12px 0 0 26px;
 }
 
+.values-link-card {
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  border-top: var(--border-strong);
+  color: inherit;
+  font-size: var(--type-title-md);
+  font-weight: 800;
+  text-decoration: none;
+  text-transform: uppercase;
+}
+
+.values-link-card:hover,
+.values-link-card:focus-visible {
+  text-decoration: underline;
+  text-decoration-thickness: 3px;
+  text-underline-offset: 7px;
+}
+
 .home-feature-copy > p:not(.eyebrow) {
   overflow: hidden;
   text-overflow: ellipsis;

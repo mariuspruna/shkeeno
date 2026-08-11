@@ -1,8 +1,9 @@
 ---
 import { aboutPages } from "../lib/about-pages";
+import { valuesPages } from "../lib/values-pages";
 
 interface Props {
-  current?: "shop" | "about" | "contact" | "admin" | "cart" | "account";
+  current?: "shop" | "about" | "values" | "contact" | "admin" | "cart" | "account";
 }
 
 const { current } = Astro.props;
@@ -18,6 +19,14 @@ const { current } = Astro.props;
         <div class="site-nav-dropdown" aria-label="About pages">
           {aboutPages.map((page) => (
             <a href={`/about/${page.slug}`}>{page.navLabel}</a>
+          ))}
+        </div>
+      </div>
+      <div class="site-nav-item has-dropdown">
+        <a href="/values" aria-current={current === "values" ? "page" : undefined}>Values</a>
+        <div class="site-nav-dropdown" aria-label="Values pages">
+          {valuesPages.map((page) => (
+            <a href={`/values/${page.slug}`}>{page.navLabel}</a>
           ))}
         </div>
       </div>
@@ -72,6 +81,13 @@ const { current } = Astro.props;
         <a href="/about" aria-current={current === "about" ? "page" : undefined}>Overview</a>
         {aboutPages.map((page) => (
           <a class="mobile-category-link" href={`/about/${page.slug}`}>{page.navLabel}</a>
+        ))}
+      </details>
+      <details class="mobile-menu-group" open={current === "values"}>
+        <summary>Values</summary>
+        <a href="/values" aria-current={current === "values" ? "page" : undefined}>Overview</a>
+        {valuesPages.map((page) => (
+          <a class="mobile-category-link" href={`/values/${page.slug}`}>{page.navLabel}</a>
         ))}
       </details>
       <a href="/contact" aria-current={current === "contact" ? "page" : undefined}>Contact</a>

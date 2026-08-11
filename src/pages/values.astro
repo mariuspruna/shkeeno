@@ -1,0 +1,38 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTrail from "../components/PageTrail.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+import { valuesPages } from "../lib/values-pages";
+---
+
+<BaseLayout
+  title="Values | Shkeeno"
+  description="Values and commitments behind Shkeeno."
+>
+  <SiteHeader current="values" />
+
+  <main class="shop-shell about-shell">
+    <PageTrail items={[{ label: "Values" }]} />
+
+    <section class="about-intro" aria-labelledby="values-title">
+      <h1 id="values-title">Values</h1>
+      <div>
+        <p>
+          Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer facilisis, libero vel
+          eleifend ultrices, erat metus malesuada lectus, sed molestie felis lorem vitae erat.
+        </p>
+      </div>
+    </section>
+
+    <section class="about-faq" aria-labelledby="values-pages-title">
+      <h2 id="values-pages-title">Explore values</h2>
+      <div class="faq-list">
+        {valuesPages.map((page) => (
+          <a class="faq-item values-link-card" href={`/values/${page.slug}`}>
+            <span>{page.title}</span>
+          </a>
+        ))}
+      </div>
+    </section>
+  </main>
+</BaseLayout>

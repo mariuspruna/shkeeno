@@ -1,0 +1,34 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageTrail from "../../components/PageTrail.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { getValuesPage, valuesPages } from "../../lib/values-pages";
+
+export function getStaticPaths() {
+  return valuesPages.map((page) => ({
+    params: { slug: page.slug },
+  }));
+}
+
+const page = getValuesPage(String(Astro.params.slug));
+
+if (!page) {
+  return Astro.redirect("/values");
+}
+---
+
+<BaseLayout title={`${page.title} | Shkeeno`} description={page.description}>
+  <SiteHeader current="values" />
+
+  <main class="shop-shell about-shell">
+    <PageTrail items={[{ label: "Values", href: "/values" }, { label: page.title }]} />
+
+    <section class="about-intro" aria-labelledby="values-subpage-title">
+      <h1 id="values-subpage-title">{page.title}</h1>
+      <div>
+        <p class="eyebrow">{page.eyebrow}</p>
+        <p>{page.body}</p>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

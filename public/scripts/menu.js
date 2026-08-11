@@ -53,13 +53,15 @@ function syncHeaderCurrent() {
     ? "/shop"
     : path.startsWith("/about")
       ? "/about"
-      : path.startsWith("/contact")
-        ? "/contact"
-        : path.startsWith("/account")
-          ? "/account"
-          : path.startsWith("/cart")
-            ? "/cart"
-            : "";
+      : path.startsWith("/values")
+        ? "/values"
+        : path.startsWith("/contact")
+          ? "/contact"
+          : path.startsWith("/account")
+            ? "/account"
+            : path.startsWith("/cart")
+              ? "/cart"
+              : "";
 
   document.querySelectorAll(".site-header a[aria-current='page']").forEach((link) => {
     link.removeAttribute("aria-current");
