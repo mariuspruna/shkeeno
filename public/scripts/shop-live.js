@@ -9,67 +9,31 @@ if (shopResults) {
 }
 
 async function refreshShopProducts() {
-  const supabaseUrl = shopResults.dataset.supabaseUrl;
-  const supabaseKey = shopResults.dataset.supabaseKey;
   const limit = Number(shopResults.dataset.limit || 0);
   const params = new URLSearchParams(window.location.search);
   const category = params.get("category") || "";
   const view = params.get("view") || "";
   const sort = params.get("sort") || "newest";
-  const viewBadgeMap = {
-    "new-in": "new",
-    "pre-order": "pre_order",
-    sale: "sale",
-  };
-
-  if (!supabaseUrl || !supabaseKey) return;
 
   setShopPending(true);
 
-  const select = [
-    "id",
-    "created_at",
-    "slug",
-    "name",
-    "brand",
-    "origin_country",
-    "short_description",
-    "price_gbp",
-    "compare_at_price_gbp",
-    "category",
-    "stock_quantity",
-    "low_stock_threshold",
-    "badge",
-    "is_featured",
-    "product_images(id,url,alt,sort_order)",
-  ].join(",");
-  const limitQuery = Number.isInteger(limit) && limit > 0 ? `&limit=${limit}` : "";
-  const categoryQuery = category ? `&category=eq.${encodeURIComponent(category)}` : "";
-  const badgeQuery = viewBadgeMap[view] ? `&badge=eq.${encodeURIComponent(viewBadgeMap[view])}` : "";
-  const orderQuery = getOrderQuery(sort);
-  const url = `${supabaseUrl}/rest/v1/products?select=${encodeURIComponent(select)}&is_published=eq.true${categoryQuery}${badgeQuery}${orderQuery}${limitQuery}`;
-  const response = await fetch(url, {
-    headers: {
-      apikey: supabaseKey,
-      authorization: `Bearer ${supabaseKey}`,
-    },
-  });
+  const url = new URL("/api/shop/products", window.location.origin);
+  if (category) url.searchParams.set("category", category);
+  if (view) url.searchParams.set("view", view);
+  if (sort && sort !== "newest") url.searchParams.set("sort", sort);
+  if (Number.isInteger(limit) && limit > 0) url.searchParams.set("limit", String(limit));
+  const response = await fetch(url.toString());
 
   if (!response.ok) {
     setShopPending(false);
     return;
   }
 
-  const products = sortProducts(await response.json(), sort);
+  const data = await response.json();
+  const products = sortProducts(data.products || [], sort);
   syncShopChrome(category, view, sort, products.length);
   shopResults.innerHTML = renderProducts(products);
   setShopPending(false);
-}
-
-function getOrderQuery(sort) {
-  if (sort === "price-asc") return "&order=price_gbp.asc,created_at.desc";
-  if (sort === "price-desc") return "&order=price_gbp.desc,created_at.desc";
-  return "&order=created_at.desc";
 }
 
 function syncShopChrome(category, view, sort, count) {
