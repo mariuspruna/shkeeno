@@ -10,6 +10,11 @@ export const shopNavigation = [
     key: "category:collections",
   },
   {
+    label: "Services",
+    href: "/shop?category=services",
+    key: "category:services",
+  },
+  {
     label: "Pre-order",
     href: "/shop?view=pre-order",
     key: "view:pre-order",
