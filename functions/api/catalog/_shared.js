@@ -285,7 +285,7 @@ export function slugify(value) {
 export function sanitizeProduct(input) {
   const name = String(input.name || "").trim();
   const shortDescription = String(input.short_description || "").trim();
-  const weight = Math.round(Number(input.weight_grams));
+  const weight = Math.round(Number(input.weight_grams || 1));
   const price = Number(input.price_gbp);
   const stock = Number(input.stock_quantity || 0);
   const imageUrls = Array.isArray(input.images)
@@ -295,7 +295,7 @@ export function sanitizeProduct(input) {
   if (!name) return { error: "Product name is required." };
   if (!shortDescription) return { error: "Short reason is required." };
   if (!Number.isFinite(weight) || weight <= 0 || weight > 49) {
-    return { error: "Weight must be greater than 0 and no more than 49g." };
+    return { error: "Product metadata could not be saved. Please refresh and try again." };
   }
   if (!Number.isFinite(price) || price < 0) return { error: "Price must be zero or higher." };
   if (!Number.isInteger(stock) || stock < 0) return { error: "Stock must be zero or higher." };

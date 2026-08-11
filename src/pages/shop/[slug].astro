@@ -17,7 +17,6 @@ const { slug } = Astro.params;
 const product = await getPublishedProductBySlug(String(slug));
 const productName = toTitleCase(product.name);
 const images = [...(product.product_images || [])].sort((a, b) => a.sort_order - b.sort_order);
-const weightLabel = `${Math.round(Number(product.weight_grams))}g`;
 const priceLabel = `£${Number(product.price_gbp || 0).toFixed(2)}`;
 const compareAtLabel = product.compare_at_price_gbp
   ? `£${Number(product.compare_at_price_gbp).toFixed(2)}`
@@ -53,14 +52,10 @@ const status = product.stock_quantity === 0
                     aria-label={image.alt || productName}
                     data-gallery-image
                     hidden={index !== 0}
-                  >
-                    <span>{weightLabel}</span>
-                  </div>
+                  />
                 ))
               ) : (
-                <div class="product-image">
-                  <span>{weightLabel}</span>
-                </div>
+                <div class="product-image" />
               )
             }
 
@@ -126,10 +121,6 @@ const status = product.stock_quantity === 0
         </div>
 
         <dl class="product-specs">
-          <div>
-            <dt>Weight</dt>
-            <dd>{weightLabel}</dd>
-          </div>
           <div>
             <dt>Category</dt>
             <dd>{product.category}</dd>

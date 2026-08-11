@@ -36,7 +36,6 @@ async function refreshShopProducts() {
     "short_description",
     "price_gbp",
     "compare_at_price_gbp",
-    "weight_grams",
     "category",
     "stock_quantity",
     "low_stock_threshold",
@@ -192,13 +191,11 @@ function renderProductCard(product) {
           data-gallery-image
           ${index === 0 ? "" : "hidden"}
         >
-          <span>${Math.round(Number(product.weight_grams))}g</span>
           ${discountLabel ? `<strong class="product-discount-badge">${escapeHtml(discountLabel)}</strong>` : ""}
         </a>
       `).join("")
     : `
         <a href="/shop/${escapeAttribute(product.slug)}" aria-label="View ${escapeAttribute(toTitleCase(product.name))}" class="product-image">
-          <span>${Math.round(Number(product.weight_grams))}g</span>
           ${discountLabel ? `<strong class="product-discount-badge">${escapeHtml(discountLabel)}</strong>` : ""}
         </a>
       `;

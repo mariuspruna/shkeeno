@@ -63,7 +63,6 @@ const productCards = sortedProducts.map((product) => {
     ...product,
     displayName: toTitleCase(product.name),
     status,
-    weightLabel: `${Math.round(Number(product.weight_grams))}g`,
     discountLabel: product.compare_at_price_gbp && product.compare_at_price_gbp > product.price_gbp
       ? `-${Math.round((1 - (Number(product.price_gbp) / Number(product.compare_at_price_gbp))) * 100)}%`
       : "",
@@ -159,13 +158,11 @@ const productCards = sortedProducts.map((product) => {
                                 data-gallery-image
                                 hidden={index !== 0}
                               >
-                                <span>{product.weightLabel}</span>
                                 {product.discountLabel && <strong class="product-discount-badge">{product.discountLabel}</strong>}
                               </a>
                             ))
                           ) : (
                             <a href={`/shop/${product.slug}`} aria-label={`View ${product.displayName}`} class="product-image">
-                              <span>{product.weightLabel}</span>
                               {product.discountLabel && <strong class="product-discount-badge">{product.discountLabel}</strong>}
                             </a>
                           )

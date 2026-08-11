@@ -154,7 +154,6 @@ function digestEmailHtml(settings, products, unsubscribeUrl) {
   const productList = products.map((product) => {
     const image = product.product_images?.[0]?.url || product.image_url || "";
     const price = `£${(Number(product.price_gbp || 0) / 100).toFixed(2)}`;
-    const weight = `${Math.round(Number(product.weight_grams || 0))}g`;
     const href = buildProductUrl(settings.siteUrl, product.slug);
 
     return `
@@ -168,7 +167,7 @@ function digestEmailHtml(settings, products, unsubscribeUrl) {
             </tr>
             <tr>
               <td style="padding:0 14px 16px;">
-                <p style="margin:0 0 8px;font:700 12px Arial,sans-serif;text-transform:uppercase;">${escapeHtml(weight)} / ${escapeHtml(price)}</p>
+                <p style="margin:0 0 8px;font:700 12px Arial,sans-serif;text-transform:uppercase;">${escapeHtml(price)}</p>
                 <h2 style="margin:0 0 10px;font:800 28px/0.95 Arial,sans-serif;">${escapeHtml(product.name)}</h2>
                 <p style="margin:0 0 14px;font:400 15px/1.6 Arial,sans-serif;">${escapeHtml(product.short_description || "")}</p>
                 <a href="${href}" style="display:inline-block;background:#202020;color:#f3f0e8;padding:12px 16px;text-decoration:none;font:700 13px Arial,sans-serif;text-transform:uppercase;">View product</a>

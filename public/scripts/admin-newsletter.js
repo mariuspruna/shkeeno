@@ -99,7 +99,7 @@ function renderQueue(products = []) {
         <article class="order-card">
           <div class="order-card-head">
             <div>
-              <p class="eyebrow">${Math.round(Number(product.weight_grams || 0))}g / £${formatPrice(product.price_gbp)}</p>
+              <p class="eyebrow">£${formatPrice(product.price_gbp)}</p>
               <h3>${escapeHtml(product.name)}</h3>
             </div>
             <div class="order-card-total">

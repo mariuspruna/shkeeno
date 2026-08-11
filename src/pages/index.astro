@@ -18,7 +18,6 @@ const featuredObjects = featuredSource.map((product) => {
     ...product,
     displayName: toTitleCase(product.name),
     imageUrl: image?.url || "",
-    weightLabel: `${Math.round(Number(product.weight_grams || 0))}g`,
   };
 });
 ---
@@ -40,9 +39,7 @@ const featuredObjects = featuredSource.map((product) => {
                     class:list={["product-image", { "has-image": Boolean(object.imageUrl) }]}
                     style={object.imageUrl ? `--product-image: url('${object.imageUrl}')` : undefined}
                     aria-label={`View ${object.displayName}`}
-                  >
-                    <span>{object.weightLabel}</span>
-                  </a>
+                  />
                 </div>
               </div>
               <div class="home-feature-copy">

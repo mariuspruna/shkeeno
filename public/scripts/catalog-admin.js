@@ -24,7 +24,7 @@ let pendingAfterSave = null;
 let currentCategories = [];
 let currentTags = [];
 let selectedTags = [];
-const FETCHED_FIELD_NAMES = ["name", "brand", "short_description", "weight_grams", "price_gbp"];
+const FETCHED_FIELD_NAMES = ["name", "brand", "short_description", "price_gbp"];
 
 const MAX_IMAGE_COUNT = 6;
 const MAX_SOURCE_IMAGE_SIZE = 5 * 1024 * 1024;
@@ -136,7 +136,6 @@ function renderProducts(products) {
       <thead>
         <tr>
           <th>Product</th>
-          <th>Weight</th>
           <th>Price</th>
           <th>Status</th>
           <th>Newsletter</th>
@@ -278,7 +277,6 @@ function renderProductRow(product) {
             <strong>${escapeHtml(product.name)}</strong>
             <span class="catalog-row-meta">${metaBits.join('<span class="catalog-row-divider">•</span>') || "Unassigned"}</span>
             <dl class="catalog-mobile-details">
-              <div><dt>Weight</dt><dd>${Math.round(Number(product.weight_grams))}g</dd></div>
               <div><dt>Price</dt><dd>${price}</dd></div>
               <div><dt>Status</dt><dd>${product.badge ? `${escapeHtml(product.badge)} / ` : ""}${status}</dd></div>
               <div><dt>Newsletter</dt><dd>${escapeHtml(newsletterStatus)}</dd></div>
@@ -289,7 +287,6 @@ function renderProductRow(product) {
           </div>
         </div>
       </td>
-      <td data-label="Weight">${Math.round(Number(product.weight_grams))}g</td>
       <td data-label="Price">${price}</td>
       <td data-label="Status">${product.badge ? `${escapeHtml(product.badge)} / ` : ""}${status}</td>
       <td data-label="Newsletter">${escapeHtml(newsletterStatus)}</td>
@@ -344,13 +341,11 @@ async function handleFetchSubmit(event) {
     productForm.elements.namedItem("name").value = data.title || "";
     productForm.elements.namedItem("brand").value = data.brand || "";
     productForm.elements.namedItem("short_description").value = data.description || "";
-    productForm.elements.namedItem("weight_grams").value = data.weight_grams || "";
     productForm.elements.namedItem("price_gbp").value = data.price_gbp || "";
     renderImageInputs((data.images || []).map((image) => ({ url: image })));
     markFetchedField("name", Boolean(data.title));
     markFetchedField("brand", Boolean(data.brand));
     markFetchedField("short_description", Boolean(data.description));
-    markFetchedField("weight_grams", Boolean(data.weight_grams));
     markFetchedField("price_gbp", Boolean(data.price_gbp));
     setStatus("Draft fetched. Review before saving.", "good");
   } catch (error) {
@@ -619,7 +614,7 @@ function populateProductForm(product) {
   setValue("origin_country", product.origin_country || "");
   setValue("category", product.category || "collections");
   renderCategoryOptions(product.category || "collections");
-  setValue("weight_grams", Math.round(Number(product.weight_grams)));
+  setValue("weight_grams", Math.round(Number(product.weight_grams || 1)));
   setValue("price_gbp", product.price_gbp || "");
   setValue("compare_at_price_gbp", product.compare_at_price_gbp || "");
   setValue("stock_quantity", product.stock_quantity || 0);

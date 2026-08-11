@@ -1435,7 +1435,7 @@ html[data-shop-filter-pending="true"] [data-shop-shell][data-pending="true"] {
 .product-image.has-image {
   background:
     linear-gradient(180deg, transparent 54%, rgba(0, 0, 0, 0.2)),
-    var(--product-image) center / contain no-repeat,
+    var(--product-image) center / cover no-repeat,
     var(--color-secondary);
 }
 
@@ -1589,7 +1589,7 @@ html[data-shop-filter-pending="true"] [data-shop-shell][data-pending="true"] {
 .product-thumb {
   background:
     linear-gradient(180deg, transparent 54%, rgba(0, 0, 0, 0.34)),
-    var(--product-image) center / contain no-repeat,
+    var(--product-image) center / cover no-repeat,
     var(--color-secondary);
 }
 
@@ -1804,7 +1804,7 @@ html[data-shop-filter-pending="true"] [data-shop-shell][data-pending="true"] {
 .cart-item-image.has-image::before {
   background:
     linear-gradient(180deg, transparent 54%, rgba(0, 0, 0, 0.2)),
-    var(--product-image) center / contain no-repeat,
+    var(--product-image) center / cover no-repeat,
     var(--color-secondary);
 }
 
@@ -3200,7 +3200,7 @@ textarea[data-fetched="true"] {
 .catalog-product-thumb.has-image {
   background:
     linear-gradient(180deg, transparent 45%, rgba(0, 0, 0, 0.22)),
-    var(--product-image) center / contain no-repeat,
+    var(--product-image) center / cover no-repeat,
     var(--color-secondary);
 }
 
