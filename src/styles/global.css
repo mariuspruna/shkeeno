@@ -1203,6 +1203,28 @@ html[data-shop-filter-pending="true"] [data-shop-shell][data-pending="true"] {
   text-transform: uppercase;
 }
 
+.site-footer-social {
+  display: flex;
+  gap: 14px;
+  align-items: center;
+  color: inherit;
+}
+
+.site-footer-social span {
+  width: 34px;
+  height: 34px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.site-footer-social svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+  fill: currentColor;
+}
+
 .site-footer-links > div {
   display: grid;
   align-content: start;
