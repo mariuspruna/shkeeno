@@ -55,6 +55,7 @@ export async function onRequestPost({ request, env }) {
 }
 
 function extensionForType(type) {
+  if (type === "image/jpeg") return "jpg";
   if (type === "image/png") return "png";
   if (type === "image/avif") return "avif";
   return "webp";
