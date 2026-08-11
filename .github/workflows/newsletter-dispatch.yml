@@ -19,7 +19,7 @@ jobs:
           fi
 
           curl --fail-with-body \
-            -X POST "https://49grams.com/api/newsletter/dispatch" \
+            -X POST "https://shkeeno.com/api/newsletter/dispatch" \
             -H "x-newsletter-cron-secret: $NEWSLETTER_CRON_SECRET" \
             -H "content-type: application/json" \
             --data '{}'
