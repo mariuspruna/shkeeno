@@ -997,8 +997,8 @@ html[data-shop-filter-pending="true"] [data-shop-shell][data-pending="true"] {
 
 .home-feature-copy h3 {
   font-size: var(--type-title-xl);
-  font-family: var(--font-brand);
-  letter-spacing: var(--display-letter-spacing);
+  font-family: inherit;
+  letter-spacing: -0.045em;
   text-transform: none;
 }
 

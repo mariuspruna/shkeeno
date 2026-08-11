@@ -28,7 +28,7 @@ const featuredObjects = featuredSource.map((product) => {
   <main>
     <section class="home-featured" aria-labelledby="featured-title">
       <h1 id="featured-title">Designer-led fashion with a graphic pulse.</h1>
-      <div class="home-featured-grid">
+      <div class="home-featured-grid" data-home-featured-products>
         {
           featuredObjects.length > 0 ? featuredObjects.map((object) => (
             <article class="home-feature-card">
@@ -73,4 +73,5 @@ const featuredObjects = featuredSource.map((product) => {
     </section>
 
   </main>
+  <script src="/scripts/home-live.js" defer></script>
 </BaseLayout>
