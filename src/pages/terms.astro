@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTrail from "../components/PageTrail.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout title="Terms & Conditions | Shkeeno" description="Terms and conditions for Shkeeno.">
+  <SiteHeader />
+
+  <main class="shop-shell legal-shell">
+    <PageTrail items={[{ label: "Terms & conditions" }]} />
+
+    <section class="settings-card wide-card legal-card" aria-labelledby="terms-title">
+      <h1 id="terms-title">Terms &amp; conditions.</h1>
+      <div class="legal-stack">
+        <div>
+          <p class="eyebrow">Orders</p>
+          <p>
+            Orders are accepted subject to availability. If there is a stock issue or fulfilment
+            problem, we will contact the customer using the checkout email.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">Pricing</p>
+          <p>
+            Prices are shown in pounds sterling (£). Shipping and taxes are handled at checkout and
+            may vary by destination and payment context.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">Delivery</p>
+          <p>
+            Orders ship from the United Kingdom. Delivery windows are estimates rather than hard
+            guarantees, though we provide tracked updates where available.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">Support</p>
+          <p>
+            For order issues, delivery questions, or cancellations, <a href="/contact" class="inline-link">contact support</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

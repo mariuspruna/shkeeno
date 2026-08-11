@@ -1,0 +1,54 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTrail from "../components/PageTrail.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout
+  title="Account | Shkeeno"
+  description="Sign in to view your Shkeeno orders."
+>
+  <SiteHeader current="account" />
+
+  <main class="shop-shell" data-account-page data-supabase-url={import.meta.env.PUBLIC_SUPABASE_URL} data-supabase-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}>
+    <PageTrail items={[{ label: "Account" }]} />
+
+    <div class="settings-grid account-grid">
+      <section class="settings-card wide-card" data-account-card aria-labelledby="account-signin-title">
+        <h2 id="account-signin-title" class="product-section-title" data-account-access-title>Magic link</h2>
+        <div class="account-session" data-account-session hidden>
+          <div class="account-session-avatar" data-account-avatar>4</div>
+          <div class="account-session-copy">
+            <p class="eyebrow">Email</p>
+            <p data-account-email>you@example.com</p>
+          </div>
+        </div>
+        <form class="inline-form" data-account-form>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" placeholder="you@example.com" required />
+          </label>
+          <div class="admin-actions">
+            <button type="submit" class="reset-button" data-account-submit>Email sign-in link</button>
+          </div>
+        </form>
+        <div class="account-status-row" data-account-status-row hidden>
+          <button type="button" class="back-link" data-account-signout hidden>Sign out</button>
+        </div>
+        <p class="field-hint account-session-note" data-account-session-note hidden>
+          We use your checkout email quietly to find matching paid orders.
+        </p>
+        <p class="catalog-status" data-account-status hidden></p>
+      </section>
+
+      <section class="settings-card wide-card" aria-labelledby="account-orders-title">
+        <h2 id="account-orders-title" class="product-section-title">Your orders</h2>
+        <p class="field-hint" data-account-copy>
+          Sign in to see paid orders, shipping address, and item summaries.
+        </p>
+        <div class="orders-stack" data-account-orders></div>
+      </section>
+    </div>
+  </main>
+  <script type="module" src="/scripts/account.js"></script>
+</BaseLayout>

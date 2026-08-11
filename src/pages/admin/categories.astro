@@ -1,0 +1,82 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminSidebar from "../../components/AdminSidebar.astro";
+---
+
+<BaseLayout title="Category Admin | Shkeeno">
+  <main class="admin-shell">
+    <AdminSidebar current="categories" />
+
+    <section class="admin-panel" aria-labelledby="categories-title">
+      <div class="admin-heading">
+        <div class="admin-topline">
+          <nav class="page-trail admin-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/admin/design">Admin</a></li>
+              <li><span aria-current="page">Categories</span></li>
+            </ol>
+          </nav>
+        </div>
+        <h1 id="categories-title">Categories</h1>
+        <p>
+          Set the collection structure once, then assign categories from the product editor.
+        </p>
+      </div>
+
+      <p class="catalog-status" data-category-status>Ready.</p>
+      <div class="settings-grid">
+        <section class="settings-card wide-card product-editor-card" aria-labelledby="category-form-title">
+          <div class="product-editor-head">
+            <div>
+              <p class="eyebrow">Categories</p>
+              <h2 id="category-form-title" data-category-form-mode>New category</h2>
+            </div>
+            <button type="button" data-category-cancel hidden>Cancel edit</button>
+          </div>
+          <form class="settings-grid" data-category-form>
+            <section class="settings-card">
+              <label class="setting-row">
+                <span>Name</span>
+                <input name="name" type="text" placeholder="e.g. Travel" required />
+              </label>
+              <label class="setting-row">
+                <span>Slug</span>
+                <input name="slug" type="text" placeholder="auto from name, e.g. travel" />
+              </label>
+              <label class="setting-row">
+                <span>Description</span>
+                <textarea name="description" placeholder="What belongs in this category."></textarea>
+              </label>
+              <label class="setting-row">
+                <span>Sort order</span>
+                <input name="sort_order" type="number" min="0" step="1" placeholder="10" />
+              </label>
+              <label class="setting-row">
+                <span>Status</span>
+                <select name="is_active">
+                  <option value="true">Active</option>
+                  <option value="false">Hidden</option>
+                </select>
+              </label>
+            </section>
+            <section class="settings-card wide-card">
+              <button type="submit" class="reset-button" data-category-submit>Save category</button>
+            </section>
+          </form>
+        </section>
+
+        <section class="settings-card wide-card" aria-labelledby="category-table-title">
+          <div class="section-kicker">
+            <p>Catalogue</p>
+            <span>Create, edit, hide, and arrange categories</span>
+          </div>
+          <h2 id="category-table-title" class="product-section-title">Category list</h2>
+          <div data-categories-table>
+            <p class="empty-copy">Loading categories...</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="/scripts/catalog-categories.js" defer></script>
+</BaseLayout>

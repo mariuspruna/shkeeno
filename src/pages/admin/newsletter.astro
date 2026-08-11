@@ -1,0 +1,162 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminSidebar from "../../components/AdminSidebar.astro";
+---
+
+<BaseLayout title="Newsletter | Shkeeno">
+  <main class="admin-shell">
+    <AdminSidebar current="newsletter" />
+
+    <section class="admin-panel" aria-labelledby="newsletter-title">
+      <div class="admin-heading">
+        <div class="admin-topline">
+          <nav class="page-trail admin-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/admin/design">Admin</a></li>
+              <li><span aria-current="page">Newsletter</span></li>
+            </ol>
+          </nav>
+        </div>
+        <h1 id="newsletter-title">Newsletter</h1>
+        <p>
+          Manage consent-first signups, weekly digest settings, queued products, and campaign history.
+        </p>
+      </div>
+
+      <p class="catalog-status" data-newsletter-admin-status>Ready.</p>
+
+      <div class="settings-grid">
+        <section class="settings-card" aria-labelledby="newsletter-audience-title">
+          <div class="section-kicker">
+            <p>Audience</p>
+            <span>Live subscriber signals</span>
+          </div>
+          <h2 id="newsletter-audience-title">Audience overview</h2>
+          <dl class="product-stats" data-newsletter-stats>
+            <div><dt>Total</dt><dd>0</dd></div>
+            <div><dt>Subscribed</dt><dd>0</dd></div>
+            <div><dt>Pending</dt><dd>0</dd></div>
+            <div><dt>Last 7 days</dt><dd>0</dd></div>
+          </dl>
+        </section>
+
+        <section class="settings-card" aria-labelledby="newsletter-send-title">
+          <div class="section-kicker">
+            <p>Digest</p>
+            <span>Next weekly send</span>
+          </div>
+          <h2 id="newsletter-send-title">Send weekly digest</h2>
+          <label class="setting-row newsletter-inline-toggle">
+            <span>Automatic sending</span>
+            <span class="field-pair">
+              <input name="newsletter_auto_send_enabled" type="checkbox" form="newsletter-settings-form" />
+              <span class="field-hint">Run the weekly automation when the schedule matches</span>
+            </span>
+          </label>
+          <p class="field-hint" data-newsletter-preview-copy>
+            Loading queued products and subscriber count.
+          </p>
+          <div class="admin-actions newsletter-admin-actions">
+            <button type="button" class="back-link" data-newsletter-refresh>Refresh preview</button>
+            <button type="button" class="reset-button" data-newsletter-send>Send weekly digest</button>
+          </div>
+        </section>
+
+        <section class="settings-card wide-card" aria-labelledby="newsletter-settings-title">
+          <div class="section-kicker">
+            <p>Settings</p>
+            <span>Consent, sender, and cadence</span>
+          </div>
+          <h2 id="newsletter-settings-title">Newsletter settings</h2>
+          <form class="settings-grid" id="newsletter-settings-form" data-newsletter-settings-form>
+            <label class="setting-row">
+              <span>Enabled</span>
+              <span class="field-pair">
+                <input name="newsletter_enabled" type="checkbox" />
+                <span class="field-hint">Allow new signups and sends</span>
+              </span>
+            </label>
+            <label class="setting-row">
+              <span>Sender name</span>
+              <input name="newsletter_sender_name" type="text" placeholder="Shkeeno" />
+            </label>
+            <label class="setting-row">
+              <span>Reply-to email</span>
+              <input name="newsletter_reply_to_email" type="email" placeholder="support@shkeeno.com" />
+            </label>
+            <label class="setting-row">
+              <span>Confirm subject</span>
+              <input name="newsletter_confirm_subject" type="text" placeholder="Confirm your Shkeeno subscription" />
+            </label>
+            <label class="setting-row">
+              <span>Digest subject</span>
+              <input name="newsletter_digest_subject" type="text" placeholder="New products designed with intention" />
+            </label>
+            <label class="setting-row">
+              <span>Digest intro</span>
+              <textarea name="newsletter_digest_intro" rows="4" placeholder="A few new additions designed with intention."></textarea>
+            </label>
+            <div class="newsletter-schedule-row">
+              <label class="setting-row newsletter-compact-setting">
+                <span>Weekly send day</span>
+                <select name="newsletter_schedule_weekday" data-custom-select>
+                  <option value="0">Sunday</option>
+                  <option value="1">Monday</option>
+                  <option value="2">Tuesday</option>
+                  <option value="3">Wednesday</option>
+                  <option value="4">Thursday</option>
+                  <option value="5">Friday</option>
+                  <option value="6">Saturday</option>
+                </select>
+              </label>
+              <label class="setting-row newsletter-compact-setting">
+                <span>Weekly send hour (UTC)</span>
+                <input name="newsletter_schedule_hour_utc" type="number" min="0" max="23" step="1" />
+              </label>
+              <div class="admin-actions newsletter-save-actions">
+                <button type="submit" class="reset-button" data-newsletter-settings-submit>Save newsletter settings</button>
+              </div>
+            </div>
+            <div class="admin-actions newsletter-save-actions-mobile">
+              <button type="submit" class="reset-button" data-newsletter-settings-submit>Save newsletter settings</button>
+            </div>
+          </form>
+        </section>
+
+        <section class="settings-card wide-card" aria-labelledby="newsletter-queue-title">
+          <div class="section-kicker">
+            <p>Queue</p>
+            <span>Products ready for the next digest</span>
+          </div>
+          <h2 id="newsletter-queue-title" class="product-section-title">Queued products</h2>
+          <div data-newsletter-queue>
+            <p class="empty-copy">Loading newsletter queue...</p>
+          </div>
+        </section>
+
+        <section class="settings-card wide-card" aria-labelledby="newsletter-subscribers-title">
+          <div class="section-kicker">
+            <p>Subscribers</p>
+            <span>Recent audience activity</span>
+          </div>
+          <h2 id="newsletter-subscribers-title" class="product-section-title">Recent subscribers</h2>
+          <div data-newsletter-subscribers>
+            <p class="empty-copy">Loading subscribers...</p>
+          </div>
+        </section>
+
+        <section class="settings-card wide-card" aria-labelledby="newsletter-campaigns-title">
+          <div class="section-kicker">
+            <p>Campaigns</p>
+            <span>Digest activity and send history</span>
+          </div>
+          <h2 id="newsletter-campaigns-title" class="product-section-title">Recent campaigns</h2>
+          <div data-newsletter-campaigns>
+            <p class="empty-copy">Loading campaign history...</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="/scripts/admin-newsletter.js" defer></script>
+</BaseLayout>

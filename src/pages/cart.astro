@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTrail from "../components/PageTrail.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout
+  title="Cart | Shkeeno"
+  description="Review your Shkeeno selection before checkout."
+>
+  <SiteHeader current="cart" />
+
+  <main class="shop-shell" data-cart-page>
+    <PageTrail items={[{ label: "Cart" }]} />
+
+    <p class="catalog-status" data-cart-page-status hidden></p>
+
+    <section class="cart-page-grid">
+      <section class="settings-card wide-card" aria-labelledby="cart-items-title">
+        <h2 id="cart-items-title" class="product-section-title">Cart</h2>
+        <div data-cart-page-items>
+          <p class="empty-copy">Your cart is empty.</p>
+        </div>
+      </section>
+
+      <aside class="settings-card cart-summary-card" data-cart-page-summary hidden>
+        <h2>Summary</h2>
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <strong data-cart-subtotal>£0.00</strong>
+        </div>
+        <label class="setting-row">
+          <span>Delivery country</span>
+          <select data-shipping-country data-custom-select>
+            <option value="">Choose country</option>
+          </select>
+        </label>
+        <p class="field-hint" data-shipping-country-hint>Choose where we should ship this before checkout.</p>
+        <p class="field-hint">Shipping and taxes are calculated at checkout.</p>
+        <label class="cart-newsletter-optin" for="cart-newsletter-optin">
+          <input id="cart-newsletter-optin" type="checkbox" data-cart-newsletter-optin />
+          <span>
+            Email me about new product additions
+            <small>Optional. We will send a confirmation email after checkout before adding you to the list.</small>
+          </span>
+        </label>
+        <div class="checkout-trust checkout-trust-page">
+          <div>
+            <p class="eyebrow">Secure checkout</p>
+            <p>Payments are finalised with Stripe. We ship from the United Kingdom and follow up by email.</p>
+          </div>
+          <div class="stripe-lockup stripe-lockup-badge" aria-label="Powered by Stripe">
+            <span>Powered by</span>
+            <strong>Stripe</strong>
+          </div>
+          <div class="checkout-trust-meta">
+            <span>Shipped from the United Kingdom</span>
+            <span>Support: <a href="/contact" class="inline-link">Contact support</a></span>
+            <span>Order updates by email</span>
+          </div>
+        </div>
+        <button type="button" class="reset-button" data-cart-checkout>Checkout</button>
+      </aside>
+    </section>
+  </main>
+</BaseLayout>

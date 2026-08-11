@@ -1,45 +1,47 @@
 <footer class="site-footer">
-  <div class="site-footer-inner shkeeno-footer-inner">
-    <section class="site-footer-newsletter" aria-labelledby="footer-brand-title">
-      <a class="brand-mark site-footer-logo" href="/" aria-label="SHKEENO home">SHKEENO</a>
-      <h2 id="footer-brand-title">Independent fashion, shaped by a designer's hand.</h2>
+  <div class="site-footer-inner">
+    <section class="site-footer-newsletter" aria-labelledby="footer-newsletter-title">
+      <a class="brand-mark site-footer-logo" href="/" aria-label="Shkeeno home">SHKEENO</a>
+      <h2 id="footer-newsletter-title">
+        New pieces, straight to your inbox.
+      </h2>
       <p>
-        SHKEENO is the creative fashion identity of Diana Baptista, a Portuguese designer based in the UK.
+        When Shkeeno adds a new piece, collection note, or release window, we will send a short
+        email. No noise, just the useful update.
       </p>
+      <form class="site-footer-signup" aria-label="New product email signup" data-newsletter-form>
+        <label class="sr-only" for="footer-email">Email address</label>
+        <div>
+          <input id="footer-email" name="email" type="email" placeholder="your@email.com" autocomplete="email" />
+          <button type="submit" data-newsletter-submit>Notify me</button>
+        </div>
+        <input type="text" name="company" class="sr-only" tabindex="-1" autocomplete="off" />
+        <p class="catalog-status" data-newsletter-status role="status" aria-live="polite" hidden></p>
+      </form>
     </section>
 
     <nav class="site-footer-links" aria-label="Footer navigation">
       <div>
-        <p class="eyebrow">Brand</p>
-        <a href="/about">Shkeeno</a>
-        <a href="/about#designer">The designer</a>
-        <a href="/about#idea">The idea</a>
-        <a href="/portfolio">Portfolio</a>
+        <p class="eyebrow">Pages</p>
+        <a href="/">Home</a>
+        <a href="/shop">Shop</a>
+        <a href="/about">About</a>
+        <a href="/contact">Contact</a>
       </div>
       <div>
-        <p class="eyebrow">Responsibilities</p>
-        <a href="/responsibilities#sustainability">Sustainability</a>
-        <a href="/responsibilities#ethics">Code of ethics</a>
-        <a href="/responsibilities#terms">Terms &amp; conditions</a>
-        <a href="/responsibilities#charity">Charity</a>
-      </div>
-      <div>
-        <p class="eyebrow">Social</p>
-        <a href="/">Instagram ↗</a>
-        <a href="/">Pinterest ↗</a>
-        <a href="/">TikTok ↗</a>
-      </div>
-      <div>
-        <p class="eyebrow">Contact</p>
-        <a href="mailto:hello@shkeeno.com">hello@shkeeno.com</a>
-        <a href="/contact">London, United Kingdom</a>
+        <p class="eyebrow">Account</p>
+        <a href="/cart">Cart</a>
+        <a href="/account">Account</a>
+        <a href="/admin/design">Admin</a>
       </div>
     </nav>
 
     <p class="site-footer-bottom">
-      <span>© 2026 SHKEENO. All rights reserved.</span>
+      <span>© 2026 <span data-brand-copy="name">Shkeeno</span>. All rights reserved.</span>
       <span aria-hidden="true">•</span>
-      <a href="/responsibilities#terms">Terms &amp; conditions</a>
+      <a href="/terms">Terms &amp; conditions</a>
+      <span aria-hidden="true">•</span>
+      <a href="/privacy">Privacy policy</a>
     </p>
   </div>
 </footer>

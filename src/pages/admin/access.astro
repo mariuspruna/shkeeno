@@ -1,0 +1,44 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminSidebar from "../../components/AdminSidebar.astro";
+---
+
+<BaseLayout title="Admin Access | Shkeeno">
+  <main class="admin-shell">
+    <AdminSidebar current="access" />
+
+    <section class="admin-panel" aria-labelledby="access-title">
+      <div class="admin-heading">
+        <div class="admin-topline">
+          <nav class="page-trail admin-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/admin/design">Admin</a></li>
+              <li><span aria-current="page">Access</span></li>
+            </ol>
+          </nav>
+        </div>
+        <h1 id="access-title">Access</h1>
+        <p>Save the admin key in this browser once, then move through the rest of the admin normally.</p>
+      </div>
+
+      <p class="catalog-status" data-access-status>Ready.</p>
+
+      <section class="settings-card wide-card access-page-card" aria-labelledby="access-card-title">
+        <div class="section-kicker">
+          <p>Access</p>
+          <span>Stored locally in this browser only</span>
+        </div>
+        <h2 id="access-card-title" class="product-section-title">Admin key</h2>
+        <form class="inline-form" data-access-form>
+          <label>
+            <span>Admin key</span>
+            <input type="password" data-admin-key placeholder="Paste admin key" required />
+          </label>
+          <button type="submit" class="reset-button" data-admin-key-submit>Save key</button>
+        </form>
+        <p class="field-hint">Stored in this browser only. Revisit this page whenever you want to replace it.</p>
+      </section>
+    </section>
+  </main>
+  <script src="/scripts/admin-access.js" defer></script>
+</BaseLayout>

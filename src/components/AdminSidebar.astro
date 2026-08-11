@@ -1,0 +1,49 @@
+---
+interface Props {
+  current?: "access" | "design" | "products" | "categories" | "tags" | "orders" | "commerce" | "newsletter";
+}
+
+const { current } = Astro.props;
+---
+
+<aside class="admin-sidebar">
+  <div class="admin-sidebar-top">
+    <a class="brand-mark" href="/">SHKEENO</a>
+    <button
+      type="button"
+      class="admin-menu-toggle"
+      data-admin-menu-toggle
+      aria-expanded="false"
+      aria-controls="admin-mobile-menu"
+    >
+      <span class="hamburger-icon" aria-hidden="true"></span>
+      <span class="sr-only">Admin menu</span>
+    </button>
+  </div>
+  <nav aria-label="Admin navigation">
+    <a href="/admin/access" aria-current={current === "access" ? "page" : undefined}>Access</a>
+    <a href="/admin/design" aria-current={current === "design" ? "page" : undefined}>Design</a>
+    <a href="/admin/products" aria-current={current === "products" ? "page" : undefined}>Products</a>
+    <a href="/admin/categories" aria-current={current === "categories" ? "page" : undefined}>Categories</a>
+    <a href="/admin/tags" aria-current={current === "tags" ? "page" : undefined}>Tags</a>
+    <a href="/admin/orders" aria-current={current === "orders" ? "page" : undefined}>Orders</a>
+    <a href="/admin/commerce" aria-current={current === "commerce" ? "page" : undefined}>Commerce</a>
+    <a href="/admin/newsletter" aria-current={current === "newsletter" ? "page" : undefined}>Newsletter</a>
+    <a href="/">View live</a>
+  </nav>
+  <div class="admin-mobile-nav" id="admin-mobile-menu" data-admin-mobile-menu hidden>
+    <nav aria-label="Admin mobile navigation">
+      <a href="/admin/access" aria-current={current === "access" ? "page" : undefined}>Access</a>
+      <a href="/admin/design" aria-current={current === "design" ? "page" : undefined}>Design</a>
+      <a href="/admin/products" aria-current={current === "products" ? "page" : undefined}>Products</a>
+      <a href="/admin/categories" aria-current={current === "categories" ? "page" : undefined}>Categories</a>
+      <a href="/admin/tags" aria-current={current === "tags" ? "page" : undefined}>Tags</a>
+      <a href="/admin/orders" aria-current={current === "orders" ? "page" : undefined}>Orders</a>
+      <a href="/admin/commerce" aria-current={current === "commerce" ? "page" : undefined}>Commerce</a>
+      <a href="/admin/newsletter" aria-current={current === "newsletter" ? "page" : undefined}>Newsletter</a>
+      <a href="/">View live</a>
+    </nav>
+  </div>
+  <button type="button" class="admin-menu-backdrop" data-admin-menu-backdrop aria-label="Close admin menu" hidden></button>
+  <script src="/scripts/admin-menu.js" defer></script>
+</aside>

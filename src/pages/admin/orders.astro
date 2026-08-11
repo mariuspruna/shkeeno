@@ -1,0 +1,41 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminSidebar from "../../components/AdminSidebar.astro";
+---
+
+<BaseLayout title="Orders | Shkeeno">
+  <main class="admin-shell">
+    <AdminSidebar current="orders" />
+
+    <section class="admin-panel" aria-labelledby="orders-title">
+      <div class="admin-heading">
+        <div class="admin-topline">
+          <nav class="page-trail admin-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/admin/design">Admin</a></li>
+              <li><span aria-current="page">Orders</span></li>
+            </ol>
+          </nav>
+        </div>
+        <h1 id="orders-title">Orders</h1>
+        <p>
+          Review paid checkouts, customer details, totals, shipping, and any stock exceptions in one place.
+        </p>
+      </div>
+
+      <p class="catalog-status" data-orders-status>Ready.</p>
+
+      <section class="settings-card wide-card" aria-labelledby="orders-table-title">
+        <div class="section-kicker">
+          <p>Commerce</p>
+          <span>Newest paid orders first</span>
+        </div>
+        <h2 id="orders-table-title" class="product-section-title">Recent orders</h2>
+        <div data-orders-table>
+          <p class="empty-copy">Loading orders...</p>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script src="/scripts/admin-orders.js" defer></script>
+</BaseLayout>

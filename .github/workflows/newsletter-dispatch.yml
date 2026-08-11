@@ -1,0 +1,25 @@
+name: Newsletter Dispatch
+
+on:
+  schedule:
+    - cron: "0 * * * *"
+  workflow_dispatch:
+
+jobs:
+  dispatch:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Call production newsletter dispatch
+        env:
+          NEWSLETTER_CRON_SECRET: ${{ secrets.NEWSLETTER_CRON_SECRET }}
+        run: |
+          if [ -z "$NEWSLETTER_CRON_SECRET" ]; then
+            echo "Missing GitHub Actions secret NEWSLETTER_CRON_SECRET."
+            exit 1
+          fi
+
+          curl --fail-with-body \
+            -X POST "https://49grams.com/api/newsletter/dispatch" \
+            -H "x-newsletter-cron-secret: $NEWSLETTER_CRON_SECRET" \
+            -H "content-type: application/json" \
+            --data '{}'

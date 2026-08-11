@@ -1,0 +1,168 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageTrail from "../../components/PageTrail.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+import { getPublishedProductBySlug, getPublishedProducts } from "../../lib/supabase";
+import { toTitleCase } from "../../lib/text";
+
+export async function getStaticPaths() {
+  const products = await getPublishedProducts();
+
+  return products.map((product) => ({
+    params: { slug: product.slug },
+  }));
+}
+
+const { slug } = Astro.params;
+const product = await getPublishedProductBySlug(String(slug));
+const productName = toTitleCase(product.name);
+const images = [...(product.product_images || [])].sort((a, b) => a.sort_order - b.sort_order);
+const weightLabel = `${Math.round(Number(product.weight_grams))}g`;
+const priceLabel = `£${Number(product.price_gbp || 0).toFixed(2)}`;
+const compareAtLabel = product.compare_at_price_gbp
+  ? `£${Number(product.compare_at_price_gbp).toFixed(2)}`
+  : "";
+const lowStock =
+  product.stock_quantity > 0 && product.stock_quantity <= product.low_stock_threshold;
+const status = product.stock_quantity === 0
+  ? "Sold out"
+  : lowStock
+    ? `Only ${product.stock_quantity} available`
+    : product.is_featured
+      ? "Featured product"
+      : "Available";
+---
+
+<BaseLayout title={`${productName} | Shkeeno`} description={product.short_description}>
+  <SiteHeader current="shop" />
+
+  <main class="product-detail-shell">
+    <PageTrail items={[{ label: "Shop", href: "/shop" }, { label: productName }]} />
+
+    <section class="product-detail" aria-labelledby="product-title">
+      <div class="product-detail-media-frame">
+        <div class="product-gallery" data-gallery>
+          <div class="gallery-viewport">
+            {
+              images.length > 0 ? (
+                images.map((image, index) => (
+                  <div
+                    role="img"
+                    class={index === 0 ? "product-image has-image" : "product-image has-image is-hidden"}
+                    style={`--product-image: url('${image.url}')`}
+                    aria-label={image.alt || productName}
+                    data-gallery-image
+                    hidden={index !== 0}
+                  >
+                    <span>{weightLabel}</span>
+                  </div>
+                ))
+              ) : (
+                <div class="product-image">
+                  <span>{weightLabel}</span>
+                </div>
+              )
+            }
+
+            {
+              images.length > 1 && (
+                <div class="gallery-controls gallery-controls-detail">
+                  <button type="button" data-gallery-prev aria-label={`Previous image for ${productName}`}>
+                    <span aria-hidden="true">‹</span>
+                  </button>
+                  <button type="button" data-gallery-next aria-label={`Next image for ${productName}`}>
+                    <span aria-hidden="true">›</span>
+                  </button>
+                </div>
+              )
+            }
+          </div>
+        </div>
+
+        {
+          images.length > 1 && (
+            <div class="product-gallery-thumbs" aria-label="Product images">
+              {images.slice(0, 6).map((image, index) => (
+                <button
+                  type="button"
+                  class={index === 0 ? "product-thumb is-active" : "product-thumb"}
+                  style={`--product-image: url('${image.url}')`}
+                  aria-label={image.alt || `View image ${index + 1} for ${productName}`}
+                  data-gallery-thumb
+                  data-gallery-index={index}
+                >
+                  <span class="sr-only">Image {index + 1}</span>
+                </button>
+                
+              ))}
+            </div>
+          )
+        }
+      </div>
+
+      <article class="product-detail-copy">
+        <p class="eyebrow">
+          {product.badge ? `${product.badge.replace("_", " ")} / ` : ""}
+          {status}
+        </p>
+        <h1 id="product-title">{productName}</h1>
+        <p class="product-detail-reason">{product.short_description}</p>
+
+        <div class="product-buy-panel">
+          <p>
+            <strong>{priceLabel}</strong>
+            {compareAtLabel && <s>{compareAtLabel}</s>}
+          </p>
+          <button
+            type="button"
+            data-add-to-cart
+            data-product-id={product.id}
+            data-product-name={productName}
+            disabled={product.stock_quantity === 0}
+          >
+            {product.stock_quantity === 0 ? "Sold out" : "Add to cart"}
+          </button>
+          <a href="/cart" class="back-link product-cart-link">View cart</a>
+        </div>
+
+        <dl class="product-specs">
+          <div>
+            <dt>Weight</dt>
+            <dd>{weightLabel}</dd>
+          </div>
+          <div>
+            <dt>Category</dt>
+            <dd>{product.category}</dd>
+          </div>
+          {product.brand && (
+            <div>
+              <dt>Brand</dt>
+              <dd>{product.brand}</dd>
+            </div>
+          )}
+          {product.origin_country && (
+            <div>
+              <dt>Origin</dt>
+              <dd>{product.origin_country}</dd>
+            </div>
+          )}
+        </dl>
+
+        {
+          product.editorial_description && (
+            <section class="product-editorial">
+              <h2>Why it earns its place</h2>
+              <p>{product.editorial_description}</p>
+            </section>
+          )
+        }
+
+        {/* <div class="product-tags">
+          {product.tags?.map((tag) => <span>{tag}</span>)}
+          {product.materials?.map((material) => <span>{material}</span>)}
+        </div> */}
+      </article>
+    </section>
+  </main>
+  <script src="/scripts/product-gallery.js" defer></script>
+</BaseLayout>

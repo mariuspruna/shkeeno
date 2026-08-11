@@ -1,0 +1,125 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminSidebar from "../../components/AdminSidebar.astro";
+---
+
+<BaseLayout title="Commerce Settings | Shkeeno">
+  <main class="admin-shell">
+    <AdminSidebar current="commerce" />
+
+    <section class="admin-panel" aria-labelledby="commerce-title">
+      <div class="admin-heading">
+        <div class="admin-topline">
+          <nav class="page-trail admin-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/admin/design">Admin</a></li>
+              <li><span aria-current="page">Commerce</span></li>
+            </ol>
+          </nav>
+        </div>
+        <h1 id="commerce-title">Commerce</h1>
+        <p>
+          Manage checkout behavior, shipping rules, and the customer-facing parts of the order flow.
+        </p>
+      </div>
+
+      <p class="catalog-status" data-commerce-status>Ready.</p>
+
+      <form class="settings-grid" data-commerce-form>
+        <section class="settings-card" aria-labelledby="checkout-settings-title">
+          <div class="section-kicker">
+            <p>Checkout</p>
+            <span>Storefront and order defaults</span>
+          </div>
+          <h2 id="checkout-settings-title">Checkout</h2>
+          <label class="setting-row">
+            <span>Shop name</span>
+            <input name="shop_name" type="text" placeholder="Shkeeno" required />
+          </label>
+          <label class="setting-row">
+            <span>Support email</span>
+            <input name="support_email" type="email" placeholder="support@shkeeno.com" />
+          </label>
+          <label class="setting-row">
+            <span>Allowed countries</span>
+            <input name="allowed_countries" type="text" placeholder="GB, US, DE, FR, NL, SE, JP" />
+          </label>
+          <div class="toggle-stack">
+            <label><input name="allow_promotion_codes" type="checkbox" /> Allow promo codes</label>
+            <label><input name="require_phone" type="checkbox" /> Collect phone number</label>
+            <label><input name="collect_billing_address" type="checkbox" /> Require billing address</label>
+          </div>
+        </section>
+
+        <section class="settings-card" aria-labelledby="standard-shipping-title">
+          <div class="section-kicker">
+            <p>Shipping</p>
+            <span>Domestic delivery settings</span>
+          </div>
+          <h2 id="standard-shipping-title">United Kingdom</h2>
+          <label class="setting-row">
+            <span>Label</span>
+            <input name="standard_rate_name" type="text" placeholder="United Kingdom" />
+          </label>
+          <label class="setting-row">
+            <span>Amount pence</span>
+            <input name="standard_rate_amount" type="number" min="0" step="1" placeholder="495" />
+          </label>
+          <label class="setting-row">
+            <span>Min business days</span>
+            <input name="standard_min_business_days" type="number" min="0" step="1" placeholder="2" />
+          </label>
+          <label class="setting-row">
+            <span>Max business days</span>
+            <input name="standard_max_business_days" type="number" min="0" step="1" placeholder="10" />
+          </label>
+          <label class="setting-row">
+            <span>Stripe shipping rate ID</span>
+            <input name="shipping_rate_standard_id" type="text" placeholder="shr_..." />
+          </label>
+        </section>
+
+        <section class="settings-card" aria-labelledby="express-shipping-title">
+          <div class="section-kicker">
+            <p>Shipping</p>
+            <span>International delivery settings</span>
+          </div>
+          <h2 id="express-shipping-title">International (Non-UK)</h2>
+          <div class="toggle-stack">
+            <label><input name="express_enabled" type="checkbox" /> Offer international shipping</label>
+          </div>
+          <label class="setting-row">
+            <span>Label</span>
+            <input name="express_rate_name" type="text" placeholder="International (Non-UK)" />
+          </label>
+          <label class="setting-row">
+            <span>Amount pence</span>
+            <input name="express_rate_amount" type="number" min="0" step="1" placeholder="995" />
+          </label>
+          <label class="setting-row">
+            <span>Min business days</span>
+            <input name="express_min_business_days" type="number" min="0" step="1" placeholder="1" />
+          </label>
+          <label class="setting-row">
+            <span>Max business days</span>
+            <input name="express_max_business_days" type="number" min="0" step="1" placeholder="3" />
+          </label>
+          <label class="setting-row">
+            <span>Stripe shipping rate ID</span>
+            <input name="shipping_rate_express_id" type="text" placeholder="shr_..." />
+          </label>
+        </section>
+
+        <section class="settings-card wide-card" aria-labelledby="commerce-save-title">
+          <div class="section-kicker">
+            <p>Save</p>
+            <span>Apply changes to checkout and shipping</span>
+          </div>
+          <h2 id="commerce-save-title" class="product-section-title">Save changes</h2>
+          <button type="submit" class="reset-button" data-commerce-submit>Save commerce settings</button>
+        </section>
+      </form>
+    </section>
+  </main>
+  <script src="/scripts/admin-commerce.js" defer></script>
+</BaseLayout>

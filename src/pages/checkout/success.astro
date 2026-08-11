@@ -1,0 +1,73 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageTrail from "../../components/PageTrail.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+---
+
+<BaseLayout
+  title="Order Received | Shkeeno"
+  description="Your Shkeeno order is confirmed."
+>
+  <SiteHeader current="account" />
+
+  <main class="shop-shell" data-order-success>
+    <PageTrail items={[{ label: "Cart", href: "/cart" }, { label: "Success" }]} />
+
+    <div class="settings-grid order-success-grid" hidden data-order-success-grid>
+      <section class="settings-card wide-card" aria-labelledby="order-summary-title">
+        <p class="eyebrow">Summary / order</p>
+        <h2 id="order-summary-title" class="product-section-title">What we received</h2>
+        <div class="order-success-meta" data-order-success-meta></div>
+        <div class="order-success-items" data-order-success-items></div>
+      </section>
+
+      <aside class="settings-card" aria-labelledby="next-title">
+        <p class="eyebrow">Next / follow-up</p>
+        <h2 id="next-title" class="product-section-title">What happens next</h2>
+        <div class="order-success-note-stack">
+          <p>We will send a confirmation now, then follow up again when the order moves from packed to shipped.</p>
+          <p data-order-success-email></p>
+        </div>
+        <div class="order-success-next-list">
+          <div>
+            <p class="eyebrow">Support</p>
+            <p>If anything looks off, reply to the order email or <a href="/contact" class="inline-link">contact support</a>.</p>
+          </div>
+          <div>
+            <p class="eyebrow">Account</p>
+            <p>Use the same checkout email in Account whenever you want to revisit this order later.</p>
+          </div>
+        </div>
+        <div class="stripe-lockup" aria-label="Powered by Stripe">
+          <span>Powered by</span>
+          <strong>Stripe</strong>
+        </div>
+        <div class="admin-actions">
+          <a href="/account" class="reset-button">View my orders</a>
+          <a href="/shop" class="back-link">Back to shop</a>
+        </div>
+      </aside>
+    </div>
+
+    <section class="settings-card wide-card" data-order-success-empty>
+      <p class="eyebrow">Lookup / order</p>
+      <h2 class="product-section-title">We could not load the summary yet.</h2>
+      <p class="field-hint">
+        The payment may already be complete. If this page was opened directly or refreshed before the
+        webhook finished, use Account to look it up by email.
+      </p>
+      <div class="stripe-lockup" aria-label="Powered by Stripe">
+        <span>Powered by</span>
+        <strong>Stripe</strong>
+      </div>
+      <div class="admin-actions">
+        <a href="/account" class="reset-button">View my orders</a>
+        <a href="/shop" class="back-link">Back to shop</a>
+      </div>
+    </section>
+  </main>
+  <script is:inline>
+    localStorage.removeItem("shkeeno-cart");
+  </script>
+  <script src="/scripts/order-success.js" defer></script>
+</BaseLayout>

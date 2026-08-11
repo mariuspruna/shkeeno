@@ -1,0 +1,214 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminSidebar from "../../components/AdminSidebar.astro";
+---
+
+<BaseLayout title="Catalogue Admin | Shkeeno">
+  <main class="admin-shell">
+    <AdminSidebar current="products" />
+
+    <section class="admin-panel" aria-labelledby="products-title">
+      <div class="admin-heading">
+        <div class="admin-topline">
+          <nav class="page-trail admin-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/admin/design">Admin</a></li>
+              <li><span aria-current="page">Catalogue</span></li>
+            </ol>
+          </nav>
+        </div>
+        <h1 id="products-title">Products</h1>
+        <p>
+          Fetch from a URL or enter everything manually. Save drafts safely, then list
+          only when copy, weight, price, and at least one image are ready.
+        </p>
+      </div>
+
+      <p class="catalog-status" data-catalog-status>Ready.</p>
+      <section class="settings-card wide-card product-flow-card" aria-labelledby="start-title">
+        <div class="section-kicker">
+          <p id="start-title">Start a product</p>
+          <span>Choose how to create the next draft</span>
+        </div>
+        <div class="product-flow-grid">
+          <article class="product-flow-step product-summary-card">
+            <p class="eyebrow">Catalogue</p>
+            <h2>Product catalogue</h2>
+            <p class="product-flow-note">Overview</p>
+            <dl class="product-stats" data-product-stats>
+              <div><dt>Products</dt><dd>0</dd></div>
+              <div><dt>Live</dt><dd>0</dd></div>
+              <div><dt>Drafts</dt><dd>0</dd></div>
+              <div><dt>Categories</dt><dd>0</dd></div>
+            </dl>
+            <a class="reset-button" href="#product-table">See catalogue</a>
+          </article>
+
+          <article class="product-flow-step">
+            <p class="eyebrow">Path 1</p>
+            <h2>Manual draft</h2>
+            <p>Start clean, add the essentials, upload images, then save.</p>
+            <button type="button" class="reset-button" data-start-blank>New blank draft</button>
+          </article>
+
+          <article class="product-flow-step">
+            <p class="eyebrow">Path 2</p>
+            <h2>Fetch draft</h2>
+            <p>Pull a product page into a rough draft, then edit it in our voice.</p>
+            <form class="inline-form" data-fetch-form>
+              <label>
+                <span>Product URL</span>
+                <input name="source_url" type="url" placeholder="https://brand.example/product" required />
+              </label>
+              <button type="submit" class="reset-button">Fetch preview</button>
+            </form>
+          </article>
+        </div>
+      </section>
+
+      <form class="settings-grid product-intake-form" data-product-form>
+        <section class="settings-card wide-card product-editor-card" aria-labelledby="form-mode-title">
+          <div class="product-editor-head">
+            <div>
+              <button type="button" class="editor-back-link" data-editor-back>See catalogue</button>
+              <p class="eyebrow">Product editor</p>
+              <h2 id="form-mode-title" data-form-mode>New product</h2>
+            </div>
+            <button type="button" data-cancel-edit hidden>Cancel edit</button>
+          </div>
+          <p class="field-hint" data-form-summary>
+            Save drafts freely. List only when copy, weight, price, stock, and at least one image are ready.
+          </p>
+        </section>
+
+        <section class="settings-card" aria-labelledby="basics-title">
+          <h2 id="basics-title">Basics</h2>
+          <input name="supplier_url" type="hidden" />
+          <label class="setting-row">
+            <span>Name</span>
+            <input name="name" type="text" placeholder="Product name" required />
+          </label>
+          <label class="setting-row">
+            <span>Slug</span>
+            <input name="slug" type="text" placeholder="auto from name if empty" />
+          </label>
+          <label class="setting-row">
+            <span>Brand</span>
+            <input name="brand" type="text" placeholder="Maker / studio" />
+          </label>
+          <label class="setting-row">
+            <span>Origin</span>
+            <input name="origin_country" type="text" placeholder="Japan, Korea, Sweden..." />
+          </label>
+          <label class="setting-row">
+            <span>Category</span>
+            <select name="category" data-category-select></select>
+          </label>
+        </section>
+
+        <section class="settings-card" aria-labelledby="carry-title">
+          <h2 id="carry-title">Carry facts</h2>
+          <label class="setting-row">
+            <span>Weight grams</span>
+            <input name="weight_grams" type="number" min="1" max="49" step="1" placeholder="18" required />
+          </label>
+          <label class="setting-row">
+            <span>Price (£)</span>
+            <input name="price_gbp" type="number" min="0" step="0.01" placeholder="32.00" required />
+          </label>
+          <label class="setting-row">
+            <span>Old price (£)</span>
+            <input name="compare_at_price_gbp" type="number" min="0" step="0.01" placeholder="44.00" />
+          </label>
+          <label class="setting-row">
+            <span>Stock</span>
+            <input name="stock_quantity" type="number" min="0" step="1" placeholder="4" />
+          </label>
+          <label class="setting-row">
+            <span>Badge</span>
+            <select name="badge">
+              <option value="">None</option>
+              <option value="new">New</option>
+              <option value="limited">Limited</option>
+              <option value="staff_pick">Staff pick</option>
+              <option value="sale">Sale</option>
+              <option value="low_stock">Low stock</option>
+            </select>
+          </label>
+        </section>
+
+        <section class="settings-card" aria-labelledby="copy-title">
+          <h2 id="copy-title">Shkeeno copy</h2>
+          <label class="setting-row">
+            <span>Short reason</span>
+            <input name="short_description" type="text" placeholder="Why it earns its place" required />
+          </label>
+          <label class="setting-row">
+            <span>Editorial paragraph</span>
+            <textarea name="editorial_description" placeholder="A calm, obsessive product note in our voice."></textarea>
+          </label>
+          <label class="setting-row">
+            <span>Tags</span>
+            <input name="tags" type="hidden" />
+            <div class="tag-picker" data-tag-picker>
+              <p class="field-hint">Choose from saved tags.</p>
+              <div class="tag-picker-list" data-tag-picker-list>
+                <p class="empty-copy">Loading tags...</p>
+              </div>
+            </div>
+          </label>
+          <label class="setting-row">
+            <span>Materials</span>
+            <input name="materials" type="text" placeholder="brass, leather, paper" />
+          </label>
+        </section>
+
+        <section class="settings-card wide-card" aria-labelledby="images-title">
+          <div class="section-kicker">
+            <p id="images-title">Images</p>
+          </div>
+          <p class="field-hint">
+            Upload JPG, PNG, WebP, or AVIF. Maximum 5MB each. Images are optimized to
+            WebP before upload. Minimum 1 image to list, maximum 6 images per product.
+          </p>
+          <div class="admin-inline-actions">
+            <button type="button" data-add-image>Add image</button>
+          </div>
+          <label class="file-upload">
+            <span>Upload images</span>
+            <input
+              type="file"
+              accept="image/jpeg,image/png,image/webp,image/avif"
+              multiple
+              data-image-files
+            />
+          </label>
+          <div class="upload-preview" data-upload-preview></div>
+          <div class="image-library" data-image-list></div>
+        </section>
+
+        <section class="settings-card wide-card" aria-labelledby="publish-title">
+          <h2 id="publish-title">Publishing</h2>
+          <div class="toggle-row">
+            <label><input name="is_published" type="checkbox" /> List on shop</label>
+            <label><input name="is_featured" type="checkbox" /> Featured</label>
+            <label><input name="include_in_newsletter" type="checkbox" /> Include in newsletter</label>
+          </div>
+          <button type="submit" class="reset-button" data-product-submit>Save product</button>
+        </section>
+      </form>
+
+      <section class="settings-card wide-card product-table-card" id="product-table" aria-labelledby="table-title">
+        <div class="section-kicker">
+          <p>Catalogue</p>
+          <span>List, unlist, edit, and inspect image counts</span>
+        </div>
+        <h2 id="table-title" class="product-section-title">Product table</h2>
+        <div data-products-table>
+          <p class="empty-copy">Loading catalogue...</p>
+        </div>
+      </section>
+    </section>
+  </main>
+  <script src="/scripts/catalog-admin.js" defer></script>
+</BaseLayout>

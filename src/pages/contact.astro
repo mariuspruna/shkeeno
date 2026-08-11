@@ -1,13 +1,69 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTrail from "../components/PageTrail.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+
+const contactTopics = [
+  "Greetings",
+  "Order support",
+  "Wholesale",
+  "Partnership",
+  "Product suggestion",
+  "Press",
+  "Other",
+];
 ---
 
-<BaseLayout title="Contact | SHKEENO">
+<BaseLayout
+  title="Contact | Shkeeno"
+  description="Contact Shkeeno for product questions, suppliers, and lightweight product suggestions."
+>
   <SiteHeader current="contact" />
-  <main class="content-page">
-    <p class="eyebrow">Contact</p>
-    <h1>Contact SHKEENO.</h1>
-    <p><a class="inline-link" href="mailto:hello@shkeeno.com">hello@shkeeno.com</a></p>
+
+  <main class="shop-shell">
+    <PageTrail items={[{ label: "Contact" }]} />
+
+    <section class="contact-card" aria-labelledby="contact-form-title">
+      <h1 id="contact-form-title">Send a note</h1>
+      <form class="settings-grid contact-form" data-contact-form>
+        <div class="contact-field-group">
+          <label class="setting-row">
+            <span>Name</span>
+            <input name="name" type="text" placeholder="Your name" required />
+          </label>
+          <label class="setting-row">
+            <span>Email</span>
+            <input name="email" type="email" placeholder="you@example.com" required />
+          </label>
+          <label class="setting-row">
+            <span>Reason</span>
+            <select name="reason" required data-custom-select>
+              {contactTopics.map((topic) => <option value={topic}>{topic}</option>)}
+            </select>
+          </label>
+          <label class="setting-row">
+            <span>Order email or number</span>
+            <input name="order_ref" type="text" placeholder="Optional but useful for support" />
+          </label>
+        </div>
+        <div class="contact-field-group contact-message-card">
+          <label class="setting-row">
+            <span>Message</span>
+            <textarea
+              name="message"
+              placeholder="What should we know?"
+              rows="8"
+              required
+            ></textarea>
+          </label>
+          <input type="text" name="company" class="sr-only" tabindex="-1" autocomplete="off" />
+        </div>
+        <div class="contact-actions">
+          <button type="submit" class="reset-button" data-contact-submit>Send message</button>
+          <p class="catalog-status" data-contact-status hidden></p>
+        </div>
+      </form>
+    </section>
   </main>
+  <script src="/scripts/contact.js" defer></script>
 </BaseLayout>

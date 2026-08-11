@@ -1,0 +1,46 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTrail from "../components/PageTrail.astro";
+import SiteHeader from "../components/SiteHeader.astro";
+---
+
+<BaseLayout title="Privacy Policy | Shkeeno" description="Privacy policy for Shkeeno.">
+  <SiteHeader />
+
+  <main class="shop-shell legal-shell">
+    <PageTrail items={[{ label: "Privacy policy" }]} />
+
+    <section class="settings-card wide-card legal-card" aria-labelledby="privacy-title">
+      <h1 id="privacy-title">Privacy policy.</h1>
+      <div class="legal-stack">
+        <div>
+          <p class="eyebrow">What we collect</p>
+          <p>
+            This includes checkout details such as name, email, delivery address, phone number when
+            provided, and payment-related metadata needed to fulfil an order.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">Why we collect it</p>
+          <p>
+            We use this information to process orders, provide delivery updates, respond to support
+            requests, and maintain the account view tied to the checkout email.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">Third parties</p>
+          <p>
+            Payments are handled by Stripe. Order email and sign-in email delivery are handled by
+            Resend and Supabase. We only use providers needed to operate the shop.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">Contact</p>
+          <p>
+            For privacy questions, <a href="/contact" class="inline-link">contact support</a>.
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

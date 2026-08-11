@@ -1,90 +1,44 @@
 ---
-interface NavItem {
-  label: string;
-  href: string;
-  items?: NavItem[];
-}
-
 interface Props {
-  current?: "home" | "about" | "portfolio" | "responsibilities" | "menu" | "contact" | "admin";
+  current?: "shop" | "about" | "contact" | "admin" | "cart" | "account";
 }
 
-const { current = "home" } = Astro.props;
-
-const navItems: NavItem[] = [
-  { label: "Home", href: "/" },
-  {
-    label: "About",
-    href: "/about",
-    items: [
-      { label: "Shkeeno", href: "/about" },
-      { label: "The designer", href: "/about#designer" },
-      { label: "The idea", href: "/about#idea" },
-    ],
-  },
-  {
-    label: "Responsibilities",
-    href: "/responsibilities",
-    items: [
-      { label: "Sustainability", href: "/responsibilities#sustainability" },
-      { label: "Code of ethics", href: "/responsibilities#ethics" },
-      { label: "Terms & conditions", href: "/responsibilities#terms" },
-      { label: "Charity", href: "/responsibilities#charity" },
-    ],
-  },
-  {
-    label: "Menu",
-    href: "/menu",
-    items: [
-      { label: "New in", href: "/menu#new-in" },
-      { label: "Wish list", href: "/menu#wish-list" },
-      { label: "Pre-order", href: "/menu#pre-order" },
-      { label: "Sale", href: "/menu#sale" },
-    ],
-  },
-  { label: "Portfolio", href: "/portfolio" },
-  {
-    label: "Follow us on",
-    href: "/contact",
-    items: [
-      { label: "Instagram ↗", href: "/" },
-      { label: "Pinterest ↗", href: "/" },
-      { label: "TikTok ↗", href: "/" },
-    ],
-  },
-  { label: "Contact", href: "/contact" },
-];
-
-const getCurrentKey = (item: NavItem) => item.href.split("/")[1] || "home";
+const { current } = Astro.props;
 ---
 
 <header class="site-header" transition:persist>
   <div class="site-header-main">
-    <a class="brand-mark" href="/" aria-label="SHKEENO home">SHKEENO</a>
+    <a class="brand-mark" href="/" aria-label="Shkeeno home">SHKEENO</a>
     <nav class="site-nav" aria-label="Primary navigation">
-      {navItems.map((item) => (
-        item.items ? (
-          <div class="site-nav-group">
-            <a href={item.href} aria-current={current === getCurrentKey(item) ? "page" : undefined}>
-              {item.label}
-            </a>
-            <div class="site-subnav" aria-label={`${item.label} submenu`}>
-              {item.items.map((subitem) => (
-                <a href={subitem.href}>{subitem.label}</a>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <a href={item.href} aria-current={current === getCurrentKey(item) ? "page" : undefined}>
-            {item.label}
-          </a>
-        )
-      ))}
+      <a href="/shop" aria-current={current === "shop" ? "page" : undefined}>Shop</a>
+      <a href="/about" aria-current={current === "about" ? "page" : undefined}>About</a>
+      <a href="/contact" aria-current={current === "contact" ? "page" : undefined}>Contact</a>
     </nav>
-    <div class="site-actions" aria-label="Admin">
-      <a class="site-action-link" href="/admin" aria-current={current === "admin" ? "page" : undefined}>Admin</a>
+    <div class="site-actions" aria-label="Account, cart, and theme">
+      <a class="site-action-link" href="/account" aria-current={current === "account" ? "page" : undefined}>
+        Account <span data-account-badge data-empty="true" aria-hidden="true"></span>
+      </a>
+      <a class="site-action-link" href="/cart" aria-current={current === "cart" ? "page" : undefined}>
+        Cart <span data-cart-count data-empty="true" aria-hidden="true"></span>
+      </a>
+      <button type="button" class="theme-toggle-button" data-theme-toggle aria-label="Switch to dark mode" title="Toggle theme">
+        <span data-theme-icon aria-hidden="true">
+          <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+            <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+            <path d="M12 2.75v3.1M12 18.15v3.1M21.25 12h-3.1M5.85 12H2.75M18.54 5.46l-2.19 2.19M7.65 16.35l-2.19 2.19M18.54 18.54l-2.19-2.19M7.65 7.65L5.46 5.46" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" />
+          </svg>
+        </span>
+      </button>
     </div>
     <div class="mobile-actions">
+      <a class="mobile-cart-link" href="/cart" aria-label="Cart">
+        <svg viewBox="0 0 24 24" class="cart-icon" aria-hidden="true" role="presentation" focusable="false">
+          <path d="M6.6 8.5h10.8l-.7 10H7.3l-.7-10Z" fill="none" stroke="currentColor" stroke-width="1.9" />
+          <path d="M9 8.5a3 3 0 0 1 6 0" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="square" />
+        </svg>
+        <span class="sr-only">Cart</span>
+        <span data-cart-count data-empty="true" aria-hidden="true"></span>
+      </a>
       <button
         type="button"
         class="mobile-menu-toggle"
@@ -99,28 +53,27 @@ const getCurrentKey = (item: NavItem) => item.href.split("/")[1] || "home";
   </div>
   <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
     <nav aria-label="Mobile navigation">
-      {navItems.map((item) => (
-        item.items ? (
-          <div class="mobile-menu-group" data-mobile-submenu>
-            <button type="button" data-mobile-submenu-toggle aria-expanded="false">
-              <span>{item.label}</span>
-              <span aria-hidden="true">+</span>
-            </button>
-            <div class="mobile-submenu" hidden>
-              <a href={item.href} aria-current={current === getCurrentKey(item) ? "page" : undefined}>{item.label}</a>
-              {item.items.map((subitem) => (
-                <a class="mobile-category-link" href={subitem.href}>{subitem.label}</a>
-              ))}
-            </div>
-          </div>
-        ) : (
-          <a href={item.href} aria-current={current === getCurrentKey(item) ? "page" : undefined}>
-            {item.label}
-          </a>
-        )
-      ))}
-      <a href="/admin" aria-current={current === "admin" ? "page" : undefined}>Admin</a>
+      <a href="/shop" aria-current={current === "shop" ? "page" : undefined}>Shop all</a>
+      <a class="mobile-category-link" href="/shop?category=edc">EDC</a>
+      <a class="mobile-category-link" href="/shop?category=office">Office</a>
+      <a class="mobile-category-link" href="/shop?category=pocket">Pocket</a>
+      <a class="mobile-category-link" href="/shop?category=travel">Travel</a>
+      <a href="/about" aria-current={current === "about" ? "page" : undefined}>About</a>
+      <a href="/contact" aria-current={current === "contact" ? "page" : undefined}>Contact</a>
+      <a href="/account" aria-current={current === "account" ? "page" : undefined}>
+        Account <span data-account-badge data-empty="true" aria-hidden="true"></span>
+      </a>
     </nav>
+    <button type="button" class="mobile-theme-toggle" data-theme-toggle aria-label="Switch to dark mode">
+      <span>Theme</span>
+      <span data-theme-icon aria-hidden="true">
+        <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+          <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+          <path d="M12 2.75v3.1M12 18.15v3.1M21.25 12h-3.1M5.85 12H2.75M18.54 5.46l-2.19 2.19M7.65 16.35l-2.19 2.19M18.54 18.54l-2.19-2.19M7.65 7.65L5.46 5.46" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" />
+        </svg>
+      </span>
+    </button>
   </div>
   <button type="button" class="mobile-menu-backdrop" data-menu-backdrop aria-label="Close menu" hidden></button>
+  <slot />
 </header>

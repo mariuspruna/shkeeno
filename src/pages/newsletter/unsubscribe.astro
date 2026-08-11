@@ -1,0 +1,25 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageTrail from "../../components/PageTrail.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+---
+
+<BaseLayout title="Unsubscribe | Shkeeno">
+  <SiteHeader />
+  <main class="shop-shell">
+    <PageTrail items={[{ label: "Newsletter" }, { label: "Unsubscribe" }]} />
+    <section class="settings-card wide-card newsletter-status-card" data-newsletter-action data-newsletter-action-type="unsubscribe">
+      <div class="section-kicker">
+        <p>Newsletter</p>
+        <span>Manage your subscription</span>
+      </div>
+      <h1 class="product-section-title">Unsubscribe</h1>
+      <p class="field-hint" data-newsletter-action-status>Checking your unsubscribe link...</p>
+      <div class="admin-actions">
+        <a href="/" class="back-link">Back home</a>
+        <a href="/contact" class="reset-button">Contact us</a>
+      </div>
+    </section>
+  </main>
+  <script src="/scripts/newsletter-action.js" defer></script>
+</BaseLayout>

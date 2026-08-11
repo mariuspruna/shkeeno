@@ -1,60 +1,79 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+import { getPublishedProducts } from "../lib/supabase";
+import { toTitleCase } from "../lib/text";
+
+const published = await getPublishedProducts();
+const featuredSeed = published.filter((product) => product.is_featured);
+const featuredSource = (featuredSeed.length >= 3 ? featuredSeed : published).slice(0, 3);
+
+const formatPrice = (value: number) => Number(value || 0).toFixed(2);
+
+const featuredObjects = featuredSource.map((product) => {
+  const image = [...(product.product_images || [])]
+    .sort((a, b) => a.sort_order - b.sort_order)[0];
+
+  return {
+    ...product,
+    displayName: toTitleCase(product.name),
+    imageUrl: image?.url || "",
+    weightLabel: `${Math.round(Number(product.weight_grams || 0))}g`,
+  };
+});
 ---
 
-<BaseLayout>
-  <SiteHeader current="home" />
+<BaseLayout title="Shkeeno | Designer-led fashion">
+  <SiteHeader />
 
   <main>
-    <section class="shkeeno-hero" aria-labelledby="home-title">
-      <div class="shkeeno-hero-copy">
-        <p class="eyebrow">Independent fashion label</p>
-        <h1 id="home-title">Designer-led fashion with a graphic pulse and a softer edge.</h1>
-        <p>
-          SHKEENO is an emerging fashion identity by Diana Baptista, built around expressive,
-          individual pieces and a contemporary designer-led point of view.
-        </p>
+    <section class="home-featured" aria-labelledby="featured-title">
+      <h1 id="featured-title">Designer-led fashion with a graphic pulse.</h1>
+      <div class="home-featured-grid">
+        {
+          featuredObjects.length > 0 ? featuredObjects.map((object) => (
+            <article class="home-feature-card">
+              <div class="home-feature-media">
+                <div class="gallery-viewport">
+                  <a
+                    href={`/shop/${object.slug}`}
+                    class:list={["product-image", { "has-image": Boolean(object.imageUrl) }]}
+                    style={object.imageUrl ? `--product-image: url('${object.imageUrl}')` : undefined}
+                    aria-label={`View ${object.displayName}`}
+                  >
+                    <span>{object.weightLabel}</span>
+                  </a>
+                </div>
+              </div>
+              <div class="home-feature-copy">
+                <p class="eyebrow home-feature-provenance">
+                  <span>{object.brand || object.category || "Shkeeno"}</span>
+                  {object.origin_country && <span class="meta-origin">{object.origin_country}</span>}
+                </p>
+                <h3><a href={`/shop/${object.slug}`}>{object.displayName}</a></h3>
+                <p>{object.short_description}</p>
+                <div class="home-feature-meta">
+                  <strong>£{formatPrice(object.price_gbp)}</strong>
+                </div>
+              </div>
+            </article>
+          )) : (
+            <section class="empty-state">
+              <p>No published products yet.</p>
+              <a href="/admin/products">Open catalogue admin</a>
+            </section>
+          )
+        }
       </div>
-      <div class="shkeeno-image-placeholder shkeeno-hero-media">
-        <span>Campaign image</span>
+      <div class="home-featured-bridge">
+        <h2>Browse the full collection</h2>
+        <p>
+          This is the first Shkeeno foundation: a brand presence, catalogue, newsletter and
+          commerce structure ready for Diana Baptista’s collections.
+        </p>
+        <a href="/shop" class="reset-button home-feature-cta">Browse our collection</a>
       </div>
     </section>
 
-    <section class="shkeeno-section-grid" aria-labelledby="intro-title">
-      <article>
-        <p class="eyebrow">About Shkeeno</p>
-        <h2 id="intro-title">A brand presence first, with room for collections and commerce later.</h2>
-        <p>
-          The website should prioritise Diana's identity, collections, imagery and storytelling before
-          becoming a conventional shop catalogue.
-        </p>
-      </article>
-      <article>
-        <p class="eyebrow">The idea</p>
-        <h2>Fashion-forward, feminine and strong, without visual noise.</h2>
-        <p>
-          Bold graphic references, organic softness and editorial restraint form the starting visual language.
-        </p>
-      </article>
-    </section>
-
-    <section class="shkeeno-portfolio-preview" aria-labelledby="portfolio-title">
-      <div class="section-heading">
-        <p class="eyebrow">Portfolio</p>
-        <h2 id="portfolio-title">A first structure for future collections.</h2>
-      </div>
-      <div class="shkeeno-card-grid">
-        {["New in", "Pre-order", "Portfolio", "Sale"].map((title) => (
-          <article class="shkeeno-card">
-            <div class="shkeeno-image-placeholder">
-              <span>{title}</span>
-            </div>
-            <h3>{title}</h3>
-            <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit.</p>
-          </article>
-        ))}
-      </div>
-    </section>
   </main>
 </BaseLayout>

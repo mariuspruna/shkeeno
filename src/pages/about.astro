@@ -1,26 +1,85 @@
 ---
 import BaseLayout from "../layouts/BaseLayout.astro";
+import PageTrail from "../components/PageTrail.astro";
 import SiteHeader from "../components/SiteHeader.astro";
+
+const faqs = [
+  {
+    question: "Do you only sell products designer-led by Diana Baptista?",
+    answer:
+      "That is the rule of the collection. If something does not belong within that limit, it does not go live.",
+  },
+  {
+    question: "Where do you ship from?",
+    answer:
+      "Orders ship from the United Kingdom. We use tracked delivery and follow up by email when the order moves.",
+  },
+  {
+    question: "How long does delivery take?",
+    answer:
+      "As a rough guide, UK delivery usually takes 1-2 days after dispatch. International delivery outside the UK usually takes 7-14 days, depending on destination and customs.",
+  },
+  {
+    question: "Which currency do you charge in?",
+    answer:
+      "Checkout is in pounds sterling (£). Stripe may show local payment options depending on the customer and region, but the store currency stays British pounds.",
+  },
+  {
+    question: "Are these your own products?",
+    answer:
+      "The catalogue starts with carefully selected brands and products. Over time, Shkeeno may also introduce its own pieces.",
+  },
+  {
+    question: "How do you take payments?",
+    answer:
+      "Payments are processed securely through Stripe. We do not store card details on Shkeeno.",
+  },
+];
 ---
 
-<BaseLayout title="About | SHKEENO">
+<BaseLayout
+  title="About | Shkeeno"
+  description="About the Shkeeno concept: a curated collection of useful, beautiful products designer-led by Diana Baptista."
+>
   <SiteHeader current="about" />
-  <main class="content-page">
-    <p class="eyebrow">About</p>
-    <h1>SHKEENO is Diana Baptista's creative fashion identity.</h1>
-    <section class="shkeeno-section-grid">
-      <article>
-        <h2>Shkeeno</h2>
-        <p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer facilisis libero vel eleifend ultrices.</p>
-      </article>
-      <article id="designer">
-        <h2>The designer</h2>
-        <p>Diana Baptista is a Portuguese fashion designer based in the UK.</p>
-      </article>
-      <article id="idea">
-        <h2>The idea</h2>
-        <p>Expressive, individual and contemporary fashion with a designer-led point of view.</p>
-      </article>
+
+  <main class="shop-shell about-shell">
+    <PageTrail items={[{ label: "About" }]} />
+
+    <section class="about-intro" aria-labelledby="about-title">
+      <h1 id="about-title">A curated collection designer-led by Diana Baptista.</h1>
+      <div>
+        <p>
+          Shkeeno is built around useful, beautiful, compact products: tools, stationery, travel
+          companions, pocket pieces, and desk things that earn attention without asking for much
+          space.
+        </p>
+        <p>
+          The weight limit is a way to keep the catalogue disciplined. It is not about grams for
+          their own sake; it is about restraint, usefulness, and products that feel considered enough
+          to justify their place.
+        </p>
+        <p>
+          Expect a small catalogue, selected brands, limited quantities, and the occasional piece of
+          our own later on. Fewer products, better chosen.
+        </p>
+      </div>
+    </section>
+
+    <section class="about-faq" aria-labelledby="faq-title">
+      <h2 id="faq-title">Practical questions</h2>
+      <div class="faq-list">
+        {faqs.map((item) => (
+          <details class="faq-item">
+            <summary>{item.question}</summary>
+            <p>{item.answer}</p>
+          </details>
+        ))}
+      </div>
+      <div class="about-contact-cta">
+        <p>Still wondering about something?</p>
+        <a href="/contact">Contact us</a>
+      </div>
     </section>
   </main>
 </BaseLayout>

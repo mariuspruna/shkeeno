@@ -1,0 +1,82 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminSidebar from "../../components/AdminSidebar.astro";
+---
+
+<BaseLayout title="Tag Admin | Shkeeno">
+  <main class="admin-shell">
+    <AdminSidebar current="tags" />
+
+    <section class="admin-panel" aria-labelledby="tags-title">
+      <div class="admin-heading">
+        <div class="admin-topline">
+          <nav class="page-trail admin-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/admin/design">Admin</a></li>
+              <li><span aria-current="page">Tags</span></li>
+            </ol>
+          </nav>
+        </div>
+        <h1 id="tags-title">Tags</h1>
+        <p>
+          Keep product language tidy. Define reusable tags once, then apply them from the product editor.
+        </p>
+      </div>
+
+      <p class="catalog-status" data-tag-status>Ready.</p>
+      <div class="settings-grid">
+        <section class="settings-card wide-card product-editor-card" aria-labelledby="tag-form-title">
+          <div class="product-editor-head">
+            <div>
+              <p class="eyebrow">Tags</p>
+              <h2 id="tag-form-title" data-tag-form-mode>New tag</h2>
+            </div>
+            <button type="button" data-tag-cancel hidden>Cancel edit</button>
+          </div>
+          <form class="settings-grid" data-tag-form>
+            <section class="settings-card">
+              <label class="setting-row">
+                <span>Name</span>
+                <input name="name" type="text" placeholder="e.g. Travel" required />
+              </label>
+              <label class="setting-row">
+                <span>Slug</span>
+                <input name="slug" type="text" placeholder="auto from name, e.g. travel" />
+              </label>
+              <label class="setting-row">
+                <span>Description</span>
+                <textarea name="description" placeholder="What this tag signals in the catalogue."></textarea>
+              </label>
+              <label class="setting-row">
+                <span>Sort order</span>
+                <input name="sort_order" type="number" min="0" step="1" placeholder="10" />
+              </label>
+              <label class="setting-row">
+                <span>Status</span>
+                <select name="is_active">
+                  <option value="true">Active</option>
+                  <option value="false">Hidden</option>
+                </select>
+              </label>
+            </section>
+            <section class="settings-card wide-card">
+              <button type="submit" class="reset-button" data-tag-submit>Save tag</button>
+            </section>
+          </form>
+        </section>
+
+        <section class="settings-card wide-card" aria-labelledby="tag-table-title">
+          <div class="section-kicker">
+            <p>Catalogue</p>
+            <span>Create, edit, hide, and arrange tags</span>
+          </div>
+          <h2 id="tag-table-title" class="product-section-title">Tag list</h2>
+          <div data-tags-table>
+            <p class="empty-copy">Loading tags...</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="/scripts/catalog-tags.js" defer></script>
+</BaseLayout>

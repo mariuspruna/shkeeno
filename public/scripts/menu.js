@@ -38,19 +38,6 @@ document.addEventListener("click", (event) => {
     return;
   }
 
-  const submenuToggle = event.target.closest("[data-mobile-submenu-toggle]");
-  if (submenuToggle) {
-    const group = submenuToggle.closest("[data-mobile-submenu]");
-    const submenu = group?.querySelector(".mobile-submenu");
-    if (!submenu) return;
-    const isOpen = submenuToggle.getAttribute("aria-expanded") === "true";
-    submenuToggle.setAttribute("aria-expanded", String(!isOpen));
-    submenu.hidden = isOpen;
-    const icon = submenuToggle.querySelector("[aria-hidden='true']");
-    if (icon) icon.textContent = isOpen ? "+" : "−";
-    return;
-  }
-
   if (event.target.closest("[data-mobile-menu] a")) {
     setMenuOpen(false);
   }
@@ -62,23 +49,17 @@ window.addEventListener("keydown", (event) => {
 
 function syncHeaderCurrent() {
   const path = window.location.pathname;
-  const hash = window.location.hash;
-  const currentPath = `${path}${hash}`;
-  const current = path.startsWith("/about")
+  const current = path.startsWith("/shop")
+    ? "/shop"
+    : path.startsWith("/about")
       ? "/about"
-      : path.startsWith("/responsibilities")
-        ? "/responsibilities"
-        : path.startsWith("/menu")
-          ? "/menu"
-          : path.startsWith("/portfolio")
-            ? "/portfolio"
-            : path.startsWith("/contact")
-              ? "/contact"
-              : path.startsWith("/admin")
-                ? "/admin"
-                : path === "/"
-                  ? "/"
-                  : "";
+      : path.startsWith("/contact")
+        ? "/contact"
+        : path.startsWith("/account")
+          ? "/account"
+          : path.startsWith("/cart")
+            ? "/cart"
+            : "";
 
   document.querySelectorAll(".site-header a[aria-current='page']").forEach((link) => {
     link.removeAttribute("aria-current");
@@ -87,19 +68,12 @@ function syncHeaderCurrent() {
   document.querySelectorAll(`.site-header a[href="${current}"]`).forEach((link) => {
     link.setAttribute("aria-current", "page");
   });
-  if (hash) {
-    document.querySelectorAll(`.site-header a[href="${currentPath}"]`).forEach((link) => {
-      link.setAttribute("aria-current", "page");
-    });
-  }
 }
 
 document.addEventListener("astro:page-load", () => {
   initPublicMenu();
   syncHeaderCurrent();
 });
-
-window.addEventListener("hashchange", syncHeaderCurrent);
 
 initPublicMenu();
 syncHeaderCurrent();

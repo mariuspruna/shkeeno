@@ -1,17 +1,33 @@
 {
   "name": "shkeeno",
-  "private": true,
-  "version": "0.0.0",
+  "version": "1.0.0",
+  "description": "Independent fashion label by Diana Baptista.",
   "type": "module",
   "scripts": {
     "dev": "ASTRO_TELEMETRY_DISABLED=1 astro dev",
-    "build": "ASTRO_TELEMETRY_DISABLED=1 astro check && ASTRO_TELEMETRY_DISABLED=1 astro build",
-    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview"
+    "build": "npm run check && ASTRO_TELEMETRY_DISABLED=1 astro build",
+    "pages:dev": "npm run build && wrangler pages dev dist --ip 127.0.0.1 --port 8788",
+    "preview": "ASTRO_TELEMETRY_DISABLED=1 astro preview",
+    "check": "ASTRO_TELEMETRY_DISABLED=1 astro sync && tsc --noEmit"
   },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/mariuspruna/shkeeno.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/mariuspruna/shkeeno/issues"
+  },
+  "homepage": "https://github.com/mariuspruna/shkeeno#readme",
   "devDependencies": {
-    "@astrojs/check": "^0.9.10",
-    "@types/node": "^24.13.3",
+    "@types/node": "^25.9.1",
     "astro": "^6.4.2",
-    "typescript": "~6.0.2"
+    "typescript": "^6.0.3",
+    "wrangler": "^4.95.0"
+  },
+  "dependencies": {
+    "@supabase/supabase-js": "^2.106.2"
   }
 }

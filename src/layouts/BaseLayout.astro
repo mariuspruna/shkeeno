@@ -1,6 +1,7 @@
 ---
 import "../styles/global.css";
 import SiteFooter from "../components/SiteFooter.astro";
+import { ClientRouter } from "astro:transitions";
 
 interface Props {
   title?: string;
@@ -8,8 +9,8 @@ interface Props {
 }
 
 const {
-  title = "SHKEENO | Independent fashion label",
-  description = "SHKEENO is an independent designer-led fashion brand by Diana Baptista.",
+  title = "Shkeeno | Designer-led fashion",
+  description = "Shkeeno is an independent fashion label by designer Diana Baptista.",
 } = Astro.props;
 ---
 
@@ -19,10 +20,107 @@ const {
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <meta name="description" content={description} />
     <title>{title}</title>
+    <ClientRouter fallback="swap" />
+    <script is:inline>
+      (() => {
+        const theme = localStorage.getItem("shkeeno-theme-mode") || "light";
+        const saved = localStorage.getItem("shkeeno-theme-tokens");
+        const brandSettings = localStorage.getItem("shkeeno-brand-settings");
+        const colorTokens = new Set([
+          "--color-primary",
+          "--color-secondary",
+          "--color-accent",
+          "--color-background",
+          "--color-surface",
+          "--color-line",
+        ]);
+
+        document.documentElement.dataset.theme = theme;
+
+        if (saved) {
+          try {
+            const tokens = JSON.parse(saved);
+            for (const [key, value] of Object.entries(tokens)) {
+              if (theme === "dark" && colorTokens.has(key)) {
+                document.documentElement.style.removeProperty(key);
+              } else {
+                document.documentElement.style.setProperty(key, value);
+              }
+            }
+          } catch {
+            localStorage.removeItem("shkeeno-theme-tokens");
+          }
+        }
+
+        if (brandSettings) {
+          try {
+            const settings = JSON.parse(brandSettings);
+            const spacing = Number(settings.displayLetterSpacing || 0);
+            if (Number.isInteger(spacing) && spacing <= 0 && spacing >= -30 && spacing % 5 === 0) {
+              document.documentElement.style.setProperty("--display-letter-spacing", `${spacing / 100}em`);
+            }
+          } catch {
+            localStorage.removeItem("shkeeno-brand-settings");
+          }
+        }
+      })();
+    </script>
   </head>
-  <body>
+  <body
+    data-supabase-url={import.meta.env.PUBLIC_SUPABASE_URL}
+    data-supabase-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
+  >
     <slot />
     <SiteFooter />
-    <script is:inline src="/scripts/menu.js" defer></script>
+    <aside class="cart-drawer" data-cart-drawer hidden>
+      <div class="cart-drawer-backdrop" data-cart-close></div>
+      <section class="cart-drawer-panel" role="dialog" aria-modal="true" aria-labelledby="cart-drawer-title">
+        <div class="cart-drawer-head">
+          <div>
+            <p class="eyebrow">Cart</p>
+            <h2 id="cart-drawer-title">Your selection</h2>
+          </div>
+          <button type="button" class="cart-drawer-close" data-cart-close aria-label="Close cart">×</button>
+        </div>
+        <div class="cart-drawer-body" data-cart-drawer-items>
+          <p class="empty-copy">Your cart is empty.</p>
+        </div>
+        <div class="cart-drawer-foot">
+          <div class="cart-summary-row">
+            <span>Subtotal</span>
+            <strong data-cart-subtotal>£0.00</strong>
+          </div>
+          <p class="field-hint">Shipping and taxes are calculated at checkout.</p>
+          <div class="checkout-trust">
+            <div>
+              <p class="eyebrow">Secure checkout</p>
+              <p>Payments are finalised with Stripe. We ship from the United Kingdom and follow up by email.</p>
+            </div>
+            <div class="stripe-lockup stripe-lockup-badge" aria-label="Powered by Stripe">
+              <span>Powered by</span>
+              <strong>Stripe</strong>
+            </div>
+            <div class="checkout-trust-meta">
+              <span>Shipped from the United Kingdom</span>
+              <span>Support: <a href="/contact" class="inline-link">Contact support</a></span>
+              <span>Order updates by email</span>
+            </div>
+          </div>
+          <div class="cart-drawer-actions">
+            <a href="/cart" class="back-link">View cart</a>
+            <button type="button" class="reset-button" data-cart-checkout>Checkout</button>
+          </div>
+          <p class="catalog-status" data-cart-status hidden></p>
+        </div>
+      </section>
+    </aside>
+    <script src="/scripts/theme.js" defer></script>
+    <script src="/scripts/menu.js" defer></script>
+    <script src="/scripts/custom-select.js" defer></script>
+    <script src="/scripts/brand.js" defer></script>
+    <script src="/scripts/cart.js" defer></script>
+    <script src="/scripts/newsletter.js" defer></script>
+    <script type="module" src="/scripts/header-account.js"></script>
+    <script src="/scripts/ping-visit.js" defer></script>
   </body>
 </html>

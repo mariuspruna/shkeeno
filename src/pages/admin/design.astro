@@ -1,0 +1,358 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminSidebar from "../../components/AdminSidebar.astro";
+
+const colorTokens = [
+  ["--color-primary", "Primary", "#202020"],
+  ["--color-secondary", "Secondary", "#d8ccba"],
+  ["--color-accent", "Accent", "#c8ff3d"],
+  ["--color-background", "Background", "#f3f0e8"],
+];
+
+const fontOptions = [
+  ["Peace Sans", "Peace Sans, Arial Black, sans-serif"],
+  ["Space Grotesk", "\"Space Grotesk\", Helvetica, Arial, sans-serif"],
+  ["Inter", "\"Inter\", Helvetica, Arial, sans-serif"],
+  ["Manrope", "\"Manrope\", Helvetica, Arial, sans-serif"],
+  ["Archivo", "\"Archivo\", Helvetica, Arial, sans-serif"],
+  ["IBM Plex Sans", "\"IBM Plex Sans\", Helvetica, Arial, sans-serif"],
+  ["DM Sans", "\"DM Sans\", Helvetica, Arial, sans-serif"],
+  ["Plus Jakarta Sans", "\"Plus Jakarta Sans\", Helvetica, Arial, sans-serif"],
+  ["Outfit", "\"Outfit\", Helvetica, Arial, sans-serif"],
+  ["Sora", "\"Sora\", Helvetica, Arial, sans-serif"],
+  ["Fraunces", "\"Fraunces\", Georgia, serif"],
+  ["Instrument Serif", "\"Instrument Serif\", Georgia, serif"],
+  ["Bodoni Moda", "\"Bodoni Moda\", \"Times New Roman\", serif"],
+  ["Cormorant Garamond", "\"Cormorant Garamond\", Georgia, serif"],
+  ["Cardo", "\"Cardo\", Georgia, serif"],
+  ["System Sans", "system-ui, -apple-system, BlinkMacSystemFont, \"Segoe UI\", sans-serif"],
+];
+
+const brandFields = [
+  ["name", "Brand name", "Shkeeno"],
+  ["wordmark", "Wordmark text", "SHKEENO"],
+  ["domain", "Domain label", "shkeeno.com"],
+];
+
+const displayLetterSpacingOptions = [0, -5, -10, -15, -20, -25, -30];
+
+const typeSpecimens = [
+  ["D1", "Display", "Designer-led fashion", "Hero and statement moments."],
+  ["H1", "Page title", "Product catalogue", "Primary page-level headlines."],
+  ["H2", "Section title", "Manual draft", "Card and section headings."],
+  ["K1", "Kicker", "Admin / appearance", "Eyebrows, trails, small overlines."],
+  ["B1", "Body", "A calm line of supporting copy for product, editorial, and admin surfaces.", "Default reading text."],
+  ["M1", "Meta", "Only 4 available", "Badges, notes, utility labels."],
+];
+
+const buttonSpecimens = [
+  ["C1", "Primary action", "Checkout", "reset-button"],
+  ["C2", "Secondary action", "View cart", "back-link"],
+  ["C3", "Compact action", "Edit", "specimen-button-compact"],
+];
+
+const surfaceSpecimens = [
+  ["S1", "Panel", "The base framed surface for cards, drawers, forms, and admin sections."],
+  ["S2", "Data grid", "Structured rows for stats, specs, and commerce settings."],
+  ["S3", "Status", "Feedback surfaces for success, warning, and neutral guidance."],
+];
+---
+
+<BaseLayout title="Design Settings | Shkeeno">
+  <main class="admin-shell">
+    <AdminSidebar current="design" />
+
+    <section class="admin-panel" aria-labelledby="design-title">
+      <div class="admin-heading">
+        <p class="eyebrow">Admin / appearance</p>
+        <h1 id="design-title">Design settings</h1>
+        <p>
+          Live token controls plus a small brand manual for the current system. We can refer to
+          specimens by their internal names when reviewing the interface.
+        </p>
+      </div>
+
+      <form class="settings-grid" data-theme-form>
+        <section class="settings-card" aria-labelledby="colors-title">
+          <h2 id="colors-title">Colors</h2>
+          {
+            colorTokens.map(([token, label, value]) => (
+              <label class="setting-row">
+                <span>{label}</span>
+                <span class="field-pair">
+                  <input type="color" value={value} data-token={token} aria-label={`${label} picker`} />
+                  <input type="text" value={value} data-token={token} aria-label={`${label} hex`} />
+                </span>
+              </label>
+            ))
+          }
+        </section>
+
+        <section class="settings-card" aria-labelledby="fonts-title">
+          <h2 id="fonts-title">Typography</h2>
+          <label class="setting-row">
+            <span>Display font</span>
+            <select data-brand-setting="displayFont" aria-label="Display font">
+              {
+                fontOptions.map(([optionLabel, optionValue]) => (
+                  <option value={optionValue} selected={optionValue === "Peace Sans, Arial Black, sans-serif"}>
+                    {optionLabel}
+                  </option>
+                ))
+              }
+            </select>
+          </label>
+          <label class="setting-row">
+            <span>Display letter spacing</span>
+            <select data-brand-setting="displayLetterSpacing" aria-label="Display letter spacing">
+              {
+                displayLetterSpacingOptions.map((value) => (
+                  <option value={String(value)} selected={value === 0}>
+                    {value === 0 ? "0 / default" : `${value} / tighter`}
+                  </option>
+                ))
+              }
+            </select>
+          </label>
+          <p class="field-hint">
+            Negative values tighten display type. Use 0 for default, then step down by 5 until the
+            selected display font feels balanced.
+          </p>
+          <label class="setting-row">
+            <span>Body font</span>
+            <select data-brand-setting="bodyFont" aria-label="Body font">
+              {
+                fontOptions.map(([optionLabel, optionValue]) => (
+                  <option value={optionValue} selected={optionValue === "\"Space Grotesk\", Helvetica, Arial, sans-serif"}>
+                    {optionLabel}
+                  </option>
+                ))
+              }
+            </select>
+          </label>
+          <label class="setting-row">
+            <span>Logo SVG</span>
+            <input type="file" accept=".svg,image/svg+xml" data-brand-svg-upload />
+          </label>
+          <div class="field-stack">
+            <button type="button" class="back-link" data-brand-clear>Clear custom logo</button>
+            <p class="catalog-status" data-brand-status hidden></p>
+          </div>
+          <p class="field-hint">
+            The text mark stays as fallback. If your SVG is smaller than the container, it sits
+            bottom-left inside a 4:1 logo frame and inherits the live color.
+          </p>
+          <p class="field-hint">
+            Display font drives titles and fallback wordmark. Body font drives navigation,
+            paragraphs, forms, and dense UI text.
+          </p>
+        </section>
+
+        <section class="settings-card" aria-labelledby="brand-fields-title">
+          <h2 id="brand-fields-title">Brand labels</h2>
+          {
+            brandFields.map(([key, label, value]) => (
+              <label class="setting-row">
+                <span>{label}</span>
+                <input type="text" value={value} data-brand-setting={key} aria-label={label} />
+              </label>
+            ))
+          }
+          <p class="field-hint">
+            Use <strong>Shkeeno</strong> for brand copy, <strong>SHKEENO</strong> for the
+            wordmark, and <strong>shkeeno.com</strong> only when the domain itself matters.
+          </p>
+          <p class="field-hint">
+            These settings drive the site UI and logo fallback. Stripe, Supabase template sender
+            names, and other third-party dashboards still need to be aligned manually.
+          </p>
+        </section>
+
+        <section class="settings-card preview-card" aria-labelledby="preview-title">
+          <h2 id="preview-title">Preview</h2>
+          <div class="mini-preview">
+            <p class="brand-mark" data-brand-preview>SHKEENO</p>
+            <h3>F**K YES ESSENTIALS</h3>
+            <p>Designer-led fashion. Under 49g, or not here.</p>
+            <span>18g / £32 / Only 4 available</span>
+          </div>
+        </section>
+      </form>
+
+      <section class="settings-card wide-card design-manual" aria-labelledby="manual-title">
+        <p class="eyebrow">Manual / live system</p>
+        <h2 id="manual-title" class="product-section-title">Brand manual</h2>
+        <p class="field-hint">
+          Internal specimen names are there to make feedback crisp: for example, “C2 outline feels
+          too light” or “H2 should be tighter on mobile.”
+        </p>
+
+        <div class="design-spec-grid">
+          <section class="design-spec-card" aria-labelledby="type-system-title">
+            <p class="design-spec-kicker">System / type</p>
+            <h3 id="type-system-title">Type specimens</h3>
+            <div class="type-rack">
+              {
+                typeSpecimens.map(([code, label, text, note]) => (
+                  <article class="type-specimen">
+                    <div class="type-spec-meta">
+                      <span>{code}</span>
+                      <strong>{label}</strong>
+                    </div>
+                    <div class:list={[
+                      "type-spec-line",
+                      code === "D1" && "type-spec-display",
+                      code === "H1" && "type-spec-page",
+                      code === "H2" && "type-spec-section",
+                      code === "K1" && "type-spec-kicker",
+                      code === "B1" && "type-spec-body",
+                      code === "M1" && "type-spec-meta-line",
+                    ]}>
+                      {text}
+                    </div>
+                    <p>{note}</p>
+                  </article>
+                ))
+              }
+            </div>
+          </section>
+
+          <section class="design-spec-card" aria-labelledby="button-system-title">
+            <p class="design-spec-kicker">System / controls</p>
+            <h3 id="button-system-title">Buttons and actions</h3>
+            <div class="button-rack">
+              {
+                buttonSpecimens.map(([code, label, text, className]) => (
+                  <article class="button-specimen">
+                    <div class="type-spec-meta">
+                      <span>{code}</span>
+                      <strong>{label}</strong>
+                    </div>
+                    <button type="button" class={className}>{text}</button>
+                  </article>
+                ))
+              }
+              <article class="button-specimen">
+                <div class="type-spec-meta">
+                  <span>C4</span>
+                  <strong>Quantity control</strong>
+                </div>
+                <div class="cart-quantity">
+                  <button type="button" aria-label="Decrease">−</button>
+                  <span>1</span>
+                  <button type="button" aria-label="Increase">+</button>
+                </div>
+              </article>
+            </div>
+          </section>
+
+          <section class="design-spec-card" aria-labelledby="surface-system-title">
+            <p class="design-spec-kicker">System / surfaces</p>
+            <h3 id="surface-system-title">Panels, grids, and states</h3>
+            <div class="surface-rack">
+              {
+                surfaceSpecimens.map(([code, label, note]) => (
+                  <article class="surface-specimen">
+                    <div class="type-spec-meta">
+                      <span>{code}</span>
+                      <strong>{label}</strong>
+                    </div>
+                    <p>{note}</p>
+                  </article>
+                ))
+              }
+              <div class="state-rack">
+                <span class="catalog-status" data-tone="good">Success state</span>
+                <span class="catalog-status">Neutral state</span>
+                <span class="catalog-status" data-tone="bad">Blocked state</span>
+              </div>
+            </div>
+          </section>
+        </div>
+
+        <div class="design-spec-grid">
+          <section class="design-spec-card" aria-labelledby="shop-sample-title">
+            <p class="design-spec-kicker">Snapshot / storefront</p>
+            <h3 id="shop-sample-title">P1 Product card</h3>
+            <article class="product-card specimen-product-card">
+              <div class="product-card-media">
+                <div class="gallery-viewport">
+                  <div class="product-image">
+                    <span>18g</span>
+                  </div>
+                </div>
+              </div>
+              <div class="product-meta">
+                <p>Only 2 available</p>
+                <h3>Flat Card Tool</h3>
+                <span>£34.00</span>
+              </div>
+              <p>Flat enough to disappear. Useful enough to come back.</p>
+              <div class="product-tags">
+                <span>EDC</span>
+                <span>Wallet</span>
+                <span>Compact</span>
+              </div>
+            </article>
+          </section>
+
+          <section class="design-spec-card" aria-labelledby="admin-sample-title">
+            <p class="design-spec-kicker">Snapshot / admin</p>
+            <h3 id="admin-sample-title">A1 Settings card</h3>
+            <div class="settings-card specimen-settings-card">
+              <h2>Commerce</h2>
+              <label class="setting-row">
+                <span>Support email</span>
+                <input type="text" value="support@shkeeno.com" />
+              </label>
+              <label class="setting-row">
+                <span>Allowed countries</span>
+                <input type="text" value="United Kingdom, Japan, United States" />
+              </label>
+            </div>
+          </section>
+
+          <section class="design-spec-card" aria-labelledby="table-sample-title">
+            <p class="design-spec-kicker">Snapshot / data</p>
+            <h3 id="table-sample-title">T1 Catalogue table</h3>
+            <div class="specimen-table-wrap">
+              <table class="catalog-table">
+                <thead>
+                  <tr>
+                    <th>Product</th>
+                    <th>Weight</th>
+                    <th>Price</th>
+                    <th>Status</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td>
+                      <strong>Brass Pocket Clip</strong>
+                      <span>Studio Sample / pocket</span>
+                    </td>
+                    <td>12g</td>
+                    <td>£28.00</td>
+                    <td>Listed</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+          </section>
+        </div>
+      </section>
+
+      <div class="admin-actions">
+        <button type="button" class="theme-toggle-button" data-theme-toggle aria-label="Switch to dark mode" title="Toggle theme">
+          <span data-theme-icon aria-hidden="true">
+            <svg viewBox="0 0 24 24" role="presentation" focusable="false">
+              <circle cx="12" cy="12" r="4.5" fill="none" stroke="currentColor" stroke-width="1.8" />
+              <path d="M12 2.75v3.1M12 18.15v3.1M21.25 12h-3.1M5.85 12H2.75M18.54 5.46l-2.19 2.19M7.65 16.35l-2.19 2.19M18.54 18.54l-2.19-2.19M7.65 7.65L5.46 5.46" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="square" />
+            </svg>
+          </span>
+        </button>
+        <button type="button" class="reset-button" data-theme-reset>Reset theme</button>
+      </div>
+    </section>
+  </main>
+</BaseLayout>

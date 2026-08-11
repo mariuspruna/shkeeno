@@ -1,0 +1,196 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import PageTrail from "../../components/PageTrail.astro";
+import SiteHeader from "../../components/SiteHeader.astro";
+
+import { getPublishedProducts } from "../../lib/supabase";
+import { toTitleCase } from "../../lib/text";
+
+const products = await getPublishedProducts();
+const currentCategory = Astro.url.searchParams.get("category") || "";
+const currentSort = Astro.url.searchParams.get("sort") || "newest";
+const categoryOptions = Array.from(
+  new Map(
+    products
+      .filter((product) => product.category)
+      .map((product) => [
+        product.category,
+        {
+          slug: product.category,
+          label: product.category.replace(/[-_]/g, " "),
+        },
+      ]),
+  ).values(),
+).sort((left, right) => left.label.localeCompare(right.label, "en"));
+const filteredProducts = currentCategory
+  ? products.filter((product) => product.category === currentCategory)
+  : products;
+const activeCategoryLabel = categoryOptions.find((category) => category.slug === currentCategory)?.label || "";
+const sortOptions = [
+  { value: "newest", label: "Newest first" },
+  { value: "price-asc", label: "Price low to high" },
+  { value: "price-desc", label: "Price high to low" },
+];
+const formatPrice = (value: number) => Number(value || 0).toFixed(2);
+const sortedProducts = [...filteredProducts].sort((left, right) => {
+  if (currentSort === "price-asc") return Number(left.price_gbp) - Number(right.price_gbp);
+  if (currentSort === "price-desc") return Number(right.price_gbp) - Number(left.price_gbp);
+  return new Date(right.created_at || 0).getTime() - new Date(left.created_at || 0).getTime();
+});
+const productCards = sortedProducts.map((product) => {
+  const lowStock =
+    product.stock_quantity > 0 && product.stock_quantity <= product.low_stock_threshold;
+  const status = product.stock_quantity === 0
+    ? "Sold out"
+    : lowStock
+      ? `Only ${product.stock_quantity} available`
+      : product.is_featured
+        ? "Featured product"
+        : "Available";
+
+  return {
+    ...product,
+    displayName: toTitleCase(product.name),
+    status,
+    weightLabel: `${Math.round(Number(product.weight_grams))}g`,
+    discountLabel: product.compare_at_price_gbp && product.compare_at_price_gbp > product.price_gbp
+      ? `-${Math.round((1 - (Number(product.price_gbp) / Number(product.compare_at_price_gbp))) * 100)}%`
+      : "",
+    images: [...(product.product_images || [])].sort((a, b) => a.sort_order - b.sort_order).slice(0, 6),
+  };
+});
+---
+
+<BaseLayout title="Shop | Shkeeno">
+  <SiteHeader current="shop" />
+  <script is:inline>
+    if (new URLSearchParams(window.location.search).get("category")) {
+      document.documentElement.dataset.shopFilterPending = "true";
+    }
+  </script>
+
+  <main class="shop-shell">
+    <PageTrail items={[{ label: "Shop" }]} />
+
+    <div class="shop-filter-group" data-shop-shell>
+      <p class="shop-filter-label">Categories</p>
+      <nav class="shop-filter-bar" aria-label="Browse by category">
+        <a href="/shop" aria-current={currentCategory ? undefined : "page"} data-shop-filter="all">All</a>
+        {categoryOptions.map((category) => (
+          <a
+            href={`/shop?category=${encodeURIComponent(category.slug)}`}
+            aria-current={currentCategory === category.slug ? "page" : undefined}
+            data-shop-filter={category.slug}
+          >
+            {category.label}
+          </a>
+        ))}
+      </nav>
+    </div>
+
+    <section class="shop-toolbar" aria-label="Catalogue controls" data-shop-shell>
+      <p class="shop-result-context" data-shop-result-context>
+        {currentCategory
+          ? `${activeCategoryLabel} / ${productCards.length} ${productCards.length === 1 ? "product" : "products"}`
+          : `${productCards.length} ${productCards.length === 1 ? "product" : "products"} in collection`}
+      </p>
+      <label class="shop-sort">
+        <span class="sr-only">Sort products</span>
+        <select data-shop-sort data-custom-select>
+          {sortOptions.map((option) => (
+            <option value={option.value} selected={currentSort === option.value}>{option.label}</option>
+          ))}
+        </select>
+      </label>
+    </section>
+
+    <div
+      data-shop-shell
+      data-shop-results
+      data-supabase-url={import.meta.env.PUBLIC_SUPABASE_URL}
+      data-supabase-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
+      data-category={currentCategory}
+      data-sort={currentSort}
+    >
+      {
+        productCards.length > 0 ? (
+          <section class="product-grid product-grid-shop" aria-label="Published products">
+            {
+              productCards.map((product) => (
+                <article class="product-card">
+                  <div class="product-card-media">
+                    <div class="product-card-gallery" data-gallery>
+                      <div class="gallery-viewport">
+                        {
+                          product.images.length > 0 ? (
+                            product.images.map((image, index) => (
+                              <a
+                                href={`/shop/${product.slug}`}
+                                aria-label={`View ${product.displayName}`}
+                                class={index === 0 ? "product-image has-image" : "product-image has-image is-hidden"}
+                                style={`--product-image: url('${image.url}')`}
+                                data-gallery-image
+                                hidden={index !== 0}
+                              >
+                                <span>{product.weightLabel}</span>
+                                {product.discountLabel && <strong class="product-discount-badge">{product.discountLabel}</strong>}
+                              </a>
+                            ))
+                          ) : (
+                            <a href={`/shop/${product.slug}`} aria-label={`View ${product.displayName}`} class="product-image">
+                              <span>{product.weightLabel}</span>
+                              {product.discountLabel && <strong class="product-discount-badge">{product.discountLabel}</strong>}
+                            </a>
+                          )
+                        }
+                        {
+                          product.images.length > 1 && (
+                            <div class="gallery-controls">
+                              <button type="button" data-gallery-prev aria-label={`Previous image for ${product.displayName}`}>
+                                <span aria-hidden="true">‹</span>
+                              </button>
+                              <button type="button" data-gallery-next aria-label={`Next image for ${product.displayName}`}>
+                                <span aria-hidden="true">›</span>
+                              </button>
+                            </div>
+                          )
+                        }
+                      </div>
+                    </div>
+                  </div>
+                  <a href={`/shop/${product.slug}`} aria-label={`View ${product.displayName}`}>
+                    <div class="product-meta">
+                      <p>
+                        {product.badge
+                          ? `${product.badge.replace("_", " ")} / ${product.status}`
+                          : product.status}
+                      </p>
+                      <h2>{product.displayName}</h2>
+                      <span>
+                        £{formatPrice(product.price_gbp)}
+                        {product.compare_at_price_gbp && <s>£{formatPrice(product.compare_at_price_gbp)}</s>}
+                      </span>
+                    </div>
+                    <p>{product.short_description}</p>
+                    {/* <div class="product-tags">
+                      <span>{product.category}</span>
+                      {product.brand && <span>{product.brand}</span>}
+                      {product.origin_country && <span>{product.origin_country}</span>}
+                    </div> */}
+                  </a>
+                </article>
+              ))
+            }
+          </section>
+        ) : (
+          <section class="empty-state">
+            <p>No published products yet.</p>
+            <a href="/admin/products">Open catalogue admin</a>
+          </section>
+        )
+      }
+    </div>
+  </main>
+  <script src="/scripts/shop-live.js" defer></script>
+  <script src="/scripts/product-gallery.js" defer></script>
+</BaseLayout>
