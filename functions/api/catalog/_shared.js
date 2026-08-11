@@ -318,7 +318,7 @@ export function sanitizeProduct(input) {
         ? roundMoney(Number(input.compare_at_price_gbp))
         : null,
       weight_grams: weight,
-      category: String(input.category || "pocket").trim().toLowerCase(),
+      category: String(input.category || "collections").trim().toLowerCase(),
       tags: splitList(input.tags),
       materials: splitList(input.materials),
       supplier_url: input.supplier_url ? String(input.supplier_url).trim() : null,

@@ -14,7 +14,13 @@ async function refreshShopProducts() {
   const limit = Number(shopResults.dataset.limit || 0);
   const params = new URLSearchParams(window.location.search);
   const category = params.get("category") || "";
+  const view = params.get("view") || "";
   const sort = params.get("sort") || "newest";
+  const viewBadgeMap = {
+    "new-in": "new",
+    "pre-order": "pre_order",
+    sale: "sale",
+  };
 
   if (!supabaseUrl || !supabaseKey) return;
 
@@ -40,8 +46,9 @@ async function refreshShopProducts() {
   ].join(",");
   const limitQuery = Number.isInteger(limit) && limit > 0 ? `&limit=${limit}` : "";
   const categoryQuery = category ? `&category=eq.${encodeURIComponent(category)}` : "";
+  const badgeQuery = viewBadgeMap[view] ? `&badge=eq.${encodeURIComponent(viewBadgeMap[view])}` : "";
   const orderQuery = getOrderQuery(sort);
-  const url = `${supabaseUrl}/rest/v1/products?select=${encodeURIComponent(select)}&is_published=eq.true${categoryQuery}${orderQuery}${limitQuery}`;
+  const url = `${supabaseUrl}/rest/v1/products?select=${encodeURIComponent(select)}&is_published=eq.true${categoryQuery}${badgeQuery}${orderQuery}${limitQuery}`;
   const response = await fetch(url, {
     headers: {
       apikey: supabaseKey,
@@ -55,7 +62,7 @@ async function refreshShopProducts() {
   }
 
   const products = sortProducts(await response.json(), sort);
-  syncShopChrome(category, sort, products.length);
+  syncShopChrome(category, view, sort, products.length);
   shopResults.innerHTML = renderProducts(products);
   setShopPending(false);
 }
@@ -66,8 +73,8 @@ function getOrderQuery(sort) {
   return "&order=created_at.desc";
 }
 
-function syncShopChrome(category, sort, count) {
-  const activeFilter = category || "all";
+function syncShopChrome(category, view, sort, count) {
+  const activeFilter = view ? `view:${view}` : category ? `category:${category}` : "all";
   const activeLink = shopFilterLinks.find((link) => link.dataset.shopFilter === activeFilter);
   const activeLabel = activeLink?.textContent?.trim() || "";
 
@@ -80,7 +87,7 @@ function syncShopChrome(category, sort, count) {
   });
 
   if (shopResultContext) {
-    shopResultContext.textContent = category
+    shopResultContext.textContent = activeFilter !== "all"
       ? `${activeLabel} / ${count} ${count === 1 ? "product" : "products"}`
       : `${count} ${count === 1 ? "product" : "products"} in collection`;
   }

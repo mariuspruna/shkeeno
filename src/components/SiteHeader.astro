@@ -1,5 +1,6 @@
 ---
 import { aboutPages } from "../lib/about-pages";
+import { shopNavigation } from "../lib/shop-navigation";
 import { valuesPages } from "../lib/values-pages";
 
 interface Props {
@@ -13,7 +14,14 @@ const { current } = Astro.props;
   <div class="site-header-main">
     <a class="brand-mark" href="/" aria-label="Shkeeno home">SHKEENO</a>
     <nav class="site-nav" aria-label="Primary navigation">
-      <a href="/shop" aria-current={current === "shop" ? "page" : undefined}>Shop</a>
+      <div class="site-nav-item has-dropdown">
+        <a href="/shop" aria-current={current === "shop" ? "page" : undefined}>Shop</a>
+        <div class="site-nav-dropdown" aria-label="Shop pages">
+          {shopNavigation.map((item) => (
+            <a href={item.href}>{item.label}</a>
+          ))}
+        </div>
+      </div>
       <div class="site-nav-item has-dropdown">
         <a href="/about" aria-current={current === "about" ? "page" : undefined}>About</a>
         <div class="site-nav-dropdown" aria-label="About pages">
@@ -71,11 +79,13 @@ const { current } = Astro.props;
   </div>
   <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
     <nav aria-label="Mobile navigation">
-      <a href="/shop" aria-current={current === "shop" ? "page" : undefined}>Shop all</a>
-      <a class="mobile-category-link" href="/shop?category=edc">EDC</a>
-      <a class="mobile-category-link" href="/shop?category=office">Office</a>
-      <a class="mobile-category-link" href="/shop?category=pocket">Pocket</a>
-      <a class="mobile-category-link" href="/shop?category=travel">Travel</a>
+      <details class="mobile-menu-group" open={current === "shop"}>
+        <summary>Shop</summary>
+        <a href="/shop" aria-current={current === "shop" ? "page" : undefined}>All</a>
+        {shopNavigation.map((item) => (
+          <a class="mobile-category-link" href={item.href}>{item.label}</a>
+        ))}
+      </details>
       <details class="mobile-menu-group" open={current === "about"}>
         <summary>About</summary>
         <a href="/about" aria-current={current === "about" ? "page" : undefined}>Overview</a>

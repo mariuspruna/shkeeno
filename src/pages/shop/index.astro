@@ -4,11 +4,18 @@ import PageTrail from "../../components/PageTrail.astro";
 import SiteHeader from "../../components/SiteHeader.astro";
 
 import { getPublishedProducts } from "../../lib/supabase";
+import { shopNavigation } from "../../lib/shop-navigation";
 import { toTitleCase } from "../../lib/text";
 
 const products = await getPublishedProducts();
 const currentCategory = Astro.url.searchParams.get("category") || "";
+const currentView = Astro.url.searchParams.get("view") || "";
 const currentSort = Astro.url.searchParams.get("sort") || "newest";
+const viewBadgeMap: Record<string, string> = {
+  "new-in": "new",
+  "pre-order": "pre_order",
+  sale: "sale",
+};
 const categoryOptions = Array.from(
   new Map(
     products
@@ -22,10 +29,14 @@ const categoryOptions = Array.from(
       ]),
   ).values(),
 ).sort((left, right) => left.label.localeCompare(right.label, "en"));
-const filteredProducts = currentCategory
+const categoryFilteredProducts = currentCategory
   ? products.filter((product) => product.category === currentCategory)
   : products;
+const filteredProducts = viewBadgeMap[currentView]
+  ? categoryFilteredProducts.filter((product) => product.badge === viewBadgeMap[currentView])
+  : categoryFilteredProducts;
 const activeCategoryLabel = categoryOptions.find((category) => category.slug === currentCategory)?.label || "";
+const activeViewLabel = shopNavigation.find((item) => item.key === `view:${currentView}`)?.label || "";
 const sortOptions = [
   { value: "newest", label: "Newest first" },
   { value: "price-asc", label: "Price low to high" },
@@ -64,7 +75,7 @@ const productCards = sortedProducts.map((product) => {
 <BaseLayout title="Shop | Shkeeno">
   <SiteHeader current="shop" />
   <script is:inline>
-    if (new URLSearchParams(window.location.search).get("category")) {
+    if (new URLSearchParams(window.location.search).get("category") || new URLSearchParams(window.location.search).get("view")) {
       document.documentElement.dataset.shopFilterPending = "true";
     }
   </script>
@@ -75,12 +86,25 @@ const productCards = sortedProducts.map((product) => {
     <div class="shop-filter-group" data-shop-shell>
       <p class="shop-filter-label">Categories</p>
       <nav class="shop-filter-bar" aria-label="Browse by category">
-        <a href="/shop" aria-current={currentCategory ? undefined : "page"} data-shop-filter="all">All</a>
-        {categoryOptions.map((category) => (
+        <a href="/shop" aria-current={currentCategory || currentView ? undefined : "page"} data-shop-filter="all">All</a>
+        {shopNavigation.map((item) => (
+          <a
+            href={item.href}
+            aria-current={
+              item.key === `category:${currentCategory}` || item.key === `view:${currentView}`
+                ? "page"
+                : undefined
+            }
+            data-shop-filter={item.key}
+          >
+            {item.label}
+          </a>
+        ))}
+        {categoryOptions.filter((category) => category.slug !== "collections").map((category) => (
           <a
             href={`/shop?category=${encodeURIComponent(category.slug)}`}
             aria-current={currentCategory === category.slug ? "page" : undefined}
-            data-shop-filter={category.slug}
+            data-shop-filter={`category:${category.slug}`}
           >
             {category.label}
           </a>
@@ -90,7 +114,9 @@ const productCards = sortedProducts.map((product) => {
 
     <section class="shop-toolbar" aria-label="Catalogue controls" data-shop-shell>
       <p class="shop-result-context" data-shop-result-context>
-        {currentCategory
+        {activeViewLabel
+          ? `${activeViewLabel} / ${productCards.length} ${productCards.length === 1 ? "product" : "products"}`
+          : currentCategory
           ? `${activeCategoryLabel} / ${productCards.length} ${productCards.length === 1 ? "product" : "products"}`
           : `${productCards.length} ${productCards.length === 1 ? "product" : "products"} in collection`}
       </p>
@@ -110,6 +136,7 @@ const productCards = sortedProducts.map((product) => {
       data-supabase-url={import.meta.env.PUBLIC_SUPABASE_URL}
       data-supabase-key={import.meta.env.PUBLIC_SUPABASE_ANON_KEY}
       data-category={currentCategory}
+      data-view={currentView}
       data-sort={currentSort}
     >
       {

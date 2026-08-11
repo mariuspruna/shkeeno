@@ -174,11 +174,7 @@ function renderCategoryOptions(selected = "") {
   const categories = currentCategories.length > 0
     ? currentCategories
     : [
-        { slug: "pocket", name: "Pocket" },
-        { slug: "travel", name: "Travel" },
-        { slug: "edc", name: "EDC" },
-        { slug: "wearable", name: "Wearable" },
-        { slug: "accessory", name: "Accessory" },
+        { slug: "collections", name: "Collections" },
       ];
 
   categorySelect.innerHTML = categories
@@ -194,11 +190,11 @@ async function loadCategories() {
   try {
     const data = await api("/api/catalog/categories");
     currentCategories = (data.categories || []).filter((category) => category.is_active !== false);
-    renderCategoryOptions(formValue(productForm, "category") || currentCategories[0]?.slug || "pocket");
+    renderCategoryOptions(formValue(productForm, "category") || currentCategories[0]?.slug || "collections");
     rememberSnapshot();
   } catch {
     currentCategories = [];
-    renderCategoryOptions(formValue(productForm, "category") || "pocket");
+    renderCategoryOptions(formValue(productForm, "category") || "collections");
     rememberSnapshot();
   }
 }
@@ -316,7 +312,7 @@ async function loadProducts() {
     if (!localStorage.getItem("shkeeno-admin-key")) {
       renderProducts([]);
       setStatus("Open Access in admin and save the key first.", "bad");
-      renderCategoryOptions(currentCategories[0]?.slug || "pocket");
+      renderCategoryOptions(currentCategories[0]?.slug || "collections");
       return;
     }
     setStatus("Loading catalogue...");
@@ -621,8 +617,8 @@ function populateProductForm(product) {
   setValue("slug", product.slug || "");
   setValue("brand", product.brand || "");
   setValue("origin_country", product.origin_country || "");
-  setValue("category", product.category || "pocket");
-  renderCategoryOptions(product.category || "pocket");
+  setValue("category", product.category || "collections");
+  renderCategoryOptions(product.category || "collections");
   setValue("weight_grams", Math.round(Number(product.weight_grams)));
   setValue("price_gbp", product.price_gbp || "");
   setValue("compare_at_price_gbp", product.compare_at_price_gbp || "");
@@ -712,7 +708,7 @@ function resetProductEditor() {
   releaseLocalImagePreviews();
   renderImageInputs([]);
   clearPendingUploads();
-  renderCategoryOptions(currentCategories[0]?.slug || "pocket");
+  renderCategoryOptions(currentCategories[0]?.slug || "collections");
   updateFormMode();
   rememberSnapshot();
 }
@@ -756,7 +752,7 @@ function hasMeaningfulEditorContent() {
   const featured = productForm.elements.namedItem("is_featured")?.checked;
   const newsletter = productForm.elements.namedItem("include_in_newsletter")?.checked;
 
-  return hasText || imageEntries.length > 0 || badge !== "" || published || featured || newsletter || (category !== "" && category !== (currentCategories[0]?.slug || "pocket"));
+  return hasText || imageEntries.length > 0 || badge !== "" || published || featured || newsletter || (category !== "" && category !== (currentCategories[0]?.slug || "collections"));
 }
 
 function attemptEditorExit(onDiscard) {
@@ -894,7 +890,7 @@ function initCatalogAdmin() {
   if (!productTable || !productForm) return;
 
   updateFormMode();
-  renderCategoryOptions("pocket");
+  renderCategoryOptions("collections");
   renderTagPicker();
   rememberSnapshot();
 
