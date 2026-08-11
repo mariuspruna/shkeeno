@@ -31,8 +31,8 @@ export async function onRequestGet({ env }) {
   try {
     const settings = await getCommerceSettings(env);
     return json({ settings: pickBrandSettings(settings) });
-  } catch (error) {
-    return json({ error: error.message }, 500);
+  } catch {
+    return json({ settings: pickBrandSettings(null) });
   }
 }
 
