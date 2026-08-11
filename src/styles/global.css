@@ -4100,3 +4100,123 @@ textarea[data-fetched="true"] {
     text-align: left;
   }
 }
+
+/* Mobile overflow guardrails: keep the page locked to the viewport while allowing
+   intentional internal scrolling only where needed. */
+html,
+body {
+  width: 100%;
+  max-width: 100%;
+  overscroll-behavior-x: none;
+}
+
+body {
+  position: relative;
+}
+
+img,
+svg,
+video,
+canvas,
+iframe,
+input,
+select,
+textarea,
+button {
+  max-width: 100%;
+}
+
+body > *,
+.site-header,
+.site-header-main,
+.site-footer,
+.site-footer-inner,
+main,
+.catalogue-section,
+.home-featured,
+.home-concept,
+.home-faq,
+.shop-shell,
+.product-detail-shell,
+.shop-shell > *,
+.product-detail-shell > *,
+.product-grid,
+.product-card,
+.product-card a,
+.settings-card,
+.cart-page-grid,
+.account-grid,
+.admin-shell,
+.admin-panel,
+.mobile-menu,
+.admin-mobile-nav {
+  min-width: 0;
+  max-width: 100%;
+}
+
+@supports (overflow: clip) {
+  body {
+    overflow-x: clip;
+  }
+}
+
+@media (max-width: 719px) {
+  html,
+  body {
+    overflow-x: hidden;
+  }
+
+  .site-header,
+  .catalogue-section,
+  .home-featured,
+  .home-concept,
+  .home-faq,
+  .shop-shell,
+  .product-detail-shell,
+  .site-footer-inner,
+  .admin-sidebar,
+  .admin-panel {
+    width: 100%;
+    max-width: 100%;
+  }
+
+  .brand-mark,
+  .brand-mark.has-custom-logo {
+    width: min(172px, calc(100vw - 112px));
+    min-width: 0;
+  }
+
+  .brand-mark-logo {
+    width: 100%;
+  }
+
+  .shop-filter-group,
+  .shop-toolbar {
+    padding-inline: 0;
+  }
+
+  .shop-filter-bar,
+  .browse-band {
+    max-width: 100%;
+    overflow-x: clip;
+  }
+
+  .browse-band {
+    flex-wrap: wrap;
+  }
+
+  .browse-band a {
+    flex: 1 1 calc(50% - 1px);
+    min-width: 0;
+  }
+
+  .shop-filter-bar a,
+  .button-ghost,
+  .button-solid,
+  .button-compact,
+  .reset-button,
+  .back-link {
+    max-width: 100%;
+    overflow-wrap: anywhere;
+  }
+}
