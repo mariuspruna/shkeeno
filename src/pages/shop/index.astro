@@ -29,6 +29,10 @@ const categoryOptions = Array.from(
       ]),
   ).values(),
 ).sort((left, right) => left.label.localeCompare(right.label, "en"));
+const primaryShopKeys = new Set(shopNavigation.map((item) => item.key));
+const extraCategoryOptions = categoryOptions.filter(
+  (category) => !primaryShopKeys.has(`category:${category.slug}`),
+);
 const categoryFilteredProducts = currentCategory
   ? products.filter((product) => product.category === currentCategory)
   : products;
@@ -99,7 +103,7 @@ const productCards = sortedProducts.map((product) => {
             {item.label}
           </a>
         ))}
-        {categoryOptions.filter((category) => category.slug !== "collections").map((category) => (
+        {extraCategoryOptions.map((category) => (
           <a
             href={`/shop?category=${encodeURIComponent(category.slug)}`}
             aria-current={currentCategory === category.slug ? "page" : undefined}
