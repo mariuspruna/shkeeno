@@ -1210,12 +1210,14 @@ html[data-shop-filter-pending="true"] [data-shop-shell][data-pending="true"] {
   color: inherit;
 }
 
+.site-footer-social a,
 .site-footer-social span {
   width: 34px;
   height: 34px;
   display: inline-flex;
   align-items: center;
   justify-content: center;
+  color: inherit;
 }
 
 .site-footer-social svg {
