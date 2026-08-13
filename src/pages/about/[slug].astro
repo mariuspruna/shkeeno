@@ -27,7 +27,7 @@ if (!page) {
       <h1 id="about-subpage-title">{page.title}</h1>
       <div>
         <p class="eyebrow">{page.eyebrow}</p>
-        <p>{page.body}</p>
+        {page.body.map((paragraph) => <p>{paragraph}</p>)}
       </div>
     </section>
   </main>

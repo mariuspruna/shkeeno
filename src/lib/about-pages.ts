@@ -4,7 +4,7 @@ export type AboutPage = {
   title: string;
   description: string;
   eyebrow: string;
-  body: string;
+  body: string[];
 };
 
 export const aboutPages: AboutPage[] = [
@@ -14,8 +14,11 @@ export const aboutPages: AboutPage[] = [
     title: "Shkeeno",
     description: "About Shkeeno, the independent fashion label by Diana Baptista.",
     eyebrow: "About",
-    body:
-      "Shkeeno is the designer-led fashion identity of Diana Baptista, a Portuguese designer working in the United Kingdom. The brand sits close to the studio: personal, visual, and built around clothes as a way of expressing character rather than following a mass-market rhythm. Its language can be bold and graphic, but the feeling should stay human — pieces with a point of view, room for craft, and an interest in how clothing can carry attitude without losing softness.",
+    body: [
+      "Shkeeno is an independent fashion label with a studio attitude: expressive pieces, sharp visual choices, and room for clothes that feel personal.",
+      "The brand is young, but the direction is clear. It is not trying to behave like a big retailer. It is building a world first: collections, images, services, notes, and small releases with a strong point of view.",
+      "Expect contrast, pattern, texture, and a mix of confidence and softness. Shkeeno should feel contemporary and easy to enter, but never generic.",
+    ],
   },
   {
     slug: "the-designer",
@@ -23,8 +26,11 @@ export const aboutPages: AboutPage[] = [
     title: "The Designer",
     description: "About Diana Baptista, the designer behind Shkeeno.",
     eyebrow: "About",
-    body:
-      "Diana Baptista is a Portuguese fashion designer based in the UK. Her public portfolio describes a path shaped by arts, crafts, sewing, and clothes, with fashion becoming the place where those interests meet. Before developing Shkeeno as a brand space, Diana studied fashion design in Portugal and continued refining her practice through BA Fashion Design work at Anglia Ruskin University. Her graduate work has appeared in ARU and Graduate Fashion Week contexts, with a visual direction that moves between structured silhouettes, expressive surface, floral energy, zebra-like pattern, and confident styling.",
+    body: [
+      "Diana Baptista is a Portuguese fashion designer based in the UK. Fashion has been the place where her interest in clothes, craft, drawing, sewing, and visual expression comes together.",
+      "Her work has moved through fashion design studies in Portugal and BA Fashion Design work at Anglia Ruskin University, with graduate work shown through ARU and Graduate Fashion Week contexts.",
+      "The visual language is confident and instinctive: structured silhouettes, strong surface detail, graphic rhythm, floral references, and expressive styling. Shkeeno gives that energy a sharper home.",
+    ],
   },
   {
     slug: "the-idea",
@@ -32,8 +38,11 @@ export const aboutPages: AboutPage[] = [
     title: "The Idea",
     description: "About the creative idea behind Shkeeno.",
     eyebrow: "About",
-    body:
-      "The idea behind Shkeeno is to give Diana’s work a clear, independent home: part brand presence, part portfolio, part future shop. It should not feel like a generic catalogue. The website is being built so collections, individual pieces, pre-orders, services, and editorial notes can grow around the same centre: Diana’s creative identity. For now, Shkeeno can hold the story, the look, and the first pieces. Later, it can support a fuller commerce flow without losing the designer-led feel.",
+    body: [
+      "Shkeeno starts with the feeling of a label before the mechanics of a shop. The first job is to create a place with a clear identity, not just a grid of products.",
+      "Collections, services, pre-orders, editorial notes, and limited pieces can all sit inside that world. The idea is flexible, but the tone stays consistent: visual, direct, designer-led, and a little unexpected.",
+      "As the brand grows, the website can grow with it. The shop can become more complete without flattening the personality that makes Shkeeno worth following.",
+    ],
   },
 ];
 

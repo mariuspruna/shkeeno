@@ -4,7 +4,7 @@ export type ValuesPage = {
   title: string;
   description: string;
   eyebrow: string;
-  body: string;
+  body: string[];
 };
 
 export const valuesPages: ValuesPage[] = [
@@ -14,8 +14,11 @@ export const valuesPages: ValuesPage[] = [
     title: "Sustainability",
     description: "Shkeeno sustainability notes and commitments.",
     eyebrow: "Values",
-    body:
-      "Shkeeno is being shaped as a considered fashion label, not a fast-moving product machine. That means building slowly, keeping quantities intentional, and giving space to repair, alteration, and custom service where it makes sense. The sustainability language will become more precise as Diana defines materials, suppliers, and production methods, but the direction is already clear: fewer careless decisions, more useful pieces, and a closer relationship between the designer, the garment, and the person wearing it.",
+    body: [
+      "Shkeeno is being built slowly, with care for what gets made and why it exists. The aim is not to chase volume, but to keep the catalogue considered.",
+      "Small releases, repair, alteration, and custom services all support that direction. A piece should have a life beyond the first wear.",
+      "As production details become clearer, this page will grow into a more specific sustainability note. For now, the principle is simple: make fewer careless choices.",
+    ],
   },
   {
     slug: "code-of-ethics",
@@ -23,8 +26,11 @@ export const valuesPages: ValuesPage[] = [
     title: "Code of ethics",
     description: "The code of ethics guiding Shkeeno.",
     eyebrow: "Values",
-    body:
-      "Shkeeno’s code of ethics starts with respect: for the people who make the work, the people who wear it, and the creative process behind each piece. The brand should communicate clearly about availability, pricing, delivery, pre-orders, and custom requests. It should avoid inflated promises, protect customer information, and treat collaborators fairly. As the shop grows, this page can become the public home for more detailed policies around sourcing, production, returns, and customer care.",
+    body: [
+      "Shkeeno’s code of ethics starts with respect: for the work, for collaborators, and for the people who choose to buy or follow the brand.",
+      "The label should be clear about pricing, availability, pre-orders, delivery, and custom requests. No vague promises, no unnecessary drama.",
+      "As the shop develops, this page will hold more detailed policies around sourcing, production, returns, privacy, and customer care.",
+    ],
   },
   {
     slug: "charity",
@@ -32,8 +38,11 @@ export const valuesPages: ValuesPage[] = [
     title: "Charity",
     description: "Shkeeno charity and giving notes.",
     eyebrow: "Values",
-    body:
-      "Charity is part of Shkeeno’s future values structure rather than a finished programme today. The intention is to leave room for meaningful giving, collaborations, or small campaigns that connect naturally with Diana’s work and community. This page can later hold the exact organisations, percentages, dates, and outcomes. Until then, the commitment is simple: if Shkeeno links itself to a cause, the wording should be honest, specific, and easy for customers to understand.",
+    body: [
+      "Shkeeno wants to leave space for giving that feels genuine, not decorative. Charity work should connect naturally with the brand, the community, or a specific project.",
+      "When a campaign or partnership is active, the details should be easy to understand: who it supports, how it works, and what has been contributed.",
+      "Until then, this page stays as a promise of intent rather than a performance. Better to be honest now and specific later.",
+    ],
   },
 ];
 

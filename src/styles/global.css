@@ -1275,6 +1275,12 @@ html[data-shop-filter-pending="true"] [data-shop-shell][data-pending="true"] {
   text-wrap: balance;
 }
 
+.contact-intro {
+  max-width: 760px;
+  margin: -8px 0 28px;
+  line-height: var(--leading-copy);
+}
+
 .contact-card .section-kicker {
   border-top-color: var(--color-primary);
 }
