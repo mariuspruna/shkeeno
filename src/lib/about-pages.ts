@@ -5,6 +5,11 @@ export type AboutPage = {
   description: string;
   eyebrow: string;
   body: string[];
+  image?: {
+    src: string;
+    alt: string;
+    label: string;
+  };
 };
 
 export const aboutPages: AboutPage[] = [
@@ -31,6 +36,11 @@ export const aboutPages: AboutPage[] = [
       "Her work has moved through fashion design studies in Portugal and BA Fashion Design work at Anglia Ruskin University, with graduate work shown through ARU and Graduate Fashion Week contexts.",
       "The visual language is confident and instinctive: structured silhouettes, strong surface detail, graphic rhythm, floral references, and expressive styling. Shkeeno gives that energy a sharper home.",
     ],
+    image: {
+      src: "/images/diana-baptista-designer.webp",
+      alt: "Diana Baptista wearing a white and floral garment with pink trim.",
+      label: "Designer portrait",
+    },
   },
   {
     slug: "the-idea",

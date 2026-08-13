@@ -1381,6 +1381,31 @@ html[data-shop-filter-pending="true"] [data-shop-shell][data-pending="true"] {
   margin: 0;
 }
 
+.about-media-frame {
+  display: grid;
+  gap: 12px;
+  max-width: 560px;
+  margin: 28px 0 0;
+  border: var(--border-strong);
+  background: var(--color-background);
+  padding: 12px;
+}
+
+.about-media-frame img {
+  display: block;
+  width: 100%;
+  aspect-ratio: 4 / 5;
+  object-fit: cover;
+}
+
+.about-media-frame figcaption {
+  margin: 0;
+  font-size: var(--type-meta);
+  font-weight: 800;
+  letter-spacing: var(--meta-letter-spacing);
+  text-transform: uppercase;
+}
+
 .about-faq {
   display: grid;
   gap: 16px;

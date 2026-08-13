@@ -30,5 +30,14 @@ if (!page) {
         {page.body.map((paragraph) => <p>{paragraph}</p>)}
       </div>
     </section>
+
+    {
+      page.image && (
+        <figure class="about-media-frame">
+          <img src={page.image.src} alt={page.image.alt} loading="lazy" />
+          <figcaption>{page.image.label}</figcaption>
+        </figure>
+      )
+    }
   </main>
 </BaseLayout>
