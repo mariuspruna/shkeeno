@@ -1,6 +1,6 @@
 import { json, supabaseAuthUser, supabaseFetch } from "./catalog/_shared.js";
+import { formatGeo, getRequestGeo, getSiteUrl, notifyNtfy } from "./_ntfy.js";
 
-const DEFAULT_NTFY_URL = "https://ntfy.sh/shkeeno";
 const DEDUP_WINDOW_MS = 60 * 60 * 1000;
 
 function getClientIp(request) {
@@ -16,18 +16,6 @@ function getClientIp(request) {
   return "unknown";
 }
 
-function getGeo(request) {
-  const country = request.headers.get("cf-ipcountry") || request.cf?.country || "";
-  const region = request.cf?.region || request.cf?.regionCode || "";
-  const city = request.cf?.city || "";
-
-  return {
-    country: String(country || "").trim(),
-    region: String(region || "").trim(),
-    city: String(city || "").trim(),
-  };
-}
-
 function readSkipEmails(env) {
   return new Set(
     String(env.NTFY_SKIP_EMAILS || "")
@@ -35,10 +23,6 @@ function readSkipEmails(env) {
       .map((value) => value.trim().toLowerCase())
       .filter(Boolean),
   );
-}
-
-function readNtfyUrl(env) {
-  return String(env.NTFY_TOPIC_URL || DEFAULT_NTFY_URL).trim() || DEFAULT_NTFY_URL;
 }
 
 function pathForClick(path) {
@@ -112,7 +96,7 @@ export async function onRequestPost({ request, env }) {
   const fallbackEmail = String(body?.accountEmail || "").trim().toLowerCase();
   const ip = getClientIp(request);
   const skipEmails = readSkipEmails(env);
-  const siteUrl = String(env.PUBLIC_SITE_URL || env.PUBLIC_SITE_DOMAIN || "https://shkeeno.com").replace(/\/+$/, "");
+  const siteUrl = getSiteUrl(env);
 
   if (ip === "unknown" && !request.headers.get("cf-ipcountry") && !request.cf) {
     return json({ ok: true, skipped: "local" }, 202);
@@ -131,7 +115,7 @@ export async function onRequestPost({ request, env }) {
     // Better to over-ping than miss a visit when dedupe storage has a wobble.
   }
 
-  const geo = getGeo(request);
+  const geo = getRequestGeo(request);
 
   void insertPingLog(env, {
     ip,
@@ -144,18 +128,14 @@ export async function onRequestPost({ request, env }) {
 
   const identity = email || "Someone";
   const refSuffix = referrer ? `(via ${referrer})` : "(direct)";
-  const geoParts = [geo.country, geo.region, geo.city].filter(Boolean);
-  const geoSuffix = geoParts.length ? ` · ${geoParts.join(" · ")}` : "";
-  const messageBody = `${identity} opened ${path} ${refSuffix}${geoSuffix}`;
+  const geoSuffix = formatGeo(geo);
+  const messageBody = `👀 Visit: ${path}${geoSuffix ? ` · ${geoSuffix}` : ""} · ${refSuffix} · ${identity}`;
 
-  void fetch(readNtfyUrl(env), {
-    method: "POST",
-    headers: {
-      Title: "Shkeeno visit",
-      Tags: "eyes,shopping_bags",
-      Priority: "default",
-      Click: `${siteUrl}${path}`,
-    },
+  void notifyNtfy(env, {
+    title: "Shkeeno visit",
+    tags: "eyes,shopping_bags",
+    priority: "default",
+    click: `${siteUrl}${path}`,
     body: messageBody,
   }).catch(() => {});
 

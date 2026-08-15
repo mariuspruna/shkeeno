@@ -1,4 +1,5 @@
 import { json, readJson, requireAdmin, supabaseFetch } from "../../catalog/_shared.js";
+import { getSiteUrl, notifyNtfy } from "../../_ntfy.js";
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => (
@@ -112,6 +113,14 @@ export async function onRequestPost({ request, env, params }) {
     });
 
     await markMessageReplied(env, message.id);
+
+    void notifyNtfy(env, {
+      title: "Shkeeno reply sent",
+      tags: "email,white_check_mark",
+      priority: "low",
+      click: `${getSiteUrl(env)}/admin/messages`,
+      body: `↩️ Reply sent to ${message.name} — ${message.reason}`,
+    }).catch(() => {});
 
     return json({ ok: true, reply });
   } catch (error) {

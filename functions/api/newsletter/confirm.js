@@ -1,4 +1,5 @@
 import { confirmSubscriber, json, readJson } from "./_shared.js";
+import { notifyNtfy } from "../_ntfy.js";
 
 export async function onRequestPost({ request, env }) {
   try {
@@ -10,6 +11,16 @@ export async function onRequestPost({ request, env }) {
     }
 
     const subscriber = await confirmSubscriber(env, token);
+
+    if (!subscriber.alreadyConfirmed) {
+      void notifyNtfy(env, {
+        title: "Shkeeno newsletter",
+        tags: "white_check_mark,email",
+        priority: "default",
+        body: `✅ Newsletter confirmed: ${subscriber.email}`,
+      }).catch(() => {});
+    }
+
     return json({
       ok: true,
       alreadyConfirmed: Boolean(subscriber.alreadyConfirmed),

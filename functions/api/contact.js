@@ -1,4 +1,5 @@
 import { json, supabaseFetch } from "./catalog/_shared.js";
+import { formatGeo, getRequestGeo, getSiteUrl, notifyNtfy } from "./_ntfy.js";
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => (
@@ -107,6 +108,15 @@ export async function onRequestPost({ request, env }) {
         inbound_email_sent: true,
         last_error: null,
       });
+
+      const geoLabel = formatGeo(getRequestGeo(request));
+      void notifyNtfy(env, {
+        title: "Shkeeno contact",
+        tags: "speech_balloon,email",
+        priority: "high",
+        click: `${getSiteUrl(env)}/admin/messages`,
+        body: `💬 Contact: ${reason} — ${name}${geoLabel ? ` · ${geoLabel}` : ""}`,
+      }).catch(() => {});
     } catch (emailError) {
       await updateContactMessage(env, contactMessage?.id, {
         inbound_email_sent: false,

@@ -7,6 +7,7 @@ import {
   sendConfirmationEmail,
   upsertPendingSubscriber,
 } from "./_shared.js";
+import { notifyNtfy } from "../_ntfy.js";
 
 export async function onRequestPost({ request, env }) {
   try {
@@ -39,6 +40,13 @@ export async function onRequestPost({ request, env }) {
     }
 
     await sendConfirmationEmail(env, subscriber);
+
+    void notifyNtfy(env, {
+      title: "Shkeeno newsletter",
+      tags: "email,sparkles",
+      priority: "default",
+      body: `✉️ Newsletter: ${subscriber.email} started signup (${source})`,
+    }).catch(() => {});
 
     let message = "Check your inbox to confirm the subscription.";
     if (subscriber.resentConfirmation) {

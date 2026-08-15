@@ -1,4 +1,6 @@
 import { sendOrderConfirmationEmail } from "../_email.js";
+import { formatMoney } from "../_email.js";
+import { getSiteUrl, notifyNtfy } from "../_ntfy.js";
 import { json, supabaseRpc } from "../catalog/_shared.js";
 import { normalizeEmail, sendConfirmationEmail, upsertPendingSubscriber } from "../newsletter/_shared.js";
 
@@ -175,6 +177,17 @@ export async function onRequestPost({ request, env }) {
       } catch (emailError) {
         console.error("Order confirmation email failed:", emailError.message);
       }
+
+      void notifyNtfy(env, {
+        title: "Shkeeno order",
+        tags: result?.stock_issue ? "warning,shopping_bags" : "shopping_bags,sparkles",
+        priority: result?.stock_issue ? "high" : "default",
+        click: `${getSiteUrl(env)}/admin/orders`,
+        body: `🛍️ New order: ${formatMoney(orderPayload.total_amount, orderPayload.currency)} — ${items
+          .map((item) => item.product_name)
+          .slice(0, 2)
+          .join(", ")}${items.length > 2 ? ` +${items.length - 2}` : ""}`,
+      }).catch(() => {});
 
       try {
         const newsletterOptIn = session.metadata?.newsletter_opt_in === "true";
