@@ -1,3 +1,8 @@
 name = "shkeeno"
 compatibility_date = "2026-06-02"
 pages_build_output_dir = "dist"
+
+[vars]
+ORDER_FROM_EMAIL = "Shkeeno <hello@mail.shkeeno.com>"
+ORDER_SUPPORT_EMAIL = "hello@shkeeno.com"
+NEWSLETTER_FROM_EMAIL = "Shkeeno <hello@mail.shkeeno.com>"
