@@ -40,8 +40,8 @@ async function syncHeaderAccountFromSession() {
     return;
   }
 
-  const supabase = window.__49gHeaderSupabase
-    || (window.__49gHeaderSupabase = createClient(supabaseUrl, supabaseKey));
+  const supabase = window.__shkeenoHeaderSupabase
+    || (window.__shkeenoHeaderSupabase = createClient(supabaseUrl, supabaseKey));
 
   const {
     data: { session },
@@ -56,8 +56,8 @@ async function syncHeaderAccountFromSession() {
   renderHeaderAccount(email);
 }
 
-if (!window.__49gHeaderAccountInit) {
-  window.__49gHeaderAccountInit = true;
+if (!window.__shkeenoHeaderAccountInit) {
+  window.__shkeenoHeaderAccountInit = true;
 
   window.addEventListener("storage", (event) => {
     if (event.key === ACCOUNT_KEY) syncHeaderAccountFromSession();
@@ -72,8 +72,8 @@ if (!window.__49gHeaderAccountInit) {
   const supabaseUrl = document.body?.dataset.supabaseUrl;
   const supabaseKey = document.body?.dataset.supabaseKey;
   if (supabaseUrl && supabaseKey) {
-    const supabase = window.__49gHeaderSupabase
-      || (window.__49gHeaderSupabase = createClient(supabaseUrl, supabaseKey));
+    const supabase = window.__shkeenoHeaderSupabase
+      || (window.__shkeenoHeaderSupabase = createClient(supabaseUrl, supabaseKey));
     supabase.auth.onAuthStateChange((_event, session) => {
       const email = session?.user?.email || "";
       if (email) {

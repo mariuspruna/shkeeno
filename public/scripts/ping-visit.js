@@ -1,4 +1,4 @@
-const SESSION_KEY = "49g_ntfy_visit_pinged";
+const SESSION_KEY = "shkeeno_ntfy_visit_pinged";
 const ACCOUNT_KEY = "shkeeno-account-email";
 const PING_URL = "/api/ping";
 
