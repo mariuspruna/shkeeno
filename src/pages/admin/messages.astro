@@ -1,0 +1,66 @@
+---
+import BaseLayout from "../../layouts/BaseLayout.astro";
+import AdminSidebar from "../../components/AdminSidebar.astro";
+---
+
+<BaseLayout title="Messages | Shkeeno">
+  <main class="admin-shell">
+    <AdminSidebar current="messages" />
+
+    <section class="admin-panel" aria-labelledby="messages-title">
+      <div class="admin-heading">
+        <div class="admin-topline">
+          <nav class="page-trail admin-trail" aria-label="Breadcrumb">
+            <ol>
+              <li><a href="/admin/design">Admin</a></li>
+              <li><span aria-current="page">Messages</span></li>
+            </ol>
+          </nav>
+        </div>
+        <h1 id="messages-title">Messages</h1>
+        <p>
+          Read contact form messages and send branded replies from Shkeeno.
+        </p>
+      </div>
+
+      <p class="catalog-status" data-messages-status>Ready.</p>
+
+      <div class="messages-admin-grid">
+        <section class="settings-card" aria-labelledby="messages-list-title">
+          <div class="section-kicker">
+            <p>Inbox</p>
+            <span>Newest first</span>
+          </div>
+          <div class="messages-filter-row">
+            <h2 id="messages-list-title" class="product-section-title">Contact messages</h2>
+            <label>
+              <span class="sr-only">Filter messages</span>
+              <select data-message-filter>
+                <option value="all">All</option>
+                <option value="new">New</option>
+                <option value="read">Read</option>
+                <option value="replied">Replied</option>
+                <option value="archived">Archived</option>
+              </select>
+            </label>
+          </div>
+          <div class="message-list" data-message-list>
+            <p class="empty-copy">Loading messages...</p>
+          </div>
+        </section>
+
+        <section class="settings-card message-detail-card" aria-labelledby="message-detail-title">
+          <div class="section-kicker">
+            <p>Reply</p>
+            <span>Sent via Shkeeno</span>
+          </div>
+          <h2 id="message-detail-title" class="product-section-title">Message detail</h2>
+          <div data-message-detail>
+            <p class="empty-copy">Choose a message from the inbox.</p>
+          </div>
+        </section>
+      </div>
+    </section>
+  </main>
+  <script src="/scripts/admin-messages.js" defer></script>
+</BaseLayout>

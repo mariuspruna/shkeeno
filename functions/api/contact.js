@@ -1,4 +1,4 @@
-import { json } from "./catalog/_shared.js";
+import { json, supabaseFetch } from "./catalog/_shared.js";
 
 function escapeHtml(value) {
   return String(value ?? "").replace(/[&<>"']/g, (char) => (
@@ -23,6 +23,34 @@ async function sendEmail(env, payload) {
   return response.json();
 }
 
+async function createContactMessage(env, payload) {
+  const response = await supabaseFetch(env, "/contact_messages", {
+    method: "POST",
+    headers: {
+      prefer: "return=representation",
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error(await response.text());
+  }
+
+  const rows = await response.json();
+  return rows?.[0] || null;
+}
+
+async function updateContactMessage(env, id, payload) {
+  if (!id) return;
+  await supabaseFetch(env, `/contact_messages?id=eq.${encodeURIComponent(id)}`, {
+    method: "PATCH",
+    body: JSON.stringify({
+      ...payload,
+      updated_at: new Date().toISOString(),
+    }),
+  });
+}
+
 export async function onRequestPost({ request, env }) {
   try {
     const body = await request.json().catch(() => ({}));
@@ -42,6 +70,17 @@ export async function onRequestPost({ request, env }) {
       return json({ error: "Contact email is not configured yet." }, 500);
     }
 
+    const contactMessage = await createContactMessage(env, {
+      name,
+      email,
+      normalized_email: email.toLowerCase(),
+      reason,
+      order_ref: orderRef || null,
+      message,
+      status: "new",
+      source: "contact_form",
+    });
+
     const html = `
       <div style="font-family:Arial,sans-serif;max-width:680px;margin:0 auto;padding:24px;color:#202020;">
         <p style="font-size:12px;font-weight:700;text-transform:uppercase;letter-spacing:0.04em;margin:0 0 12px;">Shkeeno / contact</p>
@@ -55,13 +94,26 @@ export async function onRequestPost({ request, env }) {
       </div>
     `;
 
-    await sendEmail(env, {
-      from: env.ORDER_FROM_EMAIL,
-      to: [env.ORDER_SUPPORT_EMAIL],
-      reply_to: email,
-      subject: `Shkeeno contact: ${reason} — ${name}`,
-      html,
-    });
+    try {
+      await sendEmail(env, {
+        from: env.ORDER_FROM_EMAIL,
+        to: [env.ORDER_SUPPORT_EMAIL],
+        reply_to: email,
+        subject: `Shkeeno contact: ${reason} — ${name}`,
+        html,
+      });
+
+      await updateContactMessage(env, contactMessage?.id, {
+        inbound_email_sent: true,
+        last_error: null,
+      });
+    } catch (emailError) {
+      await updateContactMessage(env, contactMessage?.id, {
+        inbound_email_sent: false,
+        last_error: emailError.message || "Could not send inbox notification.",
+      });
+      throw emailError;
+    }
 
     return json({ ok: true });
   } catch (error) {

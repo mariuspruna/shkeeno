@@ -4295,3 +4295,153 @@ main,
     overflow-wrap: anywhere;
   }
 }
+
+.messages-admin-grid {
+  display: grid;
+  gap: 18px;
+}
+
+@media (min-width: 1080px) {
+  .messages-admin-grid {
+    grid-template-columns: minmax(280px, 420px) minmax(0, 1fr);
+    align-items: start;
+  }
+}
+
+.messages-filter-row {
+  display: flex;
+  gap: 14px;
+  align-items: end;
+  justify-content: space-between;
+  flex-wrap: wrap;
+}
+
+.messages-filter-row .product-section-title {
+  margin-bottom: 0;
+}
+
+.message-list {
+  display: grid;
+  gap: 10px;
+  margin-top: 18px;
+}
+
+.message-list-item {
+  display: grid;
+  gap: 8px;
+  width: 100%;
+  padding: 14px;
+  border: var(--border-strong);
+  background: transparent;
+  color: var(--color-text);
+  text-align: left;
+  cursor: pointer;
+}
+
+.message-list-item:hover,
+.message-list-item:focus-visible,
+.message-list-item.is-active {
+  background: var(--color-text);
+  color: var(--color-background);
+}
+
+.message-list-item strong {
+  font-size: 1rem;
+  line-height: 1.1;
+}
+
+.message-list-item p,
+.message-list-item span {
+  margin: 0;
+}
+
+.message-list-meta {
+  display: flex;
+  gap: 10px;
+  justify-content: space-between;
+  font-size: 0.72rem;
+  font-weight: 800;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+}
+
+.message-detail {
+  display: grid;
+  gap: 22px;
+}
+
+.message-detail-head {
+  display: flex;
+  gap: 20px;
+  justify-content: space-between;
+  align-items: start;
+  flex-wrap: wrap;
+}
+
+.message-detail-head h3 {
+  margin: 4px 0 10px;
+  font-size: clamp(1.8rem, 4vw, 3rem);
+  line-height: 0.95;
+  letter-spacing: -0.05em;
+}
+
+.message-detail-head p {
+  margin: 0 0 8px;
+}
+
+.message-detail-actions {
+  margin-top: 0;
+}
+
+.message-body-box,
+.message-reply-card {
+  border: var(--border-strong);
+  padding: 18px;
+  font-size: 1rem;
+  line-height: 1.55;
+}
+
+.message-thread {
+  display: grid;
+  gap: 12px;
+}
+
+.message-thread h4 {
+  margin: 0;
+  font-size: 0.9rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.message-replies {
+  display: grid;
+  gap: 12px;
+}
+
+.message-reply-card p {
+  margin: 0;
+}
+
+.message-reply-form {
+  display: grid;
+  gap: 16px;
+}
+
+.message-reply-form textarea {
+  min-height: 190px;
+}
+
+@media (max-width: 719px) {
+  .messages-admin-grid {
+    gap: 14px;
+  }
+
+  .message-list-item {
+    padding: 12px;
+  }
+
+  .message-body-box,
+  .message-reply-card {
+    padding: 14px;
+  }
+}

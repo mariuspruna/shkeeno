@@ -1,6 +1,6 @@
 ---
 interface Props {
-  current?: "access" | "design" | "products" | "categories" | "tags" | "orders" | "commerce" | "newsletter";
+  current?: "access" | "design" | "products" | "categories" | "tags" | "orders" | "messages" | "commerce" | "newsletter";
 }
 
 const { current } = Astro.props;
@@ -27,6 +27,7 @@ const { current } = Astro.props;
     <a href="/admin/categories" aria-current={current === "categories" ? "page" : undefined}>Categories</a>
     <a href="/admin/tags" aria-current={current === "tags" ? "page" : undefined}>Tags</a>
     <a href="/admin/orders" aria-current={current === "orders" ? "page" : undefined}>Orders</a>
+    <a href="/admin/messages" aria-current={current === "messages" ? "page" : undefined}>Messages</a>
     <a href="/admin/commerce" aria-current={current === "commerce" ? "page" : undefined}>Commerce</a>
     <a href="/admin/newsletter" aria-current={current === "newsletter" ? "page" : undefined}>Newsletter</a>
     <a href="/">View live</a>
@@ -39,6 +40,7 @@ const { current } = Astro.props;
       <a href="/admin/categories" aria-current={current === "categories" ? "page" : undefined}>Categories</a>
       <a href="/admin/tags" aria-current={current === "tags" ? "page" : undefined}>Tags</a>
       <a href="/admin/orders" aria-current={current === "orders" ? "page" : undefined}>Orders</a>
+      <a href="/admin/messages" aria-current={current === "messages" ? "page" : undefined}>Messages</a>
       <a href="/admin/commerce" aria-current={current === "commerce" ? "page" : undefined}>Commerce</a>
       <a href="/admin/newsletter" aria-current={current === "newsletter" ? "page" : undefined}>Newsletter</a>
       <a href="/">View live</a>
