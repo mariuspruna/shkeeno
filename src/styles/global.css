@@ -4445,3 +4445,254 @@ main,
     padding: 14px;
   }
 }
+
+.word-game-shell {
+  width: 100%;
+  max-width: var(--max-width);
+  margin: 0 auto;
+  padding: 28px 14px 48px;
+}
+
+.word-game-hero {
+  display: grid;
+  gap: 28px;
+  margin-bottom: 28px;
+}
+
+.word-game-brand {
+  width: min(260px, 100%);
+  min-width: 0;
+  font-size: clamp(2.3rem, 12vw, 4.8rem);
+}
+
+.word-game-hero h1 {
+  margin: 8px 0 10px;
+  font-size: clamp(2.2rem, 10vw, 5rem);
+  line-height: 0.9;
+  letter-spacing: -0.07em;
+}
+
+.word-game-hero p:last-child {
+  max-width: 46rem;
+  margin: 0;
+  font-size: var(--type-body-lg);
+  line-height: 1.4;
+}
+
+.word-game-lobby {
+  display: grid;
+  gap: 18px;
+}
+
+.word-game-lobby h2,
+.word-rack-panel h2 {
+  margin: 0 0 18px;
+}
+
+.word-game-form {
+  display: grid;
+  gap: 16px;
+}
+
+.word-game-table {
+  display: grid;
+  gap: 18px;
+}
+
+.word-game-topbar,
+.word-game-meta,
+.word-game-actions,
+.word-scoreboard {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  align-items: center;
+}
+
+.word-game-topbar {
+  justify-content: space-between;
+  border-top: var(--border-strong);
+  padding-top: 14px;
+}
+
+.word-game-topbar p {
+  margin: 0;
+}
+
+.word-scoreboard {
+  align-items: stretch;
+}
+
+.word-player-card {
+  flex: 1 1 160px;
+  border: var(--border-strong);
+  padding: 12px;
+}
+
+.word-player-card.is-turn {
+  background: var(--color-accent);
+  color: #202020;
+}
+
+.word-player-card p,
+.word-player-card span {
+  margin: 0;
+  font-size: var(--type-kicker);
+  font-weight: 800;
+  text-transform: uppercase;
+}
+
+.word-player-card strong {
+  display: block;
+  margin: 8px 0;
+  font-size: var(--type-title-2xl);
+  line-height: 1;
+}
+
+.word-game-meta {
+  justify-content: space-between;
+  border: var(--border-strong);
+  padding: 10px 12px;
+  font-weight: 800;
+}
+
+[data-word-validity][data-valid="true"] {
+  color: #0b7a3b;
+}
+
+[data-word-validity][data-valid="false"] {
+  color: #b00020;
+}
+
+.word-board-wrap {
+  width: 100%;
+  overflow: auto;
+  border: var(--border-strong);
+  background: var(--color-secondary);
+  -webkit-overflow-scrolling: touch;
+}
+
+.word-board {
+  display: grid;
+  grid-template-columns: repeat(15, minmax(34px, 1fr));
+  width: min(100%, 900px);
+  min-width: 510px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+}
+
+.word-cell {
+  position: relative;
+  min-width: 0;
+  border: 1px solid color-mix(in srgb, var(--color-primary), transparent 55%);
+  background: var(--color-background);
+  color: var(--color-primary);
+  padding: 0;
+  font-weight: 800;
+}
+
+.word-cell.is-center {
+  background: color-mix(in srgb, var(--color-accent), var(--color-background) 35%);
+}
+
+.word-cell.has-fixed-tile,
+.word-cell.has-new-tile,
+.word-tile {
+  background: var(--color-primary);
+  color: var(--color-background);
+}
+
+.word-cell.has-new-tile {
+  outline: 3px solid var(--color-accent);
+  outline-offset: -3px;
+}
+
+.word-cell span,
+.word-tile span {
+  font-size: 1.08rem;
+  line-height: 1;
+}
+
+.word-cell small,
+.word-tile small {
+  position: absolute;
+  right: 4px;
+  bottom: 3px;
+  font-size: 0.58rem;
+  line-height: 1;
+}
+
+.word-rack-panel {
+  position: sticky;
+  bottom: 0;
+  z-index: 5;
+  display: grid;
+  gap: 14px;
+  border: var(--border-strong);
+  background: var(--color-background);
+  padding: 14px;
+}
+
+.word-rack {
+  display: flex;
+  gap: 8px;
+  overflow-x: auto;
+  padding-bottom: 4px;
+}
+
+.word-tile {
+  position: relative;
+  flex: 0 0 48px;
+  height: 54px;
+  border: var(--border-strong);
+}
+
+.word-tile.is-selected {
+  transform: translateY(-8px);
+  background: var(--color-accent);
+  color: #202020;
+}
+
+.word-tile.is-exchange {
+  outline: 3px solid #b00020;
+  outline-offset: 2px;
+}
+
+.word-tile:disabled {
+  opacity: 0.25;
+}
+
+.word-game-status {
+  margin-top: 18px;
+}
+
+@media (min-width: 820px) {
+  .word-game-hero {
+    grid-template-columns: 320px minmax(0, 1fr);
+    align-items: end;
+  }
+
+  .word-game-lobby {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+@media (max-width: 719px) {
+  .word-game-shell {
+    padding-top: 20px;
+  }
+
+  .word-board {
+    grid-template-columns: repeat(15, 36px);
+    width: 540px;
+    min-width: 540px;
+  }
+
+  .word-game-actions > * {
+    flex: 1 1 calc(50% - 8px);
+  }
+
+  .word-game-actions .reset-button {
+    flex-basis: 100%;
+  }
+}

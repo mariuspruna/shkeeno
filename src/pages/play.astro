@@ -1,0 +1,93 @@
+---
+import BaseLayout from "../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Shkeeno Words"
+  description="A private word tile game for Shkeeno."
+>
+  <main class="word-game-shell" data-word-game>
+    <section class="word-game-hero">
+      <a class="brand-mark word-game-brand" href="/" aria-label="Shkeeno home">SHKEENO</a>
+      <div>
+        <p class="eyebrow">Private wordboard</p>
+        <h1>Shkeeno Words</h1>
+        <p>
+          A tiny board, a bag of letters, and a very serious excuse to play one more turn.
+        </p>
+      </div>
+    </section>
+
+    <section class="word-game-lobby" data-game-lobby>
+      <div class="settings-card">
+        <h2>Create a game</h2>
+        <form data-create-game-form class="word-game-form">
+          <label>
+            <span>Your name</span>
+            <input name="name" type="text" value="Marius" autocomplete="name" />
+          </label>
+          <label>
+            <span>Players</span>
+            <select name="max_players">
+              <option value="2">2 players</option>
+              <option value="3">3 players</option>
+              <option value="4">4 players</option>
+            </select>
+          </label>
+          <button class="reset-button" type="submit">Create game</button>
+        </form>
+      </div>
+
+      <div class="settings-card">
+        <h2>Join a game</h2>
+        <form data-join-game-form class="word-game-form">
+          <label>
+            <span>Game code</span>
+            <input name="code" type="text" inputmode="text" autocomplete="off" />
+          </label>
+          <label>
+            <span>Your name</span>
+            <input name="name" type="text" value="Diana" autocomplete="name" />
+          </label>
+          <button class="reset-button" type="submit">Join game</button>
+        </form>
+      </div>
+    </section>
+
+    <section class="word-game-table" data-game-table hidden>
+      <div class="word-game-topbar">
+        <div>
+          <p class="eyebrow">Game <span data-game-code>------</span></p>
+          <p data-game-status>Waiting for players.</p>
+        </div>
+        <button class="back-link" type="button" data-copy-invite>Copy invite</button>
+      </div>
+
+      <div class="word-scoreboard" data-scoreboard></div>
+
+      <div class="word-game-meta">
+        <span>Bag: <strong data-bag-count>0</strong></span>
+        <span>Preview: <strong data-preview-score>0</strong></span>
+        <span data-word-validity>Place tiles to begin.</span>
+      </div>
+
+      <div class="word-board-wrap">
+        <div class="word-board" data-word-board aria-label="Word board"></div>
+      </div>
+
+      <div class="word-rack-panel">
+        <div class="word-rack" data-word-rack aria-label="Your tile tray"></div>
+        <div class="word-game-actions">
+          <button type="button" class="back-link" data-withdraw>Withdraw all</button>
+          <button type="button" class="back-link" data-exchange>Exchange selected</button>
+          <button type="button" class="back-link" data-pass>Pass</button>
+          <button type="button" class="back-link" data-resign>Resign</button>
+          <button type="button" class="reset-button" data-submit-turn>Submit</button>
+        </div>
+      </div>
+    </section>
+
+    <p class="catalog-status word-game-status" data-word-game-status hidden></p>
+  </main>
+  <script type="module" src="/scripts/word-game.js"></script>
+</BaseLayout>
