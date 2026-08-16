@@ -52,6 +52,24 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <button class="reset-button" type="submit">Join game</button>
         </form>
       </div>
+
+      <div class="settings-card">
+        <h2>Restore seat</h2>
+        <p>
+          Closed the tab? Use the same game code and the same player name to get your rack back.
+        </p>
+        <form data-restore-game-form class="word-game-form">
+          <label>
+            <span>Game code</span>
+            <input name="code" type="text" inputmode="text" autocomplete="off" />
+          </label>
+          <label>
+            <span>Your player name</span>
+            <input name="name" type="text" autocomplete="name" />
+          </label>
+          <button class="reset-button" type="submit">Restore game</button>
+        </form>
+      </div>
     </section>
 
     <p class="catalog-status word-game-status" data-word-game-status hidden></p>

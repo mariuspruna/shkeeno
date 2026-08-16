@@ -377,6 +377,26 @@ document.querySelector("[data-join-game-form]")?.addEventListener("submit", asyn
   }
 });
 
+document.querySelector("[data-restore-game-form]")?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  const form = event.currentTarget;
+  const payload = Object.fromEntries(new FormData(form).entries());
+  const code = String(payload.code || "").trim().toUpperCase();
+  const name = String(payload.name || "").trim();
+  setStatus("Restoring game...");
+  try {
+    const data = await api(`/api/play/games/${encodeURIComponent(code)}/restore`, {
+      method: "POST",
+      body: JSON.stringify({ name }),
+    });
+    renderState(data);
+    startPolling();
+    setStatus(`Restored ${name || "player"} in game ${code}.`, "good");
+  } catch (error) {
+    setStatus(error.message, "bad");
+  }
+});
+
 function placeSelectedTile(event) {
   const now = Date.now();
   if (event.type === "click" && now - state.lastBoardTapAt < 350) return;
@@ -552,9 +572,12 @@ const code = String(params.get("game") || "").trim().toUpperCase();
 if (code) {
   state.code = code;
   state.token = readToken(code);
-  const codeInput = document.querySelector('[data-join-game-form] input[name="code"]');
-  if (codeInput) codeInput.value = code;
+  document.querySelectorAll('input[name="code"]').forEach((input) => {
+    input.value = code;
+  });
   if (state.token) {
     refreshGame().then(startPolling).catch((error) => setStatus(error.message, "bad"));
+  } else {
+    setStatus("Game code loaded. Join if this is your first time, or restore your seat if you played before.", "good");
   }
 }
