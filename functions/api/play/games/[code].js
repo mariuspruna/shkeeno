@@ -1,5 +1,5 @@
-import { json } from "../../../catalog/_shared.js";
-import { errorResponse, loadGameState } from "../../../_wordgame.js";
+import { json } from "../../catalog/_shared.js";
+import { errorResponse, loadGameState } from "../../_wordgame.js";
 
 export async function onRequestGet({ request, env, params }) {
   try {

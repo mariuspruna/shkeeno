@@ -1,11 +1,11 @@
-import { json, readJson, supabaseFetch } from "../../../../catalog/_shared.js";
+import { json, readJson, supabaseFetch } from "../../../catalog/_shared.js";
 import {
   cleanName,
   drawTiles,
   errorResponse,
   loadGameState,
   makeToken,
-} from "../../../../_wordgame.js";
+} from "../../../_wordgame.js";
 
 export async function onRequestPost({ request, env, params }) {
   try {

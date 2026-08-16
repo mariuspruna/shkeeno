@@ -1,4 +1,4 @@
-import { json, readJson, supabaseFetch } from "../../../../catalog/_shared.js";
+import { json, readJson, supabaseFetch } from "../../../catalog/_shared.js";
 import {
   drawTiles,
   errorResponse,
@@ -6,7 +6,7 @@ import {
   normalisePlacements,
   shuffle,
   validateTurn,
-} from "../../../../_wordgame.js";
+} from "../../../_wordgame.js";
 
 function activePlayers(players) {
   return players.filter((player) => player.status === "active");

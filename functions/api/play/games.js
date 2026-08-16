@@ -1,4 +1,4 @@
-import { json, readJson, supabaseFetch } from "../../catalog/_shared.js";
+import { json, readJson, supabaseFetch } from "../catalog/_shared.js";
 import {
   buildBag,
   cleanName,
@@ -7,7 +7,7 @@ import {
   loadGameState,
   makeCode,
   makeToken,
-} from "../../_wordgame.js";
+} from "../_wordgame.js";
 
 async function insertGame(env, payload) {
   const response = await supabaseFetch(env, "/word_games", {
