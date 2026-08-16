@@ -27,6 +27,7 @@ const state = {
   placements: [],
   rackOrder: [],
   lastNudgeAt: 0,
+  lastBoardTapAt: 0,
   poll: null,
 };
 
@@ -76,6 +77,11 @@ function saveToken(code, token) {
 
 function readToken(code) {
   return localStorage.getItem(storageKey(code)) || "";
+}
+
+function closestElement(event, selector) {
+  const target = event.target instanceof Element ? event.target : event.target?.parentElement;
+  return target?.closest(selector) || null;
 }
 
 function currentPlayer() {
@@ -371,9 +377,13 @@ document.querySelector("[data-join-game-form]")?.addEventListener("submit", asyn
   }
 });
 
-nodes.board?.addEventListener("click", (event) => {
-  const cell = event.target.closest("[data-board-row]");
+function placeSelectedTile(event) {
+  const now = Date.now();
+  if (event.type === "click" && now - state.lastBoardTapAt < 350) return;
+  state.lastBoardTapAt = now;
+  const cell = closestElement(event, "[data-board-row]");
   if (!cell) return;
+  event.preventDefault();
   if (state.game?.status === "waiting") {
     return setStatus("Waiting for the other player to join before tiles can be placed.", "bad");
   }
@@ -401,10 +411,13 @@ nodes.board?.addEventListener("click", (event) => {
   renderRack();
   updatePreview();
   setStatus("");
-});
+}
+
+nodes.board?.addEventListener("click", placeSelectedTile);
+nodes.board?.addEventListener("pointerup", placeSelectedTile);
 
 nodes.rack?.addEventListener("click", (event) => {
-  const tileButton = event.target.closest("[data-rack-tile]");
+  const tileButton = closestElement(event, "[data-rack-tile]");
   if (!tileButton) return;
   const id = tileButton.dataset.rackTile;
   if (state.exchangeMode || event.altKey || event.metaKey || event.shiftKey) {

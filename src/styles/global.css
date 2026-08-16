@@ -4592,6 +4592,8 @@ main,
   font-weight: 800;
   font-size: 0.64rem;
   letter-spacing: 0.02em;
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .word-cell.is-center {
@@ -4668,6 +4670,8 @@ main,
   flex: 0 0 48px;
   height: 54px;
   border: var(--border-strong);
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
 }
 
 .word-tile.is-selected {
