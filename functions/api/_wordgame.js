@@ -3,6 +3,17 @@ import { json, supabaseFetch } from "./catalog/_shared.js";
 export const BOARD_SIZE = 15;
 export const RACK_SIZE = 7;
 
+export const PREMIUM_SQUARES = {
+  "7,7": "DW",
+  "0,0": "TW", "0,7": "TW", "0,14": "TW", "7,0": "TW", "7,14": "TW", "14,0": "TW", "14,7": "TW", "14,14": "TW",
+  "1,1": "DW", "2,2": "DW", "3,3": "DW", "4,4": "DW", "10,10": "DW", "11,11": "DW", "12,12": "DW", "13,13": "DW",
+  "1,13": "DW", "2,12": "DW", "3,11": "DW", "4,10": "DW", "10,4": "DW", "11,3": "DW", "12,2": "DW", "13,1": "DW",
+  "0,3": "DL", "0,11": "DL", "2,6": "DL", "2,8": "DL", "3,0": "DL", "3,7": "DL", "3,14": "DL",
+  "6,2": "DL", "6,6": "DL", "6,8": "DL", "6,12": "DL", "7,3": "DL", "7,11": "DL",
+  "8,2": "DL", "8,6": "DL", "8,8": "DL", "8,12": "DL", "11,0": "DL", "11,7": "DL", "11,14": "DL", "12,6": "DL", "12,8": "DL", "14,3": "DL", "14,11": "DL",
+  "1,5": "TL", "1,9": "TL", "5,1": "TL", "5,5": "TL", "5,9": "TL", "5,13": "TL", "9,1": "TL", "9,5": "TL", "9,9": "TL", "9,13": "TL", "13,5": "TL", "13,9": "TL",
+};
+
 const TILE_DISTRIBUTION = {
   A: [9, 1],
   B: [2, 3],
@@ -117,6 +128,27 @@ export function wordExists(word) {
   return WORDS.has(normalised);
 }
 
+function isNewTile(cell, placed) {
+  return placed.has(boardKey(cell.row, cell.col));
+}
+
+function scoreWord(cells, placed) {
+  let wordMultiplier = 1;
+  const score = cells.reduce((sum, cell) => {
+    const baseScore = Number(cell.tile.score || tileScore(cell.tile.letter));
+    if (!isNewTile(cell, placed)) return sum + baseScore;
+
+    const premium = PREMIUM_SQUARES[boardKey(cell.row, cell.col)];
+    if (premium === "DL") return sum + (baseScore * 2);
+    if (premium === "TL") return sum + (baseScore * 3);
+    if (premium === "DW") wordMultiplier *= 2;
+    if (premium === "TW") wordMultiplier *= 3;
+    return sum + baseScore;
+  }, 0);
+
+  return score * wordMultiplier;
+}
+
 export function getFormedWords(board, placements) {
   const placed = new Set(placements.map((placement) => boardKey(placement.row, placement.col)));
   const words = [];
@@ -152,7 +184,7 @@ export function getFormedWords(board, placements) {
     words.push({
       word: cells.map((cell) => cell.tile.letter).join(""),
       cells,
-      score: cells.reduce((sum, cell) => sum + Number(cell.tile.score || tileScore(cell.tile.letter)), 0),
+      score: scoreWord(cells, placed),
     });
   }
 
@@ -168,6 +200,7 @@ export function validateTurn(existingBoard, rack, placements) {
   const uniqueSquares = new Set();
   const rackById = new Map(rack.map((tile) => [tile.id, tile]));
   const board = { ...existingBoard };
+  const existingKeys = Object.keys(existingBoard || {});
 
   for (const placement of placements) {
     const key = boardKey(placement.row, placement.col);
@@ -180,6 +213,34 @@ export function validateTurn(existingBoard, rack, placements) {
   }
 
   if (!placements.length) return { ok: false, error: "Place at least one tile." };
+  const sameRow = placements.every((placement) => placement.row === placements[0].row);
+  const sameCol = placements.every((placement) => placement.col === placements[0].col);
+  if (!sameRow && !sameCol) return { ok: false, error: "Tiles must sit in one row or one column." };
+
+  if (!existingKeys.length && !placements.some((placement) => placement.row === 7 && placement.col === 7)) {
+    return { ok: false, error: "The first word must cross the centre star." };
+  }
+
+  if (existingKeys.length) {
+    const touchesExisting = placements.some((placement) => (
+      existingBoard[boardKey(placement.row - 1, placement.col)] ||
+      existingBoard[boardKey(placement.row + 1, placement.col)] ||
+      existingBoard[boardKey(placement.row, placement.col - 1)] ||
+      existingBoard[boardKey(placement.row, placement.col + 1)]
+    ));
+    if (!touchesExisting) return { ok: false, error: "New tiles must connect to the board." };
+  }
+
+  const sorted = [...placements].sort((a, b) => sameRow ? a.col - b.col : a.row - b.row);
+  const fixedAxis = sameRow ? "row" : "col";
+  const movingAxis = sameRow ? "col" : "row";
+  const start = sorted[0][movingAxis];
+  const end = sorted[sorted.length - 1][movingAxis];
+  for (let cursor = start; cursor <= end; cursor += 1) {
+    const row = fixedAxis === "row" ? sorted[0].row : cursor;
+    const col = fixedAxis === "col" ? sorted[0].col : cursor;
+    if (!board[boardKey(row, col)]) return { ok: false, error: "Tiles in one move cannot leave gaps." };
+  }
 
   const words = getFormedWords(board, placements);
   if (!words.length) {
@@ -187,11 +248,13 @@ export function validateTurn(existingBoard, rack, placements) {
     if (solo.length === 1 && Object.keys(existingBoard).length > 0) {
       return { ok: false, error: "A single tile must form a word with existing tiles." };
     }
-    const sorted = [...placements].sort((a, b) => a.row - b.row || a.col - b.col);
     words.push({
       word: sorted.map((placement) => board[boardKey(placement.row, placement.col)].letter).join(""),
       cells: sorted,
-      score: sorted.reduce((sum, placement) => sum + board[boardKey(placement.row, placement.col)].score, 0),
+      score: scoreWord(
+        sorted.map((placement) => ({ ...placement, tile: board[boardKey(placement.row, placement.col)] })),
+        new Set(placements.map((placement) => boardKey(placement.row, placement.col))),
+      ),
     });
   }
 

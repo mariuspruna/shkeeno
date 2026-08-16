@@ -3,6 +3,17 @@ const TILE_SCORES = {
   N: 1, O: 1, P: 3, Q: 10, R: 1, S: 1, T: 1, U: 1, V: 4, W: 4, X: 8, Y: 4, Z: 10,
 };
 
+const PREMIUM_SQUARES = {
+  "7,7": "DW",
+  "0,0": "TW", "0,7": "TW", "0,14": "TW", "7,0": "TW", "7,14": "TW", "14,0": "TW", "14,7": "TW", "14,14": "TW",
+  "1,1": "DW", "2,2": "DW", "3,3": "DW", "4,4": "DW", "10,10": "DW", "11,11": "DW", "12,12": "DW", "13,13": "DW",
+  "1,13": "DW", "2,12": "DW", "3,11": "DW", "4,10": "DW", "10,4": "DW", "11,3": "DW", "12,2": "DW", "13,1": "DW",
+  "0,3": "DL", "0,11": "DL", "2,6": "DL", "2,8": "DL", "3,0": "DL", "3,7": "DL", "3,14": "DL",
+  "6,2": "DL", "6,6": "DL", "6,8": "DL", "6,12": "DL", "7,3": "DL", "7,11": "DL",
+  "8,2": "DL", "8,6": "DL", "8,8": "DL", "8,12": "DL", "11,0": "DL", "11,7": "DL", "11,14": "DL", "12,6": "DL", "12,8": "DL", "14,3": "DL", "14,11": "DL",
+  "1,5": "TL", "1,9": "TL", "5,1": "TL", "5,5": "TL", "5,9": "TL", "5,13": "TL", "9,1": "TL", "9,5": "TL", "9,9": "TL", "9,13": "TL", "13,5": "TL", "13,9": "TL",
+};
+
 const WORDS = new Set("A I AM AN AS AT BE BY DO GO HE IF IN IS IT ME MY NO OF ON OR OX SO TO UP US WE ACE ACT ADD AGE AGO AID AIR AND ANT ANY APE ARE ARM ART ASH ASK ATE BAD BAG BAR BAT BED BEE BIG BIT BOX BOY BUS CAN CAR CAT COT CUP CUT DAY DID DOG EAR EAT END ERA FAR FIT FLY FOR FOX FUN GET GIRL HAT HER HIM HIS HOT HOW ICE INK JOY KEY LAW LAY LET LIE LIP LOG LOT LOW MAN MAP MAY MIX NET NEW NOW OAK OLD ONE OUR OUT PAN PEN PET PIN RAG RAN RAT RED RUN SAT SAW SAY SEA SEE SET SHE SKY SUN TEA TEN THE TOY TRY TWO USE WAR WAS WAY WHO WHY YES YET ABOUT AFTER AGAIN ALIVE APPLE BOARD BRAND CHAIR CHARM CLEAR CLOTH COLOUR DANCE DREAM DRESS EARTH EIGHT FAITH FIBRE FIELD FIRST FLAME FLAIR FLOOR FLOWER FRAME GRACE GRAPHIC GREEN HEART HOUSE IDEA IMAGE LABEL LIGHT LINES LONDON MAGIC MAKER MOMENT MUSIC NIGHT ORANGE PIECE PLACE PLAIN PLAY POET PRINT QUIET REPAIR RHYTHM ROUND SEWING SHAPE SHIRT SHOE SKIRT SOFT SOUND SPACE STITCH STONE STORY STYLE TABLE TAILOR TEAL THING THREAD TILE TRAIN VALUE WHITE WORDS WORLD ZEBRA BAPTISTA DIANA FASHION SHKEENO DESIGN DESIGNER TEXTILE PATTERN SERVICE SERVICES COLLECTION COLLECTIONS SUSTAIN CHARITY ETHICS".split(" "));
 
 const state = {
@@ -12,6 +23,7 @@ const state = {
   players: [],
   selectedTileId: "",
   selectedExchangeIds: new Set(),
+  exchangeMode: false,
   placements: [],
   poll: null,
 };
@@ -28,6 +40,7 @@ const nodes = {
   bagCount: document.querySelector("[data-bag-count]"),
   previewScore: document.querySelector("[data-preview-score]"),
   validity: document.querySelector("[data-word-validity]"),
+  exchangeMode: document.querySelector("[data-exchange-mode]"),
 };
 
 function setStatus(message, tone = "neutral") {
@@ -97,6 +110,21 @@ function wordExists(word) {
   return value.length <= 1 || WORDS.has(value);
 }
 
+function scoreWord(cells, placed) {
+  let wordMultiplier = 1;
+  const score = cells.reduce((sum, cell) => {
+    const baseScore = Number(cell.tile.score || TILE_SCORES[cell.tile.letter] || 0);
+    if (!placed.has(boardKey(cell.row, cell.col))) return sum + baseScore;
+    const premium = PREMIUM_SQUARES[boardKey(cell.row, cell.col)];
+    if (premium === "DL") return sum + (baseScore * 2);
+    if (premium === "TL") return sum + (baseScore * 3);
+    if (premium === "DW") wordMultiplier *= 2;
+    if (premium === "TW") wordMultiplier *= 3;
+    return sum + baseScore;
+  }, 0);
+  return score * wordMultiplier;
+}
+
 function collectWords() {
   const board = fullBoard();
   const words = [];
@@ -129,7 +157,7 @@ function collectWords() {
     if (!cells.some((cell) => placed.has(boardKey(cell.row, cell.col)))) return;
     words.push({
       word: cells.map((cell) => cell.tile.letter).join(""),
-      score: cells.reduce((sum, cell) => sum + Number(cell.tile.score || TILE_SCORES[cell.tile.letter] || 0), 0),
+      score: scoreWord(cells, placed),
     });
   }
 
@@ -142,7 +170,7 @@ function collectWords() {
     const sorted = [...state.placements].sort((a, b) => a.row - b.row || a.col - b.col);
     words.push({
       word: sorted.map((placement) => tileFromRack(placement.tileId)?.letter || "").join(""),
-      score: sorted.reduce((sum, placement) => sum + Number(tileFromRack(placement.tileId)?.score || 0), 0),
+      score: scoreWord(sorted.map((placement) => ({ ...placement, tile: tileFromRack(placement.tileId) })), placed),
     });
   }
 
@@ -178,14 +206,16 @@ function renderBoard() {
       const placement = placedTileAt(row, col);
       const tile = fixedTile || (placement ? tileFromRack(placement.tileId) : null);
       const center = row === 7 && col === 7;
+      const premium = PREMIUM_SQUARES[boardKey(row, col)] || "";
       html.push(`
         <button
           type="button"
-          class="word-cell${center ? " is-center" : ""}${fixedTile ? " has-fixed-tile" : ""}${placement ? " has-new-tile" : ""}"
+          class="word-cell${center ? " is-center" : ""}${fixedTile ? " has-fixed-tile" : ""}${placement ? " has-new-tile" : ""}${premium ? ` has-premium is-${premium.toLowerCase()}` : ""}"
           data-board-row="${row}"
           data-board-col="${col}"
+          data-premium="${premium}"
         >
-          ${tile ? `<span>${tile.letter}</span><small>${tile.score}</small>` : center ? "★" : ""}
+          ${tile ? `<span>${tile.letter}</span><small>${tile.score}</small>` : center ? "★" : premium}
         </button>
       `);
     }
@@ -208,6 +238,10 @@ function renderRack() {
       <span>${tile.letter}</span><small>${tile.score}</small>
     </button>
   `).join("");
+  if (nodes.exchangeMode) {
+    nodes.exchangeMode.textContent = state.exchangeMode ? "Exchange mode: on" : "Mark exchange";
+    nodes.exchangeMode.dataset.active = state.exchangeMode ? "true" : "false";
+  }
 }
 
 function renderScoreboard() {
@@ -325,13 +359,21 @@ nodes.rack?.addEventListener("click", (event) => {
   const tileButton = event.target.closest("[data-rack-tile]");
   if (!tileButton) return;
   const id = tileButton.dataset.rackTile;
-  if (event.altKey || event.metaKey || event.shiftKey) {
+  if (state.exchangeMode || event.altKey || event.metaKey || event.shiftKey) {
     if (state.selectedExchangeIds.has(id)) state.selectedExchangeIds.delete(id);
     else state.selectedExchangeIds.add(id);
+    state.selectedTileId = "";
   } else {
     state.selectedTileId = state.selectedTileId === id ? "" : id;
   }
   renderRack();
+});
+
+document.querySelector("[data-exchange-mode]")?.addEventListener("click", () => {
+  state.exchangeMode = !state.exchangeMode;
+  state.selectedTileId = "";
+  renderRack();
+  setStatus(state.exchangeMode ? "Tap tiles to mark them for exchange." : "", "neutral");
 });
 
 document.querySelector("[data-withdraw]")?.addEventListener("click", () => {
@@ -371,7 +413,7 @@ document.querySelector("[data-pass]")?.addEventListener("click", async () => {
 document.querySelector("[data-exchange]")?.addEventListener("click", async () => {
   if (!isMyTurn()) return setStatus("Not your turn yet.", "bad");
   const tileIds = [...state.selectedExchangeIds];
-  if (!tileIds.length) return setStatus("Hold Shift and tap tiles to mark them for exchange.", "bad");
+  if (!tileIds.length) return setStatus("Tap “Mark exchange”, then tap the tiles you want to swap.", "bad");
   if (!window.confirm(`Exchange ${tileIds.length} tile${tileIds.length === 1 ? "" : "s"} and lose this turn?`)) return;
   const data = await api(`/api/play/games/${encodeURIComponent(state.code)}/action`, {
     method: "POST",
@@ -380,6 +422,21 @@ document.querySelector("[data-exchange]")?.addEventListener("click", async () =>
   state.selectedExchangeIds.clear();
   state.placements = [];
   renderState(data);
+});
+
+document.querySelector("[data-nudge]")?.addEventListener("click", async () => {
+  if (!state.code || !state.token) return setStatus("Join a game first.", "bad");
+  setStatus("Sending nudge...");
+  try {
+    const data = await api(`/api/play/games/${encodeURIComponent(state.code)}/action`, {
+      method: "POST",
+      body: JSON.stringify({ token: state.token, action: "nudge" }),
+    });
+    renderState(data);
+    setStatus("Nudge sent.", "good");
+  } catch (error) {
+    setStatus(error.message, "bad");
+  }
 });
 
 document.querySelector("[data-resign]")?.addEventListener("click", async () => {

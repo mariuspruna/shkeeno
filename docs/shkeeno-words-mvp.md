@@ -39,6 +39,7 @@ Target host:
   - red if one or more formed words do not exist.
 - Live score preview while tiles are placed.
 - Nudge option.
+- Premium board squares are visible and counted in scoring.
 
 ## Technical approach
 
@@ -58,9 +59,17 @@ Target host:
 ## Later upgrades
 
 - Full UK English dictionary.
-- Premium board squares.
 - Proper drag/drop with touch support.
 - Supabase Realtime subscriptions.
 - Better end-game scoring.
-- Nudge via ntfy or email.
-- 3–4 player creation UI.
+- Better nudge UX once `play.shkeeno.com` is final.
+- Rack rearranging for visualisation.
+
+## Current implementation notes
+
+- The first version is live at `/play`.
+- The server supports 2–4 players; the create form exposes 2, 3, and 4 players.
+- Mobile interaction is tap-first: choose a rack tile, then tap a board square.
+- Exchange mode is explicit for mobile: tap “Mark exchange”, select tiles, then exchange.
+- Nudges use the existing Shkeeno ntfy topic.
+- The dictionary is intentionally small for the MVP and should be replaced with a fuller word list.

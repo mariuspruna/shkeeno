@@ -7,6 +7,7 @@ import {
   shuffle,
   validateTurn,
 } from "../../../_wordgame.js";
+import { getSiteUrl, notifyNtfy } from "../../../_ntfy.js";
 
 function activePlayers(players) {
   return players.filter((player) => player.status === "active");
@@ -60,6 +61,22 @@ export async function onRequestPost({ request, env, params }) {
     const action = String(body.action || "").trim();
     const loaded = await loadGameState(env, params.code, token);
     if (!loaded) return json({ error: "Game not found." }, 404);
+
+    if (action === "nudge") {
+      const player = loaded.players.find((candidate) => candidate.token === token);
+      if (!player) throw new Error("Player token not recognised.");
+      const turnPlayer = loaded.players.find((candidate) => candidate.player_index === loaded.game.current_player_index);
+      const click = `${getSiteUrl(env)}/play?game=${encodeURIComponent(loaded.game.code)}`;
+      await notifyNtfy(env, {
+        title: "Shkeeno Words",
+        tags: "game,eyes",
+        priority: "3",
+        click,
+        body: `🔔 ${player.name} nudged ${turnPlayer?.name || "the table"} · ${loaded.game.code}`,
+      }).catch(() => null);
+      const nextLoaded = await loadGameState(env, params.code, token);
+      return json(nextLoaded.state);
+    }
 
     const player = requireTurn(loaded, token);
     const nextIndex = nextPlayerIndex(loaded.players, loaded.game.current_player_index);

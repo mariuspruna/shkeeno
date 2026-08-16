@@ -4589,10 +4589,32 @@ main,
   color: var(--color-primary);
   padding: 0;
   font-weight: 800;
+  font-size: 0.64rem;
+  letter-spacing: 0.02em;
 }
 
 .word-cell.is-center {
   background: color-mix(in srgb, var(--color-accent), var(--color-background) 35%);
+}
+
+.word-cell.has-premium:not(.has-fixed-tile):not(.has-new-tile) {
+  color: color-mix(in srgb, var(--color-primary), transparent 30%);
+}
+
+.word-cell.is-dl:not(.has-fixed-tile):not(.has-new-tile) {
+  background: color-mix(in srgb, #7fc8ff, var(--color-background) 72%);
+}
+
+.word-cell.is-tl:not(.has-fixed-tile):not(.has-new-tile) {
+  background: color-mix(in srgb, #2d7eea, var(--color-background) 72%);
+}
+
+.word-cell.is-dw:not(.has-fixed-tile):not(.has-new-tile) {
+  background: color-mix(in srgb, var(--color-accent), var(--color-background) 62%);
+}
+
+.word-cell.is-tw:not(.has-fixed-tile):not(.has-new-tile) {
+  background: color-mix(in srgb, #f05a28, var(--color-background) 70%);
 }
 
 .word-cell.has-fixed-tile,
@@ -4656,6 +4678,11 @@ main,
 .word-tile.is-exchange {
   outline: 3px solid #b00020;
   outline-offset: 2px;
+}
+
+[data-exchange-mode][data-active="true"] {
+  background: var(--color-accent);
+  color: #202020;
 }
 
 .word-tile:disabled {
