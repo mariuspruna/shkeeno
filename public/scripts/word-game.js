@@ -290,6 +290,12 @@ function renderState(data) {
   state.game = data.game;
   state.players = data.players || [];
   state.code = data.game?.code || state.code;
+  if (state.selectedTileId && !tileFromRack(state.selectedTileId)) {
+    state.selectedTileId = "";
+  }
+  state.selectedExchangeIds.forEach((id) => {
+    if (!tileFromRack(id)) state.selectedExchangeIds.delete(id);
+  });
   if (data.token) {
     state.token = data.token;
     saveToken(state.code, state.token);
@@ -367,7 +373,16 @@ document.querySelector("[data-join-game-form]")?.addEventListener("submit", asyn
 
 nodes.board?.addEventListener("click", (event) => {
   const cell = event.target.closest("[data-board-row]");
-  if (!cell || !isMyTurn()) return;
+  if (!cell) return;
+  if (state.game?.status === "waiting") {
+    return setStatus("Waiting for the other player to join before tiles can be placed.", "bad");
+  }
+  if (state.game?.status === "finished") {
+    return setStatus("This game is finished.", "bad");
+  }
+  if (!isMyTurn()) {
+    return setStatus("Not your turn yet.", "bad");
+  }
   const row = Number(cell.dataset.boardRow);
   const col = Number(cell.dataset.boardCol);
   const existingPlacement = placedTileAt(row, col);
@@ -378,13 +393,14 @@ nodes.board?.addEventListener("click", (event) => {
     updatePreview();
     return;
   }
-  if (!state.selectedTileId) return;
-  if (state.game?.board?.[boardKey(row, col)]) return;
+  if (!state.selectedTileId) return setStatus("Select a tile from your rack first.", "bad");
+  if (state.game?.board?.[boardKey(row, col)]) return setStatus("That square is already occupied.", "bad");
   state.placements.push({ row, col, tileId: state.selectedTileId });
   state.selectedTileId = "";
   renderBoard();
   renderRack();
   updatePreview();
+  setStatus("");
 });
 
 nodes.rack?.addEventListener("click", (event) => {

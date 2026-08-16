@@ -54,6 +54,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       </div>
     </section>
 
+    <p class="catalog-status word-game-status" data-word-game-status hidden></p>
+
     <section class="word-game-table" data-game-table hidden>
       <div class="word-game-topbar">
         <div>
@@ -99,8 +101,6 @@ import BaseLayout from "../layouts/BaseLayout.astro";
         <ol data-word-history></ol>
       </section>
     </section>
-
-    <p class="catalog-status word-game-status" data-word-game-status hidden></p>
   </main>
   <script type="module" src="/scripts/word-game.js"></script>
 </BaseLayout>
