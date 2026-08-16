@@ -7,6 +7,7 @@ Target host:
 
 - First implementation: `/play`
 - Intended custom domain: `play.shkeeno.com`
+  - Added to the Cloudflare Pages project on 2026-08-16; pending Cloudflare activation.
 
 ## MVP goals
 
@@ -40,6 +41,8 @@ Target host:
 - Live score preview while tiles are placed.
 - Nudge option.
 - Premium board squares are visible and counted in scoring.
+- Recent moves are shown as a small turn history.
+- Invite link, game code copy, and native mobile share are available.
 
 ## Technical approach
 
@@ -58,12 +61,10 @@ Target host:
 
 ## Later upgrades
 
-- Full UK English dictionary.
 - Proper drag/drop with touch support.
 - Supabase Realtime subscriptions.
-- Better end-game scoring.
-- Better nudge UX once `play.shkeeno.com` is final.
-- Rack rearranging for visualisation.
+- Licensed/official dictionary choice if we want competitive Scrabble-like correctness.
+- Better final score summary UI.
 
 ## Current implementation notes
 
@@ -72,4 +73,5 @@ Target host:
 - Mobile interaction is tap-first: choose a rack tile, then tap a board square.
 - Exchange mode is explicit for mobile: tap “Mark exchange”, select tiles, then exchange.
 - Nudges use the existing Shkeeno ntfy topic.
-- The dictionary is intentionally small for the MVP and should be replaced with a fuller word list.
+- The game currently uses a broad open English word list, not an official Scrabble dictionary.
+- End-game scoring subtracts leftover rack tiles when the game ends naturally or after three consecutive passes.

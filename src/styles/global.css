@@ -4502,6 +4502,7 @@ main,
 .word-game-topbar,
 .word-game-meta,
 .word-game-actions,
+.word-invite-actions,
 .word-scoreboard {
   display: flex;
   gap: 10px;
@@ -4691,6 +4692,27 @@ main,
 
 .word-game-status {
   margin-top: 18px;
+}
+
+.word-history {
+  border: var(--border-strong);
+  padding: 14px;
+}
+
+.word-history h2 {
+  margin: 0 0 10px;
+  font-size: var(--type-title-sm);
+}
+
+.word-history ol {
+  display: grid;
+  gap: 8px;
+  margin: 0;
+  padding-left: 20px;
+}
+
+.word-history li {
+  font-weight: 700;
 }
 
 @media (min-width: 820px) {

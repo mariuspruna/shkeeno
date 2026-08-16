@@ -122,10 +122,10 @@ export function normalisePlacements(placements) {
     ));
 }
 
-export function wordExists(word) {
+export function wordExists(word, wordSet = WORDS) {
   const normalised = String(word || "").toUpperCase();
   if (normalised.length <= 1) return true;
-  return WORDS.has(normalised);
+  return wordSet.has(normalised);
 }
 
 function isNewTile(cell, placed) {
@@ -196,7 +196,7 @@ export function getFormedWords(board, placements) {
   return words;
 }
 
-export function validateTurn(existingBoard, rack, placements) {
+export function validateTurn(existingBoard, rack, placements, wordSet = WORDS) {
   const uniqueSquares = new Set();
   const rackById = new Map(rack.map((tile) => [tile.id, tile]));
   const board = { ...existingBoard };
@@ -258,7 +258,7 @@ export function validateTurn(existingBoard, rack, placements) {
     });
   }
 
-  const invalidWords = words.filter((entry) => !wordExists(entry.word)).map((entry) => entry.word);
+  const invalidWords = words.filter((entry) => !wordExists(entry.word, wordSet)).map((entry) => entry.word);
   if (invalidWords.length) {
     return { ok: false, error: `Word not recognised: ${invalidWords.join(", ")}`, board, words, invalidWords };
   }
@@ -302,6 +302,7 @@ export function publicState(game, players, currentToken = "") {
       current_player_index: game.current_player_index,
       pass_streak: game.pass_streak,
       last_action: game.last_action,
+      history: Array.isArray(game.history) ? game.history.slice(-12) : [],
       winner_player_id: game.winner_player_id,
       updated_at: game.updated_at,
     },

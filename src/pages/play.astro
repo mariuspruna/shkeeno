@@ -60,7 +60,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <p class="eyebrow">Game <span data-game-code>------</span></p>
           <p data-game-status>Waiting for players.</p>
         </div>
-        <button class="back-link" type="button" data-copy-invite>Copy invite</button>
+        <div class="word-invite-actions">
+          <button class="back-link" type="button" data-copy-code>Copy code</button>
+          <button class="back-link" type="button" data-copy-invite>Copy invite</button>
+          <button class="back-link" type="button" data-share-invite>Share</button>
+        </div>
       </div>
 
       <div class="word-scoreboard" data-scoreboard></div>
@@ -78,6 +82,8 @@ import BaseLayout from "../layouts/BaseLayout.astro";
       <div class="word-rack-panel">
         <div class="word-rack" data-word-rack aria-label="Your tile tray"></div>
         <div class="word-game-actions">
+          <button type="button" class="back-link" data-move-left>Move left</button>
+          <button type="button" class="back-link" data-move-right>Move right</button>
           <button type="button" class="back-link" data-withdraw>Withdraw all</button>
           <button type="button" class="back-link" data-exchange-mode>Mark exchange</button>
           <button type="button" class="back-link" data-exchange>Exchange selected</button>
@@ -87,6 +93,11 @@ import BaseLayout from "../layouts/BaseLayout.astro";
           <button type="button" class="reset-button" data-submit-turn>Submit</button>
         </div>
       </div>
+
+      <section class="word-history">
+        <h2>Recent moves</h2>
+        <ol data-word-history></ol>
+      </section>
     </section>
 
     <p class="catalog-status word-game-status" data-word-game-status hidden></p>

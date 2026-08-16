@@ -25,6 +25,8 @@ const state = {
   selectedExchangeIds: new Set(),
   exchangeMode: false,
   placements: [],
+  rackOrder: [],
+  lastNudgeAt: 0,
   poll: null,
 };
 
@@ -41,6 +43,7 @@ const nodes = {
   previewScore: document.querySelector("[data-preview-score]"),
   validity: document.querySelector("[data-word-validity]"),
   exchangeMode: document.querySelector("[data-exchange-mode]"),
+  history: document.querySelector("[data-word-history]"),
 };
 
 function setStatus(message, tone = "neutral") {
@@ -97,6 +100,16 @@ function tileFromRack(tileId) {
   return me?.rack?.find((tile) => tile.id === tileId) || null;
 }
 
+function orderedRack(rack = []) {
+  const currentIds = new Set(rack.map((tile) => tile.id));
+  state.rackOrder = state.rackOrder.filter((id) => currentIds.has(id));
+  rack.forEach((tile) => {
+    if (!state.rackOrder.includes(tile.id)) state.rackOrder.push(tile.id);
+  });
+  const order = new Map(state.rackOrder.map((id, index) => [id, index]));
+  return [...rack].sort((a, b) => (order.get(a.id) ?? 999) - (order.get(b.id) ?? 999));
+}
+
 function fullBoard() {
   const board = { ...(state.game?.board || {}) };
   state.placements.forEach((placement) => {
@@ -109,6 +122,16 @@ function wordExists(word) {
   const value = String(word || "").toUpperCase();
   return value.length <= 1 || WORDS.has(value);
 }
+
+fetch("/data/word-list.txt")
+  .then((response) => response.ok ? response.text() : "")
+  .then((text) => {
+    text.split(/\s+/).forEach((word) => {
+      if (word) WORDS.add(word.toUpperCase());
+    });
+    updatePreview();
+  })
+  .catch(() => null);
 
 function scoreWord(cells, placed) {
   let wordMultiplier = 1;
@@ -227,7 +250,7 @@ function renderRack() {
   if (!nodes.rack) return;
   const me = currentPlayer();
   const usedIds = new Set(state.placements.map((placement) => placement.tileId));
-  const rack = me?.rack || [];
+  const rack = orderedRack(me?.rack || []);
   nodes.rack.innerHTML = rack.map((tile) => `
     <button
       type="button"
@@ -242,6 +265,14 @@ function renderRack() {
     nodes.exchangeMode.textContent = state.exchangeMode ? "Exchange mode: on" : "Mark exchange";
     nodes.exchangeMode.dataset.active = state.exchangeMode ? "true" : "false";
   }
+}
+
+function renderHistory() {
+  if (!nodes.history) return;
+  const history = Array.isArray(state.game?.history) ? state.game.history : [];
+  nodes.history.innerHTML = history.length
+    ? history.slice().reverse().map((entry) => `<li>${entry.message || ""}</li>`).join("")
+    : "<li>No moves yet.</li>";
 }
 
 function renderScoreboard() {
@@ -278,6 +309,7 @@ function renderState(data) {
   renderScoreboard();
   renderBoard();
   renderRack();
+  renderHistory();
   updatePreview();
 }
 
@@ -383,6 +415,19 @@ document.querySelector("[data-withdraw]")?.addEventListener("click", () => {
   updatePreview();
 });
 
+function moveSelectedTile(direction) {
+  const id = state.selectedTileId;
+  if (!id) return setStatus("Select a tile first.", "bad");
+  const index = state.rackOrder.indexOf(id);
+  const nextIndex = index + direction;
+  if (index < 0 || nextIndex < 0 || nextIndex >= state.rackOrder.length) return;
+  [state.rackOrder[index], state.rackOrder[nextIndex]] = [state.rackOrder[nextIndex], state.rackOrder[index]];
+  renderRack();
+}
+
+document.querySelector("[data-move-left]")?.addEventListener("click", () => moveSelectedTile(-1));
+document.querySelector("[data-move-right]")?.addEventListener("click", () => moveSelectedTile(1));
+
 document.querySelector("[data-submit-turn]")?.addEventListener("click", async () => {
   if (!isMyTurn()) return setStatus("Not your turn yet.", "bad");
   setStatus("Submitting turn...");
@@ -426,8 +471,11 @@ document.querySelector("[data-exchange]")?.addEventListener("click", async () =>
 
 document.querySelector("[data-nudge]")?.addEventListener("click", async () => {
   if (!state.code || !state.token) return setStatus("Join a game first.", "bad");
+  const now = Date.now();
+  if (now - state.lastNudgeAt < 60_000) return setStatus("Give it a minute before nudging again. We are playful, not chaotic.", "bad");
   setStatus("Sending nudge...");
   try {
+    state.lastNudgeAt = now;
     const data = await api(`/api/play/games/${encodeURIComponent(state.code)}/action`, {
       method: "POST",
       body: JSON.stringify({ token: state.token, action: "nudge" }),
@@ -453,6 +501,21 @@ document.querySelector("[data-copy-invite]")?.addEventListener("click", async ()
   const invite = `${window.location.origin}/play?game=${state.code}`;
   await navigator.clipboard?.writeText(invite).catch(() => {});
   setStatus(`Invite: ${invite}`, "good");
+});
+
+document.querySelector("[data-copy-code]")?.addEventListener("click", async () => {
+  await navigator.clipboard?.writeText(state.code).catch(() => {});
+  setStatus(`Game code copied: ${state.code}`, "good");
+});
+
+document.querySelector("[data-share-invite]")?.addEventListener("click", async () => {
+  const invite = `${window.location.origin}/play?game=${state.code}`;
+  if (navigator.share) {
+    await navigator.share({ title: "Shkeeno Words", text: `Join my Shkeeno Words game: ${state.code}`, url: invite }).catch(() => {});
+    return;
+  }
+  await navigator.clipboard?.writeText(invite).catch(() => {});
+  setStatus(`Invite copied: ${invite}`, "good");
 });
 
 const params = new URLSearchParams(window.location.search);

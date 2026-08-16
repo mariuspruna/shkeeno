@@ -51,6 +51,12 @@ export async function onRequestPost({ request, env }) {
           max_players: maxPlayers,
           tile_bag: bag,
           status: "waiting",
+          last_action: `${name} created the game.`,
+          history: [{
+            type: "create",
+            message: `${name} created the game.`,
+            created_at: new Date().toISOString(),
+          }],
         });
       } catch (error) {
         if (!String(error.message || "").includes("duplicate")) throw error;
